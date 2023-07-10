@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createStyles, Navbar, Group, Code, getStylesRef, rem } from '@mantine/core';
+import { createStyles, ScrollArea, Navbar, Group, Code, getStylesRef, rem,  } from '@mantine/core';
 import {
   IconBellRinging,
   IconFingerprint,
@@ -101,11 +101,10 @@ const NavbarContent = () => {
   ));
 
   return (
-    <>
+    <ScrollArea>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           <MantineLogo size={28} />
-          <Code sx={{ fontWeight: 700 }}>v3.1.2</Code>
         </Group>
         {links}
       </Navbar.Section>
@@ -121,7 +120,7 @@ const NavbarContent = () => {
           <span>Logout</span>
         </a>
       </Navbar.Section>
-      </>
+      </ScrollArea>
   );
 }
 
