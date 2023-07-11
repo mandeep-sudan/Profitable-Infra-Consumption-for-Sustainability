@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { createStyles, ScrollArea, Navbar, Group, Code, getStylesRef, rem,  } from '@mantine/core';
 import {
-  IconBellRinging,
-  IconFingerprint,
-  IconKey,
   IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
   IconReceipt2,
   IconSwitchHorizontal,
   IconLogout,
+  IconWind,
+  IconDashboard,
+  IconDatabaseLeak,
+  IconBrandGoogleBigQuery,
+  IconDatabaseCog,
 } from '@tabler/icons-react';
 import { MantineLogo } from '@mantine/ds';
 
@@ -70,20 +70,20 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = [
-  { link: '', label: 'Notifications', icon: IconBellRinging },
+  { link: '', label: 'Dashboard', icon: IconDashboard },
+  { link: '', label: 'Dataflow', icon: IconDatabaseLeak },
+  { link: '', label: 'Airflow', icon: IconWind },
+  { link: '', label: 'BigQuery', icon: IconBrandGoogleBigQuery },
+  { link: '', label: 'DataProc', icon: IconDatabaseCog },
   { link: '', label: 'Billing', icon: IconReceipt2 },
-  { link: '', label: 'Security', icon: IconFingerprint },
-  { link: '', label: 'SSH Keys', icon: IconKey },
-  { link: '', label: 'Databases', icon: IconDatabaseImport },
-  { link: '', label: 'Authentication', icon: Icon2fa },
   { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
 
-const NavbarContent = () => {
+const NavbarContent = ({active,setActive}) => {
 
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState('Billing');
+  // const [active, setActive] = useState('Dashboard');
 
   const links = data.map((item) => (
     <a
