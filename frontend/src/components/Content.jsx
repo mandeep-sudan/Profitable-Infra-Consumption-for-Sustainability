@@ -2,6 +2,7 @@ import Demo from './Demo';
 import { Text,Card,Image,Accordion } from '@mantine/core';
 import "./Content.css"
 import Dashboard from './Pages/Dashboard';
+import Dataflow from './Pages/Dataflow';
 
 const Content = ({active}) => {
     const rows = [];
@@ -18,7 +19,7 @@ const Content = ({active}) => {
         {
           {
             'Dashboard':<Dashboard/>,
-            'Dataflow': <Demo/>,
+            'Dataflow': <Dataflow/>,
             'Airflow': <Text>Hi</Text>,
             'BigQuery': <Text>Yo</Text>,
             'DataProc':<Text>Me</Text>,
@@ -26,15 +27,6 @@ const Content = ({active}) => {
             'Other Settings':<Text>Hey</Text>
           }[active]
         }
-        <Demo/>
-        <Demo/>
-        <Demo/>
-        <Demo/>
-        <Demo/>
-        <Demo/>
-        <Demo/>
-        <Demo/>
-        <Demo/>
     </div>
   );
 }

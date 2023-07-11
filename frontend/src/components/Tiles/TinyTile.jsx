@@ -15,6 +15,7 @@ const TinyTile = ({stat,other,item,color}) => {
                 </div>
                 <ThemeIcon radius="xl" size="xl" color={color}>{<item.icon/>}</ThemeIcon>
             </Group>
+            {other}
         </Card>
         
         </>
