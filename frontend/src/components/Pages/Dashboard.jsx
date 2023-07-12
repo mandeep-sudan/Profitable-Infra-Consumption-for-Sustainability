@@ -2,6 +2,8 @@ import { useState } from 'react';
 import TableTile from '../Tiles/TableTile';
 import { Button,Text,Group } from '@mantine/core';
 import TinyTile from '../Tiles/TinyTile';
+import {useGoogleApi} from 'react-gapi';
+import { MyAuthComponent } from './MyAuthComponent';
 
 import {
     IconSettings,
@@ -65,6 +67,7 @@ const Dashboard = () => {
                     
                     <Text fz="sm" color="dimmed">Since last month</Text>
                 </Group>
+
     return (
         <>
         <TinyTile item={data[1]} stat={878} color={"red"} other={increase}/>
@@ -74,6 +77,7 @@ const Dashboard = () => {
         
         <TableTile title={"Jobs you Monitor"} tableRows={jobsMonitorRows} tableHeader={jobsMonitorHeader}/>
         <TableTile title={"Audit Logs"} tableRows={auditLogsRows} tableHeader={auditLogsHeader}/>
+        <MyAuthComponent/>
         </>
     );
 }
