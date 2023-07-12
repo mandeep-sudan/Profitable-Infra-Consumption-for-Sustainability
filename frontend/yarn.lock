@@ -1977,6 +1977,13 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-gapi@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-gapi/-/react-gapi-1.0.2.tgz#83b998a2e232403c22e64f4eaff2fd24e96b8245"
+  integrity sha512-MGP7Rlbwz1X5/GvcDWpys+pLzKhnkeFW0ydTwGFihy7XqKz6Ojm5XzAT84QhgywgKg5JdvEd4Wxdgc1y4rWB7Q==
+  dependencies:
+    react-weblibrary "^1.0.1"
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -2038,6 +2045,13 @@ react-textarea-autosize@8.3.4:
     "@babel/runtime" "^7.10.2"
     use-composed-ref "^1.3.0"
     use-latest "^1.2.1"
+
+react-weblibrary@^1.0.1:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-weblibrary/-/react-weblibrary-1.0.4.tgz#6f0f0e1a1d62a1979496bfdc455dcf66fb4e2dc4"
+  integrity sha512-0JSVH4jFLqxeVjkIBHtD+wO9h0IRxQa2kt4sFAu5L1K2j6rt4M2NKWZqt8tXcfPIBLE8DksN6MH4O2liKI/KoQ==
+  dependencies:
+    ts-essentials "^9.1.2"
 
 react@^18.2.0:
   version "18.2.0"
@@ -2252,6 +2266,11 @@ to-fast-properties@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==
+
+ts-essentials@^9.1.2:
+  version "9.3.2"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-9.3.2.tgz#5f4ae6d24e20d042a033316c0592dbb51d1b273f"
+  integrity sha512-JxKJzuWqH1MmH4ZFHtJzGEhkfN3QvVR3C3w+4BIoWeoY68UVVoA2Np/Bca9z0IPSErVCWhv439aT0We4Dks8kQ==
 
 tslib@^2.0.0, tslib@^2.1.0:
   version "2.6.0"

@@ -21,6 +21,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	compile("com.google.apis:google-api-services-cloudbilling:v1-rev20211106-1.32.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
