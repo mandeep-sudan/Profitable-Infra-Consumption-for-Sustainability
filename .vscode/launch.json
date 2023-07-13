@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-FinopsApplication<finops>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.deloitte.cloud.finops.FinopsApplication",
+      "projectName": "finops",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/ocsahan/Downloads/profitable-infra-consumption-aeec7551f6c2.json"
+      }
+    }
+  ]
+}
