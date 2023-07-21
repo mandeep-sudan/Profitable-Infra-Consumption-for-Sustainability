@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "profitable-infra-consumption",
+  "private_key_id": "aeec7551f6c2c0f36ec72e9a36153e822234f9a3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDHtVKhfZz9wHHJ\nicyNMCPpbGpp8rHo3PsOo1Ju4iFsN9KcxQdq7sygX8e4oNXwhWBJTzWbzhqrUAEz\nxg+rtSSi86exJbtZ7YF1NxOkoPgkG54PfY3EWJrRvSK0Vcmsd6MVlvNsK5og1bbT\nsgrSqhuSsfvUZDwSWQdTpCmIPnBZvZ6gVFuiIZp1crg3f4FJ66/nhlRo7nwRTG+N\nGvPOb+q4ObyvSRo6uZaHzo40tOrXK8qIvM8wBVRMMS6l+LPVYiop0mL4dohfyTRN\nG2WhlV4O1+rdRHGtQnHtmyebjm3jUUEg8VwkZc+aPTEt7VXQf8HGVkcs+BKSlCLg\nrRpceRjfAgMBAAECggEACN7sO30jZ/703KzVXET/psvoieCqHI4TujdejO/qntwu\nffwNE6fTGzO18y3iUJ3Pe0/cequ9FobT4SESmUSYXRV6m8QoXjZOMk7qND1Z6qOJ\naMG9CI+etgfg6h2Zseu1qNrF4NjPQQ364hWrtvjUYts9fcQMnHoHL8lt5EcIBh6o\nfpDQDe7h0aBSFXiy7am+aNeCbD7BHdJ/Gl2PuO5lczHyeDhVzdT4uibuNfgdynZd\nGn+WfXRol/iJzrf2I78YdwcA3rPa57R4F0iFLMrcSzNWhBX2cqXLPFt4PVMSOW1/\nCiCWr4cWb/gFn4eX2+w/+2GI4DoTraHUM2u4u93RoQKBgQDvrSX493ZGFMJay/m9\nD+KGEMeyLKEmF3wytpt2K8k8uz/DSNe8/L5/dd0D1UeMyTO97PfyEgTWWMHz9CqO\nI3xtTlvsApxsIY8Ufpcp9QgcqZ16zV7Zg1eThXCs9zS1BC0g7KKv56grgR7inrBN\nsPRI5ggX138u+hQwNnsGYDa9vwKBgQDVT1DAz2IxBmf3Jr9QM6uNEl5xD5gVpa0b\nGZAil8R6BsDOD/iLgLWcumxF5SL0FgiFCSft51sl0gSot2qCz762HnnVlBFiQC3X\n19wdNOmSi9XAnAGWehXEyMAGeobGTSwpomwWHP08w3SpiqccINEPXjCzziSOeFnL\n7JDZ8yCs4QKBgCJjSm51OvAFLHmQiI16yPqJT82dn6VyeyxfjOCgmafwCc8AFYwV\nC1QIWiShpjlp6NWYOV7u/OiwJWvWHYD1UHXyZzfui/jru7aqDxBDCt3p7CFhc/lr\nYdZVr/vxIAvUxJDTwufQKg3L4d2L/Sm4eOQ4tPKOxb28vcbJGk+o4FHLAoGBAMEs\nIP9bT5sCKCjEaEDjahpJZkmRS7Ne5FNEZSlOs9mmP/jcscLz/oQ+t0rc5TiSs4h2\n8DgcaojnltyLreNk61rWYpMukkedw2ZSz72La3MRO7RAE5gIW6pn+q5jS6ZNwQ67\nTpMAEb1zbDUVoZxxg6IdNJHAv45eI0PvqoYWDaNBAoGBAMbGwbTgtUJgPc+lWefY\nWgzHgBHvdXCvAdW+aL+xo36o5GDToLqnyfR3Mm1m/wNVC95ICrw7/+CczWJTxDSZ\npwjPYLWNGlUeKsawoGp+zt7tnF+zukqcBBwMFuEUD4cLdMxIVnUIklyLpyjWLhId\nc1dZKRobMd+KHVocYT3hh5+M\n-----END PRIVATE KEY-----\n",
+  "client_email": "poc-frontend@profitable-infra-consumption.iam.gserviceaccount.com",
+  "client_id": "116906380459610151679",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/poc-frontend%40profitable-infra-consumption.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

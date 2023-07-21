@@ -2,6 +2,19 @@
   "configurations": [
     {
       "type": "java",
+      "name": "DemoApplication2",
+      "request": "launch",
+      "mainClass": "com.example.demo.DemoApplication2"
+    },
+    {
+      "type": "java",
+      "name": "DemoApplication2",
+      "request": "launch",
+      "mainClass": "com.example.demo.DemoApplication2",
+      "projectName": "finops"
+    },
+    {
+      "type": "java",
       "name": "Spring Boot-FinopsApplication<finops>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
@@ -10,7 +23,7 @@
       "args": "",
       "envFile": "${workspaceFolder}/.env",
       "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/ocsahan/Downloads/profitable-infra-consumption-aeec7551f6c2.json"
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/fwintz/Downloads/profitable-infra-consumption-aeec7551f6c2.json"
       }
     }
   ]
