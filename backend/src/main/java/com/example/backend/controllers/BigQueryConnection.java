@@ -25,35 +25,36 @@ import com.google.cloud.bigquery.TableResult;
 
 @RestController
 public class BigQueryConnection {
-    // BigQuery privateBigQuery;
+    BigQuery privateBigQuery;
     BigQuery publicBigQuery;
 
     public BigQueryConnection() throws IOException {
-        // // TODO(developer): Replace these variables before running the sample.
-        // String projectId = "profitable-infra-consumption";
-        // File credentialsPath = new File("profitable-infra-consumption-aeec7551f6c2.json");
+        // TODO(developer): Replace these variables before running the sample.
+        String projectId = "profitable-infra-consumption";
+        File credentialsPath = new File("C:\\Users\\fwintz\\Downloads\\profitable-infra-consumption-c781e9bccc56.json");
+        // File credentialsPath = new File("C:/Users/fwintz/Downloads/profitable-infra-consumption-c781e9bccc56.json");
 
-        // // Load credentials from JSON key file. If you can't set the GOOGLE_APPLICATION_CREDENTIALS
-        // // environment variable, you can explicitly load the credentials file to construct the
-        // // credentials.
-        // GoogleCredentials credentials;
-        // try (FileInputStream serviceAccountStream = new FileInputStream(credentialsPath)) {
-        //     credentials = ServiceAccountCredentials.fromStream(serviceAccountStream);
-        // }
+        // Load credentials from JSON key file. If you can't set the GOOGLE_APPLICATION_CREDENTIALS
+        // environment variable, you can explicitly load the credentials file to construct the
+        // credentials.
+        GoogleCredentials credentials;
+        try (FileInputStream serviceAccountStream = new FileInputStream(credentialsPath)) {
+            credentials = ServiceAccountCredentials.fromStream(serviceAccountStream);
+        }
 
-        // // Instantiate a client.
-        // privateBigQuery =
-        //     BigQueryOptions.newBuilder()
-        //         .setCredentials(credentials)
-        //         .setProjectId(projectId)
-        //         .build()
-        //         .getService();
+        // Instantiate a client.
+        privateBigQuery =
+            BigQueryOptions.newBuilder()
+                .setCredentials(credentials)
+                .setProjectId(projectId)
+                .build()
+                .getService();
 
-        // // Use the client.
-        // System.out.println("Datasets:");
-        // for (Dataset dataset : privateBigQuery.listDatasets().iterateAll()) {
-        //     System.out.printf("%s%n", dataset.getDatasetId().getDataset());
-        // }
+        // Use the client.
+        System.out.println("Datasets:");
+        for (Dataset dataset : privateBigQuery.listDatasets().iterateAll()) {
+            System.out.printf("%s%n", dataset.getDatasetId().getDataset());
+        }
 
         // instantiate public client
         publicBigQuery = BigQueryOptions.getDefaultInstance().getService();
@@ -69,12 +70,12 @@ public class BigQueryConnection {
             
         // Create a job ID so that we can safely retry.
         JobId jobId = JobId.of(UUID.randomUUID().toString());
-        Job queryJob = publicBigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
-        // if (queryString.equals("public")) {
-        //     queryJob = publicBigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
-        // } else {
-        //     queryJob = privateBigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
-        // }
+        Job queryJob;
+        if (queryString.equals("public")) {
+            queryJob = publicBigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+        } else {
+            queryJob = privateBigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+        }
         
     
         // Wait for the query to complete.
@@ -143,25 +144,25 @@ public class BigQueryConnection {
         return getJSONFromQuery(newQuery,"public");
     }
 
-    // @GetMapping("/GET/private-data")
-    // public String getPrivateData() throws Exception {
-    //     // QueryJobConfiguration queryConfig =
-    //     //     QueryJobConfiguration.newBuilder(
-    //     //             "SELECT CONCAT('https://stackoverflow.com/questions/', "
-    //     //                 + "CAST(id as STRING)) as url, view_count "
-    //     //                 + "FROM `bigquery-public-data.stackoverflow.posts_questions` "
-    //     //                 + "WHERE tags like '%google-bigquery%' "
-    //     //                 + "ORDER BY view_count DESC "
-    //     //                 + "LIMIT 10")
-    //     //     // Use standard SQL syntax for queries.
-    //     //     // See: https://cloud.google.com/bigquery/sql-reference/
-    //     //     .setUseLegacySql(false)
-    //     //     .build();
-    //     String query = ("SELECT * FROM `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_0124FF_8C7296_9F0D41` " +
-    //                     "WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
-    //                     "LIMIT 100");
-    //     return getJSONFromQuery(query,"private");
-    // }
+    @GetMapping("/GET/private-data")
+    public String getPrivateData() throws Exception {
+        // QueryJobConfiguration queryConfig =
+        //     QueryJobConfiguration.newBuilder(
+        //             "SELECT CONCAT('https://stackoverflow.com/questions/', "
+        //                 + "CAST(id as STRING)) as url, view_count "
+        //                 + "FROM `bigquery-public-data.stackoverflow.posts_questions` "
+        //                 + "WHERE tags like '%google-bigquery%' "
+        //                 + "ORDER BY view_count DESC "
+        //                 + "LIMIT 10")
+        //     // Use standard SQL syntax for queries.
+        //     // See: https://cloud.google.com/bigquery/sql-reference/
+        //     .setUseLegacySql(false)
+        //     .build();
+        String query = ("SELECT * FROM `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_0124FF_8C7296_9F0D41` " +
+                        "WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
+                        "LIMIT 100");
+        return getJSONFromQuery(query,"private");
+    }
 
     @GetMapping("/POST")
     public String getHelloWorld() {
