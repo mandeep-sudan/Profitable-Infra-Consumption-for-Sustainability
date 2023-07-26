@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.StringJoiner;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -33,11 +35,15 @@ HELPFUL LINKS:
         https://stackoverflow.com/questions/44150064/how-to-get-query-result-in-json-form-using-java-api-of-google-bigquery
 */ 
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
+// @RequestMapping("api/")
 public class BigQueryConnection {
     // fields
     BigQuery privateBigQuery;
     BigQuery publicBigQuery;
+    String publicString = "ctg-storage.bigquery_billing_export.gcp_billing_export_v1_01150A_B8F62B_47D999";
+    String privateString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_0124FF_8C7296_9F0D41";
 
     // ****************************************************************
     // ********************** CONSTRUCTOR(S) **************************
@@ -146,22 +152,36 @@ public class BigQueryConnection {
     // ********************* API ENDPOINTS ****************************
     // ****************************************************************
 
-    @GetMapping("/GET/public-data")
-    public String getPublicData() throws Exception {
+    @GetMapping("/public-data/all-data")
+    public String getAllPublicData() throws Exception {
         // gets full table data for publically available data (up to 100 jobs)
+
         String newQuery = (
-                        "SELECT * FROM `ctg-storage.bigquery_billing_export.gcp_billing_export_v1_01150A_B8F62B_47D999` " +
-                        "WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
-                        "LIMIT 100");
+                        "SELECT * FROM " + publicString +
+                        " WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
+                        "LIMIT 15");
         return getJSONFromQuery(newQuery,"public");
     }
-
-    @GetMapping("/GET/private-data")
-    public String getPrivateData() throws Exception {
+    
+    @GetMapping("/public-data/cost-by-month")
+    public String getPublicDataByMonth() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
-        String query = ("SELECT * FROM `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_0124FF_8C7296_9F0D41` " +
-                        "WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
-                        "LIMIT 100");
+        String query = ("SELECT invoice.month, (SUM(CAST(cost * 1000000 AS int64)) " +
+                            "+ SUM(IFNULL((SELECT SUM(CAST(c.amount * 1000000 as int64)) " +
+                            "FROM UNNEST(credits) c), 0))) / 1000000 AS total_exact " +
+                            "FROM " + publicString +
+                            " GROUP BY 1 " +
+                            "ORDER BY 1 ASC " +
+                            "LIMIT 15");
+
+        return getJSONFromQuery(query,"public");
+    }
+    @GetMapping("/private-data/all-data")
+    public String getAllPrivateData() throws Exception {
+        // gets full table data for our private data (up to 100 jobs)
+        String query = ("SELECT * FROM " + privateString +
+                        " WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
+                        "LIMIT 15");
         return getJSONFromQuery(query,"private");
     }
 }

@@ -4,7 +4,7 @@ import {Table,Title,Card,ScrollArea,ThemeIcon,Group} from '@mantine/core';
 import "./Tiles.css"
 
 const TinyTile = ({stat,other,item,color}) => {
-    console.log("item",item)
+    // console.log("item",item)
     return (
         <>
         <Card shadow="sm" padding="lg" radius="md" withBorder className="tiny-tile tile">
