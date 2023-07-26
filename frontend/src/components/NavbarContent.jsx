@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createStyles, ScrollArea, Navbar, Group, Code, getStylesRef, rem,  } from '@mantine/core';
+import { createStyles, ScrollArea, Navbar, Group, Image, getStylesRef, rem,  } from '@mantine/core';
 import {
   IconSettings,
   IconReceipt2,
@@ -12,6 +12,7 @@ import {
   IconDatabaseCog,
 } from '@tabler/icons-react';
 import { MantineLogo } from '@mantine/ds';
+import imgUrl from '../images/DeloitteLogo.png'
 
 
 const useStyles = createStyles((theme) => ({
@@ -104,7 +105,8 @@ const NavbarContent = ({active,setActive}) => {
     <ScrollArea>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
-          <MantineLogo size={28} />
+          <Image src={imgUrl} height="60px" width={"auto"}/>
+          {/* <MantineLogo size={28} /> */}
         </Group>
         {links}
       </Navbar.Section>

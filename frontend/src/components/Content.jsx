@@ -11,11 +11,11 @@ const Content = ({active}) => {
           {
             'Dashboard':<Dashboard/>,
             'Dataflow': <Dataflow/>,
-            'Airflow': <Text>Hi</Text>,
-            'BigQuery': <Text>Yo</Text>,
-            'DataProc':<Text>Me</Text>,
-            'Billing':<Text>We</Text>,
-            'Other Settings':<Text>Hey</Text>
+            'Airflow': <Text>Airflow Information</Text>,
+            'BigQuery': <Text>BigQuery Information</Text>,
+            'DataProc':<Text>DataProc Information</Text>,
+            'Billing':<Text>Billing Information</Text>,
+            'Other Settings':<Text>Other Settings Information</Text>
           }[active]
         }
     </div>

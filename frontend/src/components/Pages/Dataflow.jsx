@@ -64,13 +64,14 @@ const Dashboard = () => {
                 </Group>
     return (
         <>
-        <TinyTile item={data[0]} stat={33} color={"yellow"}/>
+        <Text>Dataflow Information</Text>
+        {/* <TinyTile item={data[0]} stat={33} color={"yellow"}/>
         <TinyTile item={data[1]} stat={29} color={"green"}/>
         <TinyTile item={data[2]} stat={3} color={"red"}/>
         <TinyTile item={data[3]} stat={1} color={"cyan"}/>
         
         <TableTile title={"Dataflow Jobs History"} tableRows={dataflowJobsHistoryRows} tableHeader={dataflowJobsHistoryHeader}/>
-        <TableTile title={"Long Running Jobs"} tableRows={longRunningJobsRows} tableHeader={longRunningJobsHeader}/>
+        <TableTile title={"Long Running Jobs"} tableRows={longRunningJobsRows} tableHeader={longRunningJobsHeader}/> */}
         </>
     );
 }
