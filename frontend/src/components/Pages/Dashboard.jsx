@@ -38,13 +38,13 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/public-data/all-data`)
+        axios.get(`http://localhost:8080/private-data/all-data`)
         .then(response => {
             console.log("success all-data");
             setFullData(response.data);
             setFullDataHeader(Object.keys(response.data[0]));
         })
-        axios.get(`http://localhost:8080/public-data/cost-by-month`)
+        axios.get(`http://localhost:8080/private-data/cost-by-month`)
         .then(response => {
             console.log("success cost-by-month");
             setCostByMonthData(response.data);

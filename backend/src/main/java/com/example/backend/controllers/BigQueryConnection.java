@@ -44,6 +44,8 @@ public class BigQueryConnection {
     BigQuery publicBigQuery;
     String publicString = "ctg-storage.bigquery_billing_export.gcp_billing_export_v1_01150A_B8F62B_47D999";
     String privateString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_0124FF_8C7296_9F0D41";
+    String privateCostString = "profitable-infra-consumption.all_billing_data.cloud_pricing_export";
+    String privateDetailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41";
 
     // ****************************************************************
     // ********************** CONSTRUCTOR(S) **************************
@@ -162,7 +164,19 @@ public class BigQueryConnection {
                         "LIMIT 15");
         return getJSONFromQuery(newQuery,"public");
     }
+
+    @GetMapping("/private-data/cost-for-gcp")
+    public String getCostPricingExportPrivate() throws Exception {
+        // gets full table data for publically available data (up to 100 jobs)
+
+        String newQuery = (
+                        "SELECT * FROM " + privateCostString +
+                        " WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
+                        "LIMIT 15");
+        return getJSONFromQuery(newQuery,"private");
+    }
     
+
     @GetMapping("/public-data/cost-by-month")
     public String getPublicDataByMonth() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
@@ -176,6 +190,7 @@ public class BigQueryConnection {
 
         return getJSONFromQuery(query,"public");
     }
+
     @GetMapping("/private-data/all-data")
     public String getAllPrivateData() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
@@ -184,4 +199,29 @@ public class BigQueryConnection {
                         "LIMIT 15");
         return getJSONFromQuery(query,"private");
     }
+
+    @GetMapping("/private-data/all-detailed-data")
+    public String getDetailedPrivateData() throws Exception {
+        // gets full table data for our private data (up to 100 jobs)
+        String query = ("SELECT * FROM " + privateDetailedString +
+                        " WHERE DATE(_PARTITIONTIME) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) " + 
+                        "LIMIT 15");
+        return getJSONFromQuery(query,"private");
+    }
+
+    @GetMapping("/private-data/cost-by-month")
+    public String getPrivateDataByMonth() throws Exception {
+        // gets full table data for our private data (up to 100 jobs)
+        String query = ("SELECT invoice.month, (SUM(CAST(cost * 1000000 AS int64)) " +
+                            "+ SUM(IFNULL((SELECT SUM(CAST(c.amount * 1000000 as int64)) " +
+                            "FROM UNNEST(credits) c), 0))) / 1000000 AS total_exact " +
+                            "FROM " + privateString +
+                            " GROUP BY 1 " +
+                            "ORDER BY 1 ASC " +
+                            "LIMIT 15");
+
+        return getJSONFromQuery(query,"public");
+    }
+
+
 }
