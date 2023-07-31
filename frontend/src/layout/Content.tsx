@@ -1,7 +1,8 @@
 import { Text,Card,Image,Accordion } from '@mantine/core';
 import "./Content.css"
-import Dashboard from './Pages/Dashboard';
-import Dataflow from './Pages/Dataflow';
+
+import Dashboard from '../pages/Dashboard';
+import Dataflow from '../pages/Dataflow';
 import React from 'react';
 
 

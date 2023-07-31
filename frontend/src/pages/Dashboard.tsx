@@ -1,8 +1,8 @@
 import React,{ useEffect, useState } from 'react';
 import { Button,Text,Group } from '@mantine/core';
-import TinyTile from '../Tiles/TinyTile';
+import TinyTile from '../components/TinyTile';
 import axios from 'axios';
-import TableTile from '../Tiles/TableTile'
+import TableTile from '../components/TableTile'
 
 import {
     IconSettings,

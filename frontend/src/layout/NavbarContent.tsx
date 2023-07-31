@@ -12,8 +12,7 @@ import {
   IconDatabaseCog,
 } from '@tabler/icons-react';
 import { MantineLogo } from '@mantine/ds';
-import deloitteImgUrl from '../images/DeloitteLogo.png' // TO DO: Remove this error (https://stackoverflow.com/questions/52759220/importing-images-in-typescript-react-cannot-find-module)
-
+import deloitteImgUrl from '../../public/images/DeloitteLogo.png' // TO DO: Remove this error (https://stackoverflow.com/questions/52759220/importing-images-in-typescript-react-cannot-find-module)
 
 const useStyles = createStyles((theme) => ({
   header: {

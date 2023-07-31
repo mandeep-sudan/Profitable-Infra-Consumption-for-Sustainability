@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import MainPage from './components/MainPage';
+import MainPage from './layout/MainPage';
 
 const App = () => {
   return (

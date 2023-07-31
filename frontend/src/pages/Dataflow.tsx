@@ -27,7 +27,7 @@ const data = [
     { link: '', label: 'Running', icon: IconRun },
 ];
 
-const Dashboard = () => {
+const Dataflow = () => {
     // Dataflow Jobs History prep
     const dataflowJobsHistoryHeader = ["Task", "Job Name", "Job Id", "Runtime", "Start Time", "End Time", "Status", "Cost"]
     const dataflowJobsHistoryRows = [<Button size="xs" radius="sm">Add to Task</Button>,
@@ -76,4 +76,4 @@ const Dashboard = () => {
     );
 }
 
-export default Dashboard
+export default Dataflow
