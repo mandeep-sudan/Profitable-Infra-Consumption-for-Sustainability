@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import TableTileReal from '../Tiles/TableTileReal';
+import React,{ useState } from 'react';
+// import TableTile from '../Tiles/TableTile'
 import { Button,Text,Group } from '@mantine/core';
-import TinyTile from '../Tiles/TinyTile';
+// import TinyTile from '../Tiles/TinyTile';
 
 import {
     IconSettings,

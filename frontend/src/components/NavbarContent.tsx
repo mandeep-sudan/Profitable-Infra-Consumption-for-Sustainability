@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState,SetStateAction,Dispatch } from 'react'
 import { createStyles, ScrollArea, Navbar, Group, Image, getStylesRef, rem,  } from '@mantine/core';
 import {
   IconSettings,
@@ -12,7 +12,7 @@ import {
   IconDatabaseCog,
 } from '@tabler/icons-react';
 import { MantineLogo } from '@mantine/ds';
-import imgUrl from '../images/DeloitteLogo.png'
+import deloitteImgUrl from '../images/DeloitteLogo.png' // TO DO: Remove this error (https://stackoverflow.com/questions/52759220/importing-images-in-typescript-react-cannot-find-module)
 
 
 const useStyles = createStyles((theme) => ({
@@ -80,8 +80,12 @@ const data = [
   { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
+type NavbarContentProps = {
+  active:string,
+  setActive:Dispatch<SetStateAction<string>>
+}
 
-const NavbarContent = ({active,setActive}) => {
+const NavbarContent = ({active,setActive} : NavbarContentProps) => {
 
   const { classes, cx } = useStyles();
   // const [active, setActive] = useState('Dashboard');
@@ -105,7 +109,7 @@ const NavbarContent = ({active,setActive}) => {
     <ScrollArea>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
-          <Image src={imgUrl} height="60px" width={"auto"}/>
+          <Image src={deloitteImgUrl} height="60px" width={"auto"}/>
           {/* <MantineLogo size={28} /> */}
         </Group>
         {links}

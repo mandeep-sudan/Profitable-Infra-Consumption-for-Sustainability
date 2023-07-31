@@ -2,8 +2,14 @@ import { Text,Card,Image,Accordion } from '@mantine/core';
 import "./Content.css"
 import Dashboard from './Pages/Dashboard';
 import Dataflow from './Pages/Dataflow';
+import React from 'react';
 
-const Content = ({active}) => {
+
+type ContentProps = {
+  active:string
+}
+
+const Content = ({active} : ContentProps) => {
 
   return (
     <div id="content">

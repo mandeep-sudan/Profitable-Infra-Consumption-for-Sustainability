@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { Button,Text,Group } from '@mantine/core';
 import TinyTile from '../Tiles/TinyTile';
 import axios from 'axios';
+import TableTile from '../Tiles/TableTile'
 
 import {
     IconSettings,
@@ -15,7 +16,6 @@ import {
     IconArrowNarrowDown,
   } from '@tabler/icons-react';
 // import { getDataFromEndpoint } from '../../utils';
-import TableTileReal from '../Tiles/TableTileReal';
 
 const data = [
     { link: '', label: 'Dashboard', icon: IconDashboard },
@@ -28,11 +28,8 @@ const data = [
 ];
 
 const Dashboard = () => {
-    // FULL DATA
     const [fullData, setFullData] = useState([])
-
     const [costByMonthData, setCostByMonthData] = useState([])
-
 
     useEffect(() => {
         axios.get(`http://localhost:8080/private-data/all-data`)
@@ -71,8 +68,8 @@ const Dashboard = () => {
         <TinyTile item={data[3]} stat={90} color={"yellow"} other={increase}/>
         <TinyTile item={data[4]} stat={78} color={"cyan"} other={decrease}/>
         
-        <TableTileReal title={"Full Data"} tableData={fullData}/>
-        <TableTileReal title={"Cost by Month"} tableData={costByMonthData}/>
+        <TableTile title={"Full Data"} tableData={fullData}/>
+        <TableTile title={"Cost by Month"} tableData={costByMonthData}/>
         </>
     );
 }

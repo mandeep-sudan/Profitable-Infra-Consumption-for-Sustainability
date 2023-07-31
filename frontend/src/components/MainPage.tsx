@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   AppShell,
   Navbar,
@@ -11,7 +11,7 @@ import {
   Burger,
   useMantineTheme,
 } from '@mantine/core';
-import NavbarContent from './NavbarContent'
+import NavbarContent from './NavbarContent';
 import Content from './Content'
 import "./MainPage.css"
 
@@ -21,7 +21,7 @@ const MainPage = () => {
   const [active, setActive] = useState('Dashboard');
   return (
     <AppShell
-    id="app-shell"
+    id="app-shell" // TO DO: Fix the fact that the id is registering an error even though it shouldn't
     layout="alt"
       styles={{
         main: {
