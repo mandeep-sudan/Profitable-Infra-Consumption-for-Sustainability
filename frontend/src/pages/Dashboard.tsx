@@ -1,7 +1,6 @@
 import React,{ useEffect, useState } from 'react';
 import { Button,Text,Group } from '@mantine/core';
 import TinyTile from '../components/TinyTile';
-import axios from 'axios';
 import TableTile from '../components/TableTile'
 
 import {
@@ -15,6 +14,7 @@ import {
     IconArrowNarrowUp,
     IconArrowNarrowDown,
   } from '@tabler/icons-react';
+import { getAllData, getCostByMonthData } from '../api/APICalls';
 // import { getDataFromEndpoint } from '../../utils';
 
 const data = [
@@ -32,14 +32,10 @@ const Dashboard = () => {
     const [costByMonthData, setCostByMonthData] = useState([])
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/private-data/all-data`)
-        .then(response => {
-            console.log("success all-data");
+        getAllData().then(response => {
             setFullData(response.data);
         })
-        axios.get(`http://localhost:8080/private-data/cost-by-month`)
-        .then(response => {
-            console.log("success cost-by-month");
+        getCostByMonthData().then(response => {
             setCostByMonthData(response.data);
         })
     },[])
@@ -63,10 +59,10 @@ const Dashboard = () => {
                 </Group>
     return (
         <>
-        <TinyTile item={data[1]} stat={878} color={"red"} other={increase}/>
-        <TinyTile item={data[2]} stat={2356} color={"orange"} other={decrease}/>
-        <TinyTile item={data[3]} stat={90} color={"yellow"} other={increase}/>
-        <TinyTile item={data[4]} stat={78} color={"cyan"} other={decrease}/>
+        <TinyTile item={data[1]} stat={878} color={"red"}  percentage={3.48}/>
+        <TinyTile item={data[2]} stat={2356} color={"orange"} percentage={-2.22}/>
+        <TinyTile item={data[3]} stat={90} color={"yellow"}  percentage={5.29}/>
+        <TinyTile item={data[4]} stat={78} color={"cyan"}  percentage={-1.07}/>
         
         <TableTile title={"Full Data"} tableData={fullData}/>
         <TableTile title={"Cost by Month"} tableData={costByMonthData}/>

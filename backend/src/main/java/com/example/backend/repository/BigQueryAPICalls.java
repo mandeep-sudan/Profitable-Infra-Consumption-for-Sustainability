@@ -1,4 +1,4 @@
-package com.example.backend.controllers;
+package com.example.backend.repository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.util.StringJoiner;
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
@@ -23,22 +20,7 @@ import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 
-/*
-HELPFUL LINKS:
-    (1) Query a public dataset with BigQuery client libraries
-        https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
-
-    (2) Authenticating with a service account key file for BigQuery
-        https://cloud.google.com/bigquery/docs/authentication/service-account-file
-
-    (3) Convert BigQuery output easily to JSON
-        https://stackoverflow.com/questions/44150064/how-to-get-query-result-in-json-form-using-java-api-of-google-bigquery
-*/ 
-
-@CrossOrigin(origins = "http://localhost:5173")
-@RestController
-// @RequestMapping("api/")
-public class BigQueryConnection {
+public class BigQueryAPICalls {
     // fields
     BigQuery privateBigQuery;
     BigQuery publicBigQuery;
@@ -52,7 +34,7 @@ public class BigQueryConnection {
     // ****************************************************************
 
     // Constructor to instantiate public and private bigquery instances for later use
-    public BigQueryConnection() throws IOException {
+    public BigQueryAPICalls() throws IOException {
         // (1) INSTANTIATE PRIVATE CLIENT
         // https://cloud.google.com/bigquery/docs/authentication/service-account-file
 
@@ -149,12 +131,12 @@ public class BigQueryConnection {
 
 
 
-
+    
+    
     // ****************************************************************
-    // ********************* API ENDPOINTS ****************************
+    // ************************ GET JSON ******************************
     // ****************************************************************
 
-    @GetMapping("/public-data/all-data")
     public String getAllPublicData() throws Exception {
         // gets full table data for publically available data (up to 100 jobs)
 
@@ -176,8 +158,6 @@ public class BigQueryConnection {
         return getJSONFromQuery(newQuery,"private");
     }
     
-
-    @GetMapping("/public-data/cost-by-month")
     public String getPublicDataByMonth() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
         String query = ("SELECT invoice.month, (SUM(CAST(cost * 1000000 AS int64)) " +
@@ -191,7 +171,6 @@ public class BigQueryConnection {
         return getJSONFromQuery(query,"public");
     }
 
-    @GetMapping("/private-data/all-data")
     public String getAllPrivateData() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
         String query = ("SELECT * FROM " + privateString +
@@ -200,7 +179,6 @@ public class BigQueryConnection {
         return getJSONFromQuery(query,"private");
     }
 
-    @GetMapping("/private-data/all-detailed-data")
     public String getDetailedPrivateData() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
         String query = ("SELECT * FROM " + privateDetailedString +
@@ -209,7 +187,6 @@ public class BigQueryConnection {
         return getJSONFromQuery(query,"private");
     }
 
-    @GetMapping("/private-data/cost-by-month")
     public String getPrivateDataByMonth() throws Exception {
         // gets full table data for our private data (up to 100 jobs)
         String query = ("SELECT invoice.month, (SUM(CAST(cost * 1000000 AS int64)) " +
@@ -222,6 +199,4 @@ public class BigQueryConnection {
 
         return getJSONFromQuery(query,"public");
     }
-
-
 }
