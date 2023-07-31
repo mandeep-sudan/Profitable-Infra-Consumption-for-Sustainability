@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TableTile from '../Tiles/TableTile';
+import TableTileReal from '../Tiles/TableTileReal';
 import { Button,Text,Group } from '@mantine/core';
 import TinyTile from '../Tiles/TinyTile';
 

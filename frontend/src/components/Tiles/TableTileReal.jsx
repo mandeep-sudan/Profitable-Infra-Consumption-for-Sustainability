@@ -2,7 +2,12 @@ import { useState, Fragment } from 'react';
 
 import {Table,Title,Card,ScrollArea,Group,Button} from '@mantine/core';
 
-const createTableHeader = (tableHeader) => {
+const createTableHeader = (tableData) => {
+
+    let tableHeader = []
+    if (tableData.length > 0) {
+        tableHeader = Object.keys(tableData[0])
+    }
     // console.log(tableHeader)
     let modifiedTableHeader = tableHeader.map((colName,index) => {
         return (
@@ -22,24 +27,29 @@ const createTableHeader = (tableHeader) => {
     );
 }
 
-const createRows = (tableRows, tableHeader) => {
-    const rows = tableRows.map((element) => {
+const createRows = (tableData) => {
 
+    let tableHeader = []
+    if (tableData.length > 0) {
+        tableHeader = Object.keys(tableData[0])
+    }
+
+    const rows = tableData.map((element) => {
         return (<tr>
             <Fragment>
                 {
                     tableHeader.map((field) => {
                         // console.log(element[field]);
-                        let temp;
+                        let cellValue;
                         if (typeof element[field] === 'string' || element[field] instanceof String) {
-                            temp = element[field];
+                            cellValue = element[field];
                         } else {
-                            temp = JSON.stringify(element[field])
+                            cellValue = JSON.stringify(element[field])
                         }
                         // it's something else
-                        return <td style={{ whiteSpace: 'nowrap' }}>
-                            {temp}
-                        </td>;
+                        return  <td style={{ whiteSpace: 'nowrap' }}>
+                                    {cellValue}
+                                </td>;
                     })
                 }
             </Fragment>
@@ -49,7 +59,7 @@ const createRows = (tableRows, tableHeader) => {
     return rows;
 }
 
-const TableTileReal = ({title,tableHeader,tableRows}) => {
+const TableTileReal = ({title,tableData}) => {
     // console.log("tableHeader",tableHeader)
     // console.log("tableHeader",tableRows)
 
@@ -67,9 +77,9 @@ const TableTileReal = ({title,tableHeader,tableRows}) => {
             <ScrollArea w={"100%"}>
                 <Table>
                     <thead>
-                        {createTableHeader(tableHeader)}
+                        {createTableHeader(tableData)}
                     </thead>
-                    <tbody>{createRows(tableRows,tableHeader)}</tbody>
+                    <tbody>{createRows(tableData)}</tbody>
                 </Table>
             </ScrollArea>
             

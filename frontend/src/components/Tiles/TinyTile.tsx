@@ -1,9 +1,23 @@
-import { useState, Fragment } from 'react';
+import React,{ useState, Fragment } from 'react';
 
-import {Table,Title,Card,ScrollArea,ThemeIcon,Group} from '@mantine/core';
+import {Table, Title, Card, ScrollArea, ThemeIcon, Group, GroupProps} from '@mantine/core';
 import "./Tiles.css"
 
-const TinyTile = ({stat,other,item,color}) => {
+
+type ItemProps = {
+    link:string,
+    label:string,
+    icon:React.FC
+}
+
+type TinyTileProps = {
+    stat:number,
+    other:React.ReactNode, // any react node/element
+    item:ItemProps,
+    color:string
+}
+
+const TinyTile = ( { stat, other, item, color } : TinyTileProps ) => {
     // console.log("item",item)
     return (
         <>
