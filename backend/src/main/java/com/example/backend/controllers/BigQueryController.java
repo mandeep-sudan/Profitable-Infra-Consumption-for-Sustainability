@@ -1,7 +1,6 @@
 package com.example.backend.controllers;
 
-import java.io.IOException;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 // import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,15 +25,8 @@ HELPFUL LINKS:
 // @RequestMapping("api/")
 public class BigQueryController {
     // fields
+    @Autowired
     BigQueryAPICalls bigQueryAPICalls;
-
-    // ****************************************************************
-    // ********************** CONSTRUCTOR(S) **************************
-    // ****************************************************************
-
-    public BigQueryController() throws IOException {
-        bigQueryAPICalls = new BigQueryAPICalls();
-    }
 
     // ****************************************************************
     // ************************ API CALLS *****************************

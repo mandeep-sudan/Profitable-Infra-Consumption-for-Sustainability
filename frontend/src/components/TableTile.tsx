@@ -63,9 +63,10 @@ const createRows = (tableData:any) => {
 type TableTileProps = {
     title:string,
     tableData:any, // TO DO: ANY TYPE MIGHT BE QUESTIONABLE
+    headersAndModifiers:any
 }
 
-const TableTile = ({title,tableData}:TableTileProps) => {
+const TableTile = ({title,tableData,headersAndModifiers}:TableTileProps) => {
     // console.log("tableHeader",tableHeader)
     // console.log("tableHeader",tableRows)
 

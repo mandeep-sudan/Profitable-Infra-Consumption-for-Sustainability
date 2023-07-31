@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.StringJoiner;
 import java.util.UUID;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -20,6 +21,7 @@ import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 
+@Repository
 public class BigQueryAPICalls {
     // fields
     BigQuery privateBigQuery;

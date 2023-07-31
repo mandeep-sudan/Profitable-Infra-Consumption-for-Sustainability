@@ -13,7 +13,6 @@ type ItemProps = {
 
 type TinyTileProps = {
     stat:number,
-    other:React.ReactNode, // any react node/element
     item:ItemProps,
     color:string,
     percentage:number
@@ -23,22 +22,7 @@ type TinyTileProps = {
 
 const TinyTile = ( { stat, item, color, percentage } : TinyTileProps ) => {
     // Increase or decrease for tiny tiles
-    const increase = <Group spacing="xs" style={{ marginTop: "10px" }}>
-        <Group spacing="0">
-            <IconArrowNarrowUp color="green" />
-            <Text fz="sm" color="green">3.48%</Text>
-        </Group>
-
-        <Text fz="sm" color="dimmed">Since last month</Text>
-    </Group>
-    const decrease = <Group spacing="xs" style={{ marginTop: "10px" }}>
-        <Group spacing="0">
-            <IconArrowNarrowDown color="red" />
-            <Text fz="sm" color="red">3.48%</Text>
-        </Group>
-
-        <Text fz="sm" color="dimmed">Since last month</Text>
-    </Group>
+    
     // console.log("item",item)
     return (
         <>
