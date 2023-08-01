@@ -12,7 +12,9 @@ import {
   IconDatabaseCog,
 } from '@tabler/icons-react';
 import { MantineLogo } from '@mantine/ds';
-import deloitteImgUrl from '../../public/images/DeloitteLogo.png' // TO DO: Remove this error (https://stackoverflow.com/questions/52759220/importing-images-in-typescript-react-cannot-find-module)
+// import deloitteImgUrl from '../../public/images/DeloitteLogo.png' // TO DO: Remove this error (https://stackoverflow.com/questions/52759220/importing-images-in-typescript-react-cannot-find-module)
+import imgUrl from '/images/DeloitteLogo.png'
+
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -108,7 +110,7 @@ const NavbarContent = ({active,setActive} : NavbarContentProps) => {
     <ScrollArea>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
-          <Image src={deloitteImgUrl} height="60px" width={"auto"}/>
+          <Image src={imgUrl} height="60px" width={"auto"}/>
           {/* <MantineLogo size={28} /> */}
         </Group>
         {links}

@@ -1,9 +1,14 @@
 .tiny-tile {
     width: 23%;
 }
+
 .tile {
     margin-bottom: 15px;
 }
-.table-tile {
+
+.full-tile {
     width: 100%;
+}
+.half-tile {
+    width: 49%;
 }

@@ -1,18 +1,19 @@
 import React,{ useState, Fragment } from 'react';
 
 import {Table,Title,Card,ScrollArea,Group,Button} from '@mantine/core';
+import { colNameToReadable } from '../utils/formatAndModifyData';
 
 const createTableHeader = (tableData:any) => {
 
     let tableHeader : string[] = []
-    if (tableData.length > 0) {
-        tableHeader = Object.keys(tableData[0])
+    if (tableData.length>0) {
+        tableHeader=Object.keys(tableData[0])
     }
     // console.log(tableHeader)
     let modifiedTableHeader = tableHeader.map((colName:any,index:number) => {
         return (
             <th key={index} style={{whiteSpace:'nowrap'}}>
-                {colName}
+                {colNameToReadable(colName)}
             </th>
         )
     }
@@ -27,11 +28,11 @@ const createTableHeader = (tableData:any) => {
     );
 }
 
-const createRows = (tableData:any) => {
+const createRows = (tableData:any,modifiers:any) => {
 
     let tableHeader : string[] = []
-    if (tableData.length > 0) {
-        tableHeader = Object.keys(tableData[0])
+    if (tableData.length>0) {
+        tableHeader=Object.keys(tableData[0])
     }
 
     const rows = tableData.map((element:any) => {
@@ -41,7 +42,13 @@ const createRows = (tableData:any) => {
                     tableHeader.map((field:any) => {
                         // console.log(element[field]);
                         let cellValue;
-                        if (typeof element[field] === 'string' || element[field] instanceof String) {
+                        // if (headersAndModifiers[field]["modifyJSON"] !== "") {
+                        //     cellValue = headersAndModifiers[field]["modifyJSON"](element[field])
+                        // }
+                        if (field in modifiers) {
+                            cellValue = modifiers[field](element[field])
+                        }
+                        else if (typeof element[field] === 'string' || element[field] instanceof String) {
                             cellValue = element[field];
                         } else {
                             cellValue = JSON.stringify(element[field])
@@ -63,16 +70,17 @@ const createRows = (tableData:any) => {
 type TableTileProps = {
     title:string,
     tableData:any, // TO DO: ANY TYPE MIGHT BE QUESTIONABLE
-    headersAndModifiers:any
+    modifiers:any,
+    bigSize:boolean
 }
 
-const TableTile = ({title,tableData,headersAndModifiers}:TableTileProps) => {
+const TableTile = ({title,tableData,modifiers,bigSize}:TableTileProps) => {
     // console.log("tableHeader",tableHeader)
     // console.log("tableHeader",tableRows)
 
     return (
         <>
-        <Card shadow="sm" padding="lg" radius="md" withBorder className="table-tile tile">
+        <Card shadow="sm" padding="lg" radius="md" withBorder className={bigSize ? "tile full-tile" : "tile half-tile"}>
             <Group position="apart">
                 <Title order={2}>{title}</Title>
                 <Group>
@@ -86,7 +94,7 @@ const TableTile = ({title,tableData,headersAndModifiers}:TableTileProps) => {
                     <thead>
                         {createTableHeader(tableData)}
                     </thead>
-                    <tbody>{createRows(tableData)}</tbody>
+                    <tbody>{createRows(tableData,modifiers)}</tbody>
                 </Table>
             </ScrollArea>
             
