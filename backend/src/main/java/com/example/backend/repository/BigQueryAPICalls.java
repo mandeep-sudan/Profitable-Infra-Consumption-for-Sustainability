@@ -8,9 +8,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryException;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.Dataset;
 import com.google.cloud.bigquery.FieldValueList;
@@ -63,6 +65,7 @@ public class BigQueryAPICalls {
                 .setProjectId(projectId)
                 .build()
                 .getService();
+        
 
         // Use the client.
         System.out.println("Datasets:");
@@ -174,7 +177,7 @@ public class BigQueryAPICalls {
                     sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
                     FROM 
                     """+ " "+ detailedString + " " +
-                    restrictDate(range) + " " +
+                    restrictDate(range) +
                     """
                     GROUP BY 1
                     ORDER BY 1
@@ -194,7 +197,7 @@ public class BigQueryAPICalls {
                     sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
                     FROM 
                     """+ " "+ detailedString +
-                    restrictDate(range) + " " +
+                    restrictDate(range) +
                     """
                     GROUP BY 1
                     ORDER BY 1
@@ -214,7 +217,7 @@ public class BigQueryAPICalls {
                     sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
                     FROM 
                     """+ " "+ detailedString +
-                    restrictDate(range) + " " +
+                    restrictDate(range) +
                     """ 
                     GROUP BY 1
                     ORDER BY 1
@@ -223,5 +226,80 @@ public class BigQueryAPICalls {
 
         return getJSONFromQuery(query);
     }
+
+    public String getCostByWeek(String range) throws Exception {
+        // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
+        String query = """
+                        SELECT 
+                        DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week,
+                        sum(cost) as total_cost,
+                        SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
+                        sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
+                        FROM
+                    """ + " " + detailedString + restrictDate(range) +
+                    """
+                        GROUP BY week
+                        ORDER BY week
+                        LIMIT
+                    """+
+                    " "+limit;
+
+        return getJSONFromQuery(query);
+    }
+
+    public String getCostByWeekAndService(String range) throws Exception {
+        // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
+        String query = """
+                        SELECT 
+                        service.description,
+                        DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week,
+                        sum(cost) as total_cost,
+                        SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
+                        sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
+                        FROM
+                    """ + " " + detailedString + restrictDate(range) +
+                    """
+                        GROUP BY 1,2
+                        ORDER BY 1,2
+                        LIMIT
+                    """+
+                    " "+limit;
+
+        return getJSONFromQuery(query);
+    }
+
+    public String getJobsList(String range) {
+        try {
+            // Initialize client that will be used to send requests. This client only needs
+            // to be created
+            // once, and can be reused for multiple requests.
+            BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+
+            Page<Job> jobs = bigquery.listJobs(BigQuery.JobListOption.pageSize(10));
+            if (jobs == null) {
+                // System.out.println("Dataset does not contain any jobs.");
+                return "No jobs found!";
+            }
+
+            // convert iterable result into JSON string joiner
+            StringJoiner strJoinAll = new StringJoiner(",");
+            StringJoiner strJoinStats = new StringJoiner(",");
+            jobs.getValues().forEach(j -> {
+                strJoinAll.add(j.toString());
+                strJoinStats.add(j.getStatistics().toString());
+            });
+            System.out.println("--------------------------------------");
+            System.out.println(strJoinAll.toString());
+            System.out.println("======================================");
+            System.out.println(strJoinStats.toString());
+
+            // modify joined strings by turning them into a list of jobs in JSON format
+            return "[" + strJoinAll.toString() + "]";
+        } catch (BigQueryException e) {
+            return "Jobs not listed in dataset due to error: \n" + e.toString();
+        }
+    }
+
+
 
 }

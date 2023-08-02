@@ -76,4 +76,8 @@ public class BigQueryController {
     public String getCostByService(@RequestParam(required = false) String range) throws Exception {
         return bigQueryAPICalls.getCostByService(range);
     }
+    @GetMapping("/api/jobs-list")
+    public String getJobsList(@RequestParam(required = false) String range) throws Exception {
+        return bigQueryAPICalls.getJobsList(range);
+    }
 }
