@@ -3,6 +3,8 @@ package com.example.backend.repository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ import com.google.cloud.bigquery.JobId;
 import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
+import com.google.gson.Gson;
 
 
 @Repository
@@ -81,6 +84,60 @@ public class BigQueryAPICalls {
     // ******************** HELPER FUNCTION(S) ************************
     // ****************************************************************
 
+
+    // helper function to get JSON string from a given query
+    List<FieldValueList> getJSONFromQueryNew(String query) throws Exception {
+
+        // create query job configuration based on input
+        // https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
+        QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(query)
+                // Use standard SQL syntax for queries.
+                // See: https://cloud.google.com/bigquery/sql-reference/
+                .setUseLegacySql(false)
+                .build();
+
+        // Create a job ID so that we can safely retry.
+        JobId jobId = JobId.of(UUID.randomUUID().toString());
+        Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+        
+        // Wait for the query to complete.
+        queryJob = queryJob.waitFor();
+
+        // Check for errors
+        if (queryJob == null) {
+            throw new RuntimeException("Job no longer exists");
+        } else if (queryJob.getStatus().getError() != null) {
+            // You can also look at queryJob.getStatus().getExecutionErrors() for all
+            // errors, not just the latest one.
+            throw new RuntimeException(queryJob.getStatus().getError().toString());
+        }
+
+        // Get the results.
+        TableResult result = queryJob.getQueryResults();
+
+        // return jsonResults;
+        // transform TableResult into Iterable object
+        Iterable<FieldValueList> iterable = result.iterateAll();
+
+        List<FieldValueList> retVal = new ArrayList<FieldValueList>();
+
+        Gson gson = new Gson();
+        String jsonResults = gson.toJson(result, result.getClass());
+        System.out.println("jsonResults from GSON: " + jsonResults);
+
+        // // convert iterable result into JSON string joiner
+        iterable.forEach(s -> {
+            retVal.add(s);
+            // jsonResults.add(gson.toJson(s, s.getClass()));
+        });
+
+        System.out.println("retVal");
+        System.out.println(retVal);
+        System.out.println("jsonResults");
+        System.out.println(jsonResults);
+        return retVal;
+    }
+
     // helper function to get JSON string from a given query
     String getJSONFromQuery(String oldQuery) throws Exception {
         // modify query to make json configuration easier
@@ -131,10 +188,11 @@ public class BigQueryAPICalls {
 
     String restrictDate(String oldString) {
         if (oldString == null) {
-            return "";
+            return " ";
         }
-        return " WHERE usage_start_time >= CURRENT_TIMESTAMP() - INTERVAL " + 
+        String temp = " WHERE usage_start_time >= CURRENT_TIMESTAMP() - INTERVAL " + 
                 oldString.replace("-", " ") + " ";
+        return temp;
     }
 
     // ****************************************************************
@@ -162,8 +220,6 @@ public class BigQueryAPICalls {
             """ +
              " " + detailedString +
             restrictDate(range) + " LIMIT "+limit;
-        // System.out.println("HEYYYYYYYYY");
-        // System.out.println(query);
         return getJSONFromQuery(query);
     }
 
@@ -223,8 +279,27 @@ public class BigQueryAPICalls {
                     ORDER BY 1
                     LIMIT
                     """+" "+limit;
-
         return getJSONFromQuery(query);
+    }
+
+    public List<FieldValueList> getCostByProjectNew(String range) throws Exception {
+        // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
+        String query = """
+                    SELECT
+                    project.name,
+                    sum(cost) as total_cost,
+                    SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
+                    sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
+                    FROM 
+                    """+ " "+ detailedString +
+                    restrictDate(range) +
+                    """ 
+                    GROUP BY 1
+                    ORDER BY 1
+                    LIMIT
+                    """+" "+limit;
+        System.out.println(query);
+        return getJSONFromQueryNew(query);
     }
 
     public String getCostByWeek(String range) throws Exception {
@@ -275,11 +350,13 @@ public class BigQueryAPICalls {
             // once, and can be reused for multiple requests.
             BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
-            Page<Job> jobs = bigquery.listJobs(BigQuery.JobListOption.pageSize(10));
+            Page<Job> jobs = bigquery.listJobs(BigQuery.JobListOption.pageSize(1));
             if (jobs == null) {
-                // System.out.println("Dataset does not contain any jobs.");
                 return "No jobs found!";
             }
+            // Gson gson = new Gson();
+            // String jsonResults = gson.toJson(result);
+            // System.out.println("jsonResults from GSON: " + jsonResults);
 
             // convert iterable result into JSON string joiner
             StringJoiner strJoinAll = new StringJoiner(",");
@@ -292,9 +369,10 @@ public class BigQueryAPICalls {
             System.out.println(strJoinAll.toString());
             System.out.println("======================================");
             System.out.println(strJoinStats.toString());
+            
 
             // modify joined strings by turning them into a list of jobs in JSON format
-            return "[" + strJoinAll.toString() + "]";
+            return strJoinAll.toString();
         } catch (BigQueryException e) {
             return "Jobs not listed in dataset due to error: \n" + e.toString();
         }

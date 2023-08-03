@@ -1,5 +1,7 @@
 package com.example.backend.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.repository.BigQueryAPICalls;
+import com.google.cloud.bigquery.FieldValueList;
 
 /*
 HELPFUL LINKS:
@@ -71,6 +74,10 @@ public class BigQueryController {
     @GetMapping("/api/cost-by-project")
     public String getCostByProject(@RequestParam(required = false) String range) throws Exception {
         return bigQueryAPICalls.getCostByProject(range);
+    }
+    @GetMapping("/api/cost-by-project-new")
+    public List<FieldValueList> getCostByProjectNew(@RequestParam(required = false) String range) throws Exception {
+        return bigQueryAPICalls.getCostByProjectNew(range);
     }
     @GetMapping("/api/cost-by-service")
     public String getCostByService(@RequestParam(required = false) String range) throws Exception {

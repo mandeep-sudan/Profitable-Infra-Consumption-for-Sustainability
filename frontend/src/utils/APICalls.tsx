@@ -1,5 +1,5 @@
 import React,{  Dispatch, SetStateAction } from "react";
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 
 const baseURL : string = "http://localhost:8080/"
@@ -34,7 +34,7 @@ export const getCostByProject = (range:string) => {
     } else {
         queries = "?range="+range
     }
-    return axios.get(baseURL+endpoint+queries)
+    return axios.get<string[]>(baseURL+endpoint+queries)
 }
 export const getCostByService = (range:string) => {
     let endpoint : string = "api/cost-by-service"
