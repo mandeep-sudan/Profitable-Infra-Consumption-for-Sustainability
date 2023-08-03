@@ -34,6 +34,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         getAllData("5-DAY",false).then(response => {
+            // console.log(response.data);
             setAllData(response.data);
         })
         getCostByMonth("5-DAY").then(response => {

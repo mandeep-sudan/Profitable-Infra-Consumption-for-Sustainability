@@ -12,7 +12,7 @@ export const getAllData = (range:string,allColumns:boolean) =>  {
     } else {
         queries = "?range="+range+"&allColumns="+allColumns
     }
-    return axios.get<string[]>(baseURL+endpoint+queries)
+    return axios.get<AllData[]>(baseURL+endpoint+queries)
 }
 
 export const getCostByMonth = (range:string) => {
@@ -21,7 +21,7 @@ export const getCostByMonth = (range:string) => {
     if (range === "") {
         queries = "?range="+range
     }
-    return axios.get<string[]>(baseURL+endpoint+queries)
+    return axios.get<CostByMonth[]>(baseURL+endpoint+queries)
 }
 
 export const getCostByProject = (range:string) => {
@@ -30,7 +30,7 @@ export const getCostByProject = (range:string) => {
     if (range !== "") {
         queries = "?range="+range
     }
-    return axios.get<string[]>(baseURL+endpoint+queries)
+    return axios.get<CostByProject[]>(baseURL+endpoint+queries)
 }
 export const getCostByService = (range:string) => {
     let endpoint : string = "api/cost-by-service"
@@ -38,5 +38,5 @@ export const getCostByService = (range:string) => {
     if (range !== "") {
         queries = "?range="+range
     }
-    return axios.get<string[]>(baseURL+endpoint+queries)
+    return axios.get<CostByService[]>(baseURL+endpoint+queries)
 }
