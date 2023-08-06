@@ -5,32 +5,11 @@
       "name": "BackendApplication",
       "request": "launch",
       "mainClass": "com.example.backend.BackendApplication",
-      "projectName": "backend"
-    },
-    {
-      "type": "java",
-      "name": "DemoApplication2",
-      "request": "launch",
-      "mainClass": "com.example.demo.DemoApplication2"
-    },
-    {
-      "type": "java",
-      "name": "DemoApplication2",
-      "request": "launch",
-      "mainClass": "com.example.demo.DemoApplication2",
-      "projectName": "finops"
-    },
-    {
-      "type": "java",
-      "name": "Spring Boot-FinopsApplication<finops>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "com.deloitte.cloud.finops.FinopsApplication",
-      "projectName": "finops",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env",
+      "projectName": "backend",
       "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/fwintz/Downloads/profitable-infra-consumption-aeec7551f6c2.json"
+        "GOOGLE_APPLICATION_CREDENTIALS": "<PATH_TO_JSON>",
+        "GCP_PROJECT_ID": "profitable-infra-consumption",
+        "DATASET_NAME": "profitable-infra-consumption.all_billing_data"
       }
     }
   ]

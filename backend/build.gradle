@@ -21,12 +21,15 @@ ext {
 }
 
 dependencies {
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
+	compileOnly 'org.projectlombok:lombok:1.18.28'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.google.cloud:spring-cloud-gcp-starter'
-	implementation('com.google.cloud:google-cloud-bigquery')
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-bigquery'
 	implementation 'com.google.code.gson:gson:2.10.1'
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("com.h2database:h2")
+
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+	testCompileOnly 'org.projectlombok:lombok:1.18.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 }
