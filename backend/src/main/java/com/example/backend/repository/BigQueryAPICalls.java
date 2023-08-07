@@ -31,11 +31,14 @@ public class BigQueryAPICalls {
     // fields
     // BigQuery privateBigQuery;
     BigQuery bigQuery;
-    int limit = 15;
+    String limit = " 15";
+    String costSqlString = " sum(cost) as total_cost, " + //
+            " SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits, " + //
+            " sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost, ";
     // String publicString = "ctg-storage.bigquery_billing_export.gcp_billing_export_v1_01150A_B8F62B_47D999";
     // String privateString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_0124FF_8C7296_9F0D41";
     // String privateCostString = "profitable-infra-consumption.all_billing_data.cloud_pricing_export";
-    String detailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41";
+    String tableName = " profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41 ";
 
     // ****************************************************************
     // ********************** CONSTRUCTOR(S) **************************
@@ -79,6 +82,12 @@ public class BigQueryAPICalls {
         // // (1) INSTANTIATE PUBLIC CLIENT
         // publicBigQuery = BigQueryOptions.getDefaultInstance().getService();
     }
+
+
+
+
+
+
 
     // ****************************************************************
     // ******************** HELPER FUNCTION(S) ************************
@@ -195,14 +204,21 @@ public class BigQueryAPICalls {
         return temp;
     }
 
+
+
+
+
+
+
+
     // ****************************************************************
     // ********************* BIGQUERY CALLS ***************************
     // ****************************************************************
 
     public String getAllData(String range) throws Exception {
 
-        String query = "SELECT *,TIMESTAMP_DIFF(usage_end_time, usage_start_time, SECOND) AS usage_duration_seconds FROM " + detailedString +
-            restrictDate(range) + " LIMIT "+limit;
+        String query = "SELECT *,TIMESTAMP_DIFF(usage_end_time, usage_start_time, SECOND) AS usage_duration_seconds FROM " + tableName +
+            restrictDate(range) + "LIMIT"+limit;
  
         return getJSONFromQuery(query);
     }
@@ -217,128 +233,91 @@ public class BigQueryAPICalls {
                 project, labels,
                 location, export_time, cost, usage
                 FROM 
-            """ +
-             " " + detailedString +
-            restrictDate(range) + " LIMIT "+limit;
+            """ + tableName +
+            restrictDate(range) + "LIMIT"+limit;
         return getJSONFromQuery(query);
     }
 
     public String getCostByMonth(String range) throws Exception {
         // gets full table data for our private data (up to 100 jobs)
-        String query = """
-                    SELECT
-                    invoice.month,
-                    sum(cost) as total_cost,
-                    SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
-                    sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
-                    FROM 
-                    """+ " "+ detailedString + " " +
+        String query = "SELECT invoice.month, " +
+                    costSqlString + "FROM"+ tableName +
                     restrictDate(range) +
                     """
                     GROUP BY 1
                     ORDER BY 1
                     LIMIT
-                    """+" "+limit;
+                    """+limit;
 
         return getJSONFromQuery(query);
     }
 
     public String getCostByService(String range) throws Exception {
         
-        String query = """
-                    SELECT
-                    service.description,
-                    sum(cost) as total_cost,
-                    SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
-                    sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
-                    FROM 
-                    """+ " "+ detailedString +
+        String query = "SELECT service.description, " +
+                    costSqlString + "FROM"+ tableName +
                     restrictDate(range) +
                     """
                     GROUP BY 1
                     ORDER BY 1
                     LIMIT
-                    """+" "+limit;
+                    """+limit;
 
         return getJSONFromQuery(query);
     }
 
     public String getCostByProject(String range) throws Exception {
         // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
-        String query = """
-                    SELECT
-                    project.name,
-                    sum(cost) as total_cost,
-                    SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
-                    sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
-                    FROM 
-                    """+ " "+ detailedString +
+        String query = "SELECT project.name, " +
+                    costSqlString + "FROM"+ tableName +
                     restrictDate(range) +
-                    """ 
+                    """
                     GROUP BY 1
                     ORDER BY 1
                     LIMIT
-                    """+" "+limit;
+                    """+limit;
         return getJSONFromQuery(query);
     }
 
     public List<FieldValueList> getCostByProjectNew(String range) throws Exception {
         // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
-        String query = """
-                    SELECT
-                    project.name,
-                    sum(cost) as total_cost,
-                    SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
-                    sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
-                    FROM 
-                    """+ " "+ detailedString +
+        String query = "SELECT project.name, " +
+                    costSqlString + "FROM"+ tableName +
                     restrictDate(range) +
-                    """ 
+                    """
                     GROUP BY 1
                     ORDER BY 1
                     LIMIT
-                    """+" "+limit;
+                    """+limit;
         System.out.println(query);
         return getJSONFromQueryNew(query);
     }
 
     public String getCostByWeek(String range) throws Exception {
         // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
-        String query = """
-                        SELECT 
-                        DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week,
-                        sum(cost) as total_cost,
-                        SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
-                        sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
-                        FROM
-                    """ + " " + detailedString + restrictDate(range) +
+        
+        String query = "SELECT DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week, " +
+                    costSqlString + "FROM"+ tableName +
+                    restrictDate(range) +
                     """
                         GROUP BY week
                         ORDER BY week
                         LIMIT
-                    """+
-                    " "+limit;
+                    """ + limit;
 
         return getJSONFromQuery(query);
     }
 
     public String getCostByWeekAndService(String range) throws Exception {
         // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels, wasn't needed
-        String query = """
-                        SELECT 
-                        service.description,
-                        DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week,
-                        sum(cost) as total_cost,
-                        SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
-                        sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
-                        FROM
-                    """ + " " + detailedString + restrictDate(range) +
+        String query = "SELECT service.description, DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week, " +
+                    costSqlString + "FROM"+ tableName +
+                    restrictDate(range) +
                     """
                         GROUP BY 1,2
                         ORDER BY 1,2
                         LIMIT
-                    """+
-                    " "+limit;
+                    """ + limit;
 
         return getJSONFromQuery(query);
     }
