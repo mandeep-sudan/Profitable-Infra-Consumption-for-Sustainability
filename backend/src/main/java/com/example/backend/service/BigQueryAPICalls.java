@@ -341,19 +341,19 @@ public class BigQueryAPICalls {
             // System.out.println("jsonResults from GSON: " + jsonResults);
 
             // convert iterable result into JSON string joiner
-            System.out.println("Anything");
+            // System.out.println("Anything");
             // Iterator<Job> iterator = jobs.iterateAll().iterator();
             List<ModifiedJob> resultSet = new ArrayList<ModifiedJob>();
             // System.out.println(jobs.getValues().iterator().toString());
             for (Job job : jobs.getValues()) {
-                System.out.println(job.toString());
+                // System.out.println(job.toString());
                 resultSet.add(new ModifiedJob(job));
             }
             // iterator.forEachRemaining();
             // List<ModifiedJob> resultSet = Stream.generate(() -> null)
             //     .takeWhile(x -> iterator.hasNext())
             //     .map(n -> new ModifiedJob(iterator.next())).toList();
-            System.out.println("else");
+            // System.out.println("else");
             // return gson.toJson(jobs.getValues().iterator().next());
             return resultSet;
             // modify joined strings by turning them into a list of jobs in JSON format

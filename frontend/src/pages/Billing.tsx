@@ -49,10 +49,10 @@ const Billing = () => {
     }, [])
     return (
         <>
-            <TinyTile item={data[1]} stat={878} color={"red"} percentage={3.48} />
+            {/* <TinyTile item={data[1]} stat={878} color={"red"} percentage={3.48} />
             <TinyTile item={data[2]} stat={2356} color={"orange"} percentage={-2.22} />
             <TinyTile item={data[3]} stat={90} color={"yellow"} percentage={5.29} />
-            <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} />
+            <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
 
             <TableTile title={"Full Data"} tableData={allData} modifiers={allDataModifiers} bigSize={true}/>
             <TableTile title={"Cost by Month"} tableData={costByMonth} modifiers={costByMonthModifiers} bigSize={false}/>

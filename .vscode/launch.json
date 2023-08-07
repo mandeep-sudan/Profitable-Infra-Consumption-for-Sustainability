@@ -7,7 +7,7 @@
       "mainClass": "com.example.backend.BackendApplication",
       "projectName": "backend",
       "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "<PATH_TO_JSON>",
+        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\fwintz\\Downloads\\profitable-infra-consumption-c781e9bccc56.json",
         "GCP_PROJECT_ID": "profitable-infra-consumption",
         "DATASET_NAME": "profitable-infra-consumption.all_billing_data"
       }

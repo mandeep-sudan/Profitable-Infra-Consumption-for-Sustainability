@@ -17,17 +17,17 @@ import { allDataModifiers, bigQueryJobsModifiers, costByMonthModifiers, costByPr
 // import { getDataFromEndpoint } from '../../utils';
 
 const BigQuery = () => {
-    const [bigQueryJobsLIst, setBigQueryJobsLIst] = useState([])
+    const [bigQueryJobsList, setBigQueryJobsList] = useState([])
 
     useEffect(() => {
         getBigQueryJobsList("").then(response => {
             // console.log(response.data);
-            setBigQueryJobsLIst(response.data);
+            setBigQueryJobsList(response.data);
         })
     }, [])
     return (
         <>
-            <TableTile title={"BigQuery Jobs"} tableData={bigQueryJobsLIst} modifiers={bigQueryJobsModifiers} bigSize={true}/>
+            <TableTile title={"BigQuery Jobs"} tableData={bigQueryJobsList} modifiers={bigQueryJobsModifiers} bigSize={true}/>
         </>
     );
 }
