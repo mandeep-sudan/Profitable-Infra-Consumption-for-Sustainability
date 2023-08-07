@@ -26,7 +26,7 @@ const data = [
     { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
-const Dashboard = () => {
+const Billing = () => {
     const [allData, setAllData] = useState([])
     const [costByMonth, setCostByMonth] = useState([])
     const [costByService, setCostByService] = useState([])
@@ -62,4 +62,4 @@ const Dashboard = () => {
     );
 }
 
-export default Dashboard
+export default Billing

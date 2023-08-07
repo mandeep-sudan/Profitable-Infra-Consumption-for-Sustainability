@@ -40,3 +40,9 @@ export const getCostByService = (range:string) => {
     }
     return axios.get<CostByService[]>(baseURL+endpoint+queries)
 }
+
+
+export const getBigQueryJobsList = (range:string) => {
+    let endpoint : string = "api/jobs-list"
+    return axios.get<BigQueryJob[]>(baseURL+endpoint)
+}

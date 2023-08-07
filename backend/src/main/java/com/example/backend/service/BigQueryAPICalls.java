@@ -9,10 +9,15 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.model.AllData;
 import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
+import com.example.backend.model.ModifiedJob;
+import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryException;
+import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.Job;
 import com.google.cloud.bigquery.JobId;
@@ -137,15 +142,34 @@ public class BigQueryAPICalls {
     // ********************* BIGQUERY CALLS ***************************
     // ****************************************************************
 
-    // public String getAllData(String range) throws Exception {
+    public List<AllData> getAllData(String range) throws Exception {
 
-    // String query = "SELECT *,TIMESTAMP_DIFF(usage_end_time, usage_start_time,
-    // SECOND) AS usage_duration_seconds FROM "
-    // + detailedString +
-    // restrictDate(range) + " LIMIT " + limit;
+        String query = """
+            SELECT billing_account_id,
+                    service.description as service,
+                    sku.description as sku,
+                    usage_start_time,
+                    usage_end_time,
+                    TIMESTAMP_DIFF(usage_end_time, usage_start_time, SECOND) AS usage_duration_seconds,
+                    project.id as project_id,
+                    project.name as project_name,
+                    location.location as location,
+                    resource.name as resource_name,
+                    resource.global_name as resource_global_name,
+                    export_time,
+                    cost,
+                    currency,
+                    usage.amount as usage_amount,
+                    usage.unit as usage_unit,
+                    credits,
+                    invoice.month as invoice_month,
+                    FROM
+        """
+                + detailedString +
+                restrictDate(range) + " LIMIT " + limit;
 
-    // return getDataFromQuery(query);
-    // }
+        return getDataFromQuery(query,AllData.class);
+    }
 
     // public String getImportantColumns(String range) throws Exception {
 
@@ -299,35 +323,44 @@ public class BigQueryAPICalls {
     // return getDataFromQuery(query);
     // }
 
-    // public String getJobsList(String range) {
-    // try {
-    // // Initialize client that will be used to send requests. This client only
-    // needs
-    // // to be created
-    // // once, and can be reused for multiple requests.
-    // BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+    public List<ModifiedJob> getJobsList(String range) {
+        // try {
+            // Initialize client that will be used to send requests. This client only needs
+            // to be created
+            // once, and can be reused for multiple requests.
+            BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
-    // Page<Job> jobs = bigquery.listJobs(BigQuery.JobListOption.pageSize(1));
-    // if (jobs == null) {
-    // return "No jobs found!";
-    // }
-    // // Gson gson = new Gson();
-    // // String jsonResults = gson.toJson(result);
-    // // System.out.println("jsonResults from GSON: " + jsonResults);
+            Page<Job> jobs = bigquery.listJobs(BigQuery.JobListOption.pageSize(10));
+            if (jobs == null) {
+                System.out.println("Dataset does not contain any jobs.");
+                // return;
+            }
+            
+            // Gson gson = new Gson();
+            // String jsonResults = gson.toJson(result);
+            // System.out.println("jsonResults from GSON: " + jsonResults);
 
-    // // convert iterable result into JSON string joiner
-    // StringJoiner strJoinAll = new StringJoiner(",");
-    // StringJoiner strJoinStats = new StringJoiner(",");
-    // jobs.getValues().forEach(j -> {
-    // strJoinAll.add(j.toString());
-    // strJoinStats.add(j.getStatistics().toString());
-    // });
-
-    // // modify joined strings by turning them into a list of jobs in JSON format
-    // return strJoinAll.toString();
-    // } catch (BigQueryException e) {
-    // return "Jobs not listed in dataset due to error: \n" + e.toString();
-    // }
-    // }
+            // convert iterable result into JSON string joiner
+            System.out.println("Anything");
+            // Iterator<Job> iterator = jobs.iterateAll().iterator();
+            List<ModifiedJob> resultSet = new ArrayList<ModifiedJob>();
+            // System.out.println(jobs.getValues().iterator().toString());
+            for (Job job : jobs.getValues()) {
+                System.out.println(job.toString());
+                resultSet.add(new ModifiedJob(job));
+            }
+            // iterator.forEachRemaining();
+            // List<ModifiedJob> resultSet = Stream.generate(() -> null)
+            //     .takeWhile(x -> iterator.hasNext())
+            //     .map(n -> new ModifiedJob(iterator.next())).toList();
+            System.out.println("else");
+            // return gson.toJson(jobs.getValues().iterator().next());
+            return resultSet;
+            // modify joined strings by turning them into a list of jobs in JSON format
+            // return strJoinAll.toString();
+        // } catch (BigQueryException e) {
+        //     System.out.println("Jobs not listed in dataset due to error: \n" + e.toString());
+        // }
+    }
 
 }

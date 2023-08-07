@@ -14,6 +14,10 @@ const dateToReadable = (inputString: string) => {
     let date = new Date(inputString)
     return format(date, "d LLL, yyy, h:mmaaa")
 }
+const dateToReadableMs = (inputString: string) => {
+    let date = new Date(inputString)
+    return format(date, "d LLL, yyy, H:mm:ss.SSSS")
+}
 
 const numToCost = (inputNum: number) => {
     return "$ " + inputNum.toFixed(2).toString();
@@ -26,13 +30,11 @@ const monthToReadable = (inputString: string) => {
     return format(date, "LLL yyy")
 }
 
-export const colNameToReadable = (inputString:string) => {
-    let allWords : string[] = inputString.split("_");
-    
-    for (let i=0; i<allWords.length; i++) {
-        allWords[i] = allWords[i][0].toUpperCase() + allWords[i].substring(1)
-    }
-    return allWords.join(" ")
+
+export const camelCaseToReadable = (inputString:string) => {
+    let words : string[] = inputString.match(/[A-Za-z][a-z]*/g) || [];
+
+    return words.map((word) => {return word.charAt(0).toUpperCase() + word.substring(1)}).join(" ");
 }
 
 // ****************************************************************
@@ -40,31 +42,34 @@ export const colNameToReadable = (inputString:string) => {
 // ****************************************************************
 
 export const allDataModifiers : any = {
-    "service":getGivenFieldFunction("description"),
-    "sku":getGivenFieldFunction("description"),
-    "usage_start_time":dateToReadable,
-    "usage_end_time":dateToReadable,
-    "project": getGivenFieldFunction("name"),
-    "location": getGivenFieldFunction("location"), // TO DO: make sure that this is the field we want
-    "export_time":dateToReadable,
+    "usageStartTime":dateToReadable,
+    "usageEndTime":dateToReadable,
+    "exportTime":dateToReadable,
     "cost": numToCost,
-    "usage":(json: any) => {return json["amount"]+" "+json["unit"]}
+    "usage":(json: any) => {return json["amount"]+" "+json["unit"]},
+    // "invoiceMonth":monthToReadable
 };
 
+const costModifiers : any = {
+    "totalCost":numToCost,
+    "totalCredits":numToCost,
+    "finalCost":numToCost
+}
+
 export const costByMonthModifiers : any = {
+    ...costModifiers,
     "month":monthToReadable,
-    "total_cost":numToCost,
-    "total_credits":numToCost,
-    "final_cost":numToCost
 };
 
 export const costByServiceModifiers : any = {
-    "total_cost":numToCost,
-    "total_credits":numToCost,
-    "final_cost":numToCost
+    ...costModifiers,
 };
 export const costByProjectModifiers : any = {
-    "total_cost":numToCost,
-    "total_credits":numToCost,
-    "final_cost":numToCost
+    ...costModifiers,
+};
+
+export const bigQueryJobsModifiers : any = {
+    "creationTime":dateToReadableMs,
+    "startTime":dateToReadableMs,
+    "endTime":dateToReadableMs,
 };

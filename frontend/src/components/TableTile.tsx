@@ -1,7 +1,7 @@
 import React,{ useState, Fragment } from 'react';
 
 import {Table,Title,Card,ScrollArea,Group,Button} from '@mantine/core';
-import { colNameToReadable } from '../utils/formatAndModifyData';
+import { camelCaseToReadable } from '../utils/formatAndModifyData';
 
 const createTableHeader = (tableData:any) => {
 
@@ -13,7 +13,7 @@ const createTableHeader = (tableData:any) => {
     let modifiedTableHeader = tableHeader.map((colName:any,index:number) => {
         return (
             <th key={index} style={{whiteSpace:'nowrap'}}>
-                {colNameToReadable(colName)}
+                {camelCaseToReadable(colName)}
             </th>
         )
     }

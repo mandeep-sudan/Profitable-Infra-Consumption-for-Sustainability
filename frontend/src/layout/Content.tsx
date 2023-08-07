@@ -1,9 +1,10 @@
 import { Text,Card,Image,Accordion } from '@mantine/core';
 import "./Content.css"
 
-import Dashboard from '../pages/Dashboard';
+import Billing from '../pages/Billing';
 import Dataflow from '../pages/Dataflow';
 import React from 'react';
+import BigQuery from '../pages/BigQuery';
 
 
 type ContentProps = {
@@ -16,12 +17,12 @@ const Content = ({active} : ContentProps) => {
     <div id="content">
         {
           {
-            'Dashboard':<Dashboard/>,
+            'Dashboard':<Text>Dashboard Information</Text>,
             'Dataflow': <Dataflow/>,
             'Airflow': <Text>Airflow Information</Text>,
-            'BigQuery': <Text>BigQuery Information</Text>,
+            'BigQuery': <BigQuery/>,
             'DataProc':<Text>DataProc Information</Text>,
-            'Billing':<Text>Billing Information</Text>,
+            'Billing':<Billing/>,
             'Other Settings':<Text>Other Settings Information</Text>
           }[active]
         }

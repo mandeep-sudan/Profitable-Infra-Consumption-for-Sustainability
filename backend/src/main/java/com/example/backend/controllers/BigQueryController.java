@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.model.AllData;
 import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
+import com.example.backend.model.ModifiedJob;
 import com.example.backend.service.BigQueryAPICalls;
+import com.google.cloud.bigquery.Job;
 
 /*
 HELPFUL LINKS:
@@ -55,11 +58,11 @@ public class BigQueryController {
     // return bigQueryAPICalls.getCostPricingExportPrivate();
     // }
 
-    // PRIVATE
-    // @GetMapping("/api/all-data")
-    // public String getAllData() throws Exception {
-    // return bigQueryAPICalls.getAllData();
-    // }
+    
+    @GetMapping("/api/all-data")
+    public List<AllData> getAllData(@RequestParam(required = false) String range) throws Exception {
+        return bigQueryAPICalls.getAllData(range);
+    }
 
     // @GetMapping("/api/all-data")
     // public String getAllData(@RequestParam(required = false) String range,
@@ -93,9 +96,9 @@ public class BigQueryController {
         return bigQueryAPICalls.getCostByService(range);
     }
 
-    // @GetMapping("/api/jobs-list")
-    // public String getJobsList(@RequestParam(required = false) String range)
-    // throws Exception {
-    // return bigQueryAPICalls.getJobsList(range);
-    // }
+    @GetMapping("/api/jobs-list")
+    public List<ModifiedJob> getJobsList(@RequestParam(required = false) String range)
+            throws Exception {
+        return bigQueryAPICalls.getJobsList(range);
+    }
 }
