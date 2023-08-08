@@ -14,6 +14,8 @@ import {
 } from '@tabler/icons-react';
 import { getAllData, getCostByMonth, getCostByProject, getCostByService } from '../utils/APICalls';
 import { allDataModifiers, costByMonthModifiers, costByProjectModifiers, costByServiceModifiers } from '../utils/formatAndModifyData';
+import NewTableTile from '../components/NewTableTile';
+import { allDataColumns, costByMonthColumns, costByProjectColumns, costByServiceColumns } from '../utils/TableColumns';
 // import { getDataFromEndpoint } from '../../utils';
 
 const data = [
@@ -27,10 +29,10 @@ const data = [
 ];
 
 const Billing = () => {
-    const [allData, setAllData] = useState([])
-    const [costByMonth, setCostByMonth] = useState([])
-    const [costByService, setCostByService] = useState([])
-    const [costByProject, setCostByProject] = useState([])
+    const [allData, setAllData] = useState<AllData[]>([])
+    const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
+    const [costByService, setCostByService] = useState<CostByService[]>([])
+    const [costByProject, setCostByProject] = useState<CostByProject[]>([])
 
     useEffect(() => {
         getAllData("5-DAY",false).then(response => {
@@ -54,10 +56,11 @@ const Billing = () => {
             <TinyTile item={data[3]} stat={90} color={"yellow"} percentage={5.29} />
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
 
-            <TableTile title={"Full Data"} tableData={allData} modifiers={allDataModifiers} bigSize={true}/>
-            <TableTile title={"Cost by Month"} tableData={costByMonth} modifiers={costByMonthModifiers} bigSize={false}/>
-            <TableTile title={"Cost by Project"} tableData={costByProject} modifiers={costByProjectModifiers} bigSize={false} />
-            <TableTile title={"Cost by Service"} tableData={costByService} modifiers={costByServiceModifiers} bigSize={false} />
+            <NewTableTile title={"Full Data"} data={allData} modifiers={allDataModifiers} bigSize={true} columnsHelper={allDataColumns}/>
+            {/* <NewTableTile title={"Cost by Month"} data={costByMonth} modifiers={costByMonthModifiers} bigSize={false}  columnsHelper={costByServiceColumns}/> */}
+            <NewTableTile title={"Cost by Project"} data={costByProject} modifiers={costByProjectModifiers} bigSize={false}  columnsHelper={costByProjectColumns}/>
+            <NewTableTile title={"Cost by Service"} data={costByService} modifiers={costByServiceModifiers} bigSize={false} columnsHelper={costByServiceColumns}/>
+            <NewTableTile title={"Cost by Month"} data={costByMonth} modifiers={costByMonthModifiers} bigSize={false} columnsHelper={costByMonthColumns}/>
         </>
     );
 }

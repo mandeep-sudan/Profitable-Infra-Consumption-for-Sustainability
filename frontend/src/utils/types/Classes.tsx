@@ -6,7 +6,7 @@ class CostByProject {
 }
 
 class CostByService {
-    name:string
+    description:string
     totalCost:number
     totalCredits:number
     finalCost:number
@@ -31,7 +31,6 @@ class BigQueryJob {
 
 class AllData {
     billingAccountId:string
-
     service:string
     sku:string
     usageStartTime:string

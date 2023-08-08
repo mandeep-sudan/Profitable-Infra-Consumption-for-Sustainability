@@ -2,6 +2,7 @@ import React,{ useState, Fragment } from 'react';
 
 import {Table,Title,Card,ScrollArea,Group,Button} from '@mantine/core';
 import { camelCaseToReadable } from '../utils/formatAndModifyData';
+import "./Tiles.css"
 
 const createTableHeader = (tableData:any) => {
 
