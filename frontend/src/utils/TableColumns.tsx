@@ -7,11 +7,6 @@ import {Button,Group,Title,Text} from '@mantine/core';
 // ******************** HELPER FUNCTION(S) ************************
 // ****************************************************************
 
-
-const getGivenFieldFunction = (field: string) => {
-  return (json: any) => {return json[field]};
-}
-
 // takes a string of the form "2023-07-30T05:00:00Z" to the form "Thu, 01 Jan 1970 00:00:00 GMT"
 const dateToReadable = (inputString: string) => {
   let date = new Date(inputString)
@@ -149,7 +144,6 @@ export const costByMonthColumns = () => {return useMemo<MRT_ColumnDef<CostByMont
     [],
   )};
 
-
   export const allDataColumns = () => {return useMemo<MRT_ColumnDef<AllData>[]>(
     () => [
       {
@@ -242,6 +236,54 @@ export const costByMonthColumns = () => {return useMemo<MRT_ColumnDef<CostByMont
         Cell: ({ cell }) =>
           <Text>
             {monthToReadable(cell.getValue<string>())}
+          </Text>
+      }
+    ],
+    [],
+  )};
+
+  export const bigQueryJobsListColumns = () => {return useMemo<MRT_ColumnDef<BigQueryJob>[]>(
+    () => [
+      {
+        accessorKey: 'jobId', //access nested data with dot notation
+        header: 'Job Id',
+      },
+      {
+        accessorKey: 'projectId',
+        header: 'Project Id',
+      },
+      {
+        accessorKey: 'email', //normal accessorKey
+        header: 'Email',
+        
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        
+      },
+      {
+        accessorKey: 'creationTime',
+        header: 'Creation Time',
+        Cell: ({ cell }) =>
+          <Text>
+            {dateToReadableMs(cell.getValue<string>())}
+          </Text>
+      },
+      {
+        accessorKey: 'startTime',
+        header: 'Start Time',
+        Cell: ({ cell }) =>
+          <Text>
+            {dateToReadableMs(cell.getValue<string>())}
+          </Text>
+      },
+      {
+        accessorKey: 'endTime',
+        header: 'End Time',
+        Cell: ({ cell }) =>
+          <Text>
+            {dateToReadableMs(cell.getValue<string>())}
           </Text>
       }
     ],

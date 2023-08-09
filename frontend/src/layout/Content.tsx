@@ -5,7 +5,7 @@ import Billing from '../pages/Billing';
 import Dataflow from '../pages/Dataflow';
 import React from 'react';
 import BigQuery from '../pages/BigQuery';
-import NewTableTile from '../components/NewTableTile';
+import NewTableTile from '../components/TableTile';
 
 
 type ContentProps = {
