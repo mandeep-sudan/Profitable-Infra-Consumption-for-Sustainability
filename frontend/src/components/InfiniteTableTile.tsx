@@ -27,6 +27,8 @@ type InfiniteTableTileProps = {
 const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [noFilters, setNoFilters] = useState<boolean>(true);
+  
 
   const [pagesData, setPagesData] = useState<BigQueryPage[]>([]);
 
@@ -73,6 +75,7 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
     }
     catch (err) {
       setIsError(true)
+      console.log("err",err)
     }
     finally {
       setIsFetching(false) //to turn off loading
@@ -96,15 +99,16 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
       if (containerRefElement) {
         const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
         //once the user has scrolled within 400px of the bottom of the table, fetch more data if we can
+        let noFiltersTemp : boolean = JSON.stringify(columnFilters)==="[]" && JSON.stringify(sorting)==="[]" && globalFilter===undefined
+        setNoFilters(noFiltersTemp)
         if (
           scrollHeight - scrollTop - clientHeight < 400 &&
-          !isFetching && true
+          !isFetching && noFiltersTemp
           // totalFetched < totalDBRowCount
           // TO DO: FIX THIS RIGHT HERE
         ) {
-          setIsFetching(true);
           throttle(fetchNextPage);
-          setIsFetching(false);
+          // TO DO: doesn't really actually do anything
         }
       }
     },
@@ -113,6 +117,7 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
 
   //scroll to top of table when sorting or filters change
   useEffect(() => {
+    
     if (rowVirtualizerInstanceRef.current) {
       try {
         rowVirtualizerInstanceRef.current.scrollToIndex(0);
@@ -127,7 +132,6 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
     fetchMoreOnBottomReached(tableContainerRef.current);
   }, [fetchMoreOnBottomReached]);
 
-
   return <div className={bigSize ? "tile full-tile" : "tile half-tile"}>
     <MantineReactTable 
       // MY OWN ATTRIBUTES
@@ -140,12 +144,13 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
       enableColumnResizing={true}
       renderTopToolbarCustomActions={renderTopToolbarCustomActions}
 
+      positionToolbarAlertBanner={'bottom'}
       // ATTRIBUTES FROM: https://www.mantine-react-table.com/docs/examples/infinite-scrolling
       enablePagination={false}
       enableRowNumbers={true}
       enableRowVirtualization={true} //optional, but recommended if it is likely going to be more than 100 rows
-      manualFiltering={true}
-      manualSorting={true}
+      // manualFiltering={true}
+      // manualSorting={true}
 
       mantineTableContainerProps={{
         ref: tableContainerRef, //get access to the table container element
@@ -155,8 +160,8 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
         ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
       }}
       mantineToolbarAlertBannerProps={{
-        color: 'red',
-        children: 'Error loading data',
+        color: !noFilters ? 'blue': 'red',
+        children: !noFilters ? 'Deselect filters to load more results' : 'Error loading data',
       }}
       onColumnFiltersChange={setColumnFilters}
       onGlobalFilterChange={setGlobalFilter}
@@ -172,7 +177,7 @@ const InfiniteTableTile = ({ title, columns, bigSize }: InfiniteTableTileProps) 
         columnFilters,
         globalFilter,
         // isLoading,
-        showAlertBanner: isError,
+        showAlertBanner: isError||!noFilters,
         showProgressBars: isFetching,
         sorting,
       }}
