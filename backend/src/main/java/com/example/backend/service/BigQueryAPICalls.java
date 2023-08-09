@@ -14,9 +14,10 @@ import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 import com.example.backend.model.ModifiedJob;
+import com.example.backend.model.ModifiedPage;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
-import com.google.cloud.bigquery.BigQueryException;
+// import com.google.cloud.bigquery.BigQueryException;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.Job;
@@ -362,5 +363,26 @@ public class BigQueryAPICalls {
         //     System.out.println("Jobs not listed in dataset due to error: \n" + e.toString());
         // }
     }
+    public ModifiedPage getJobsList2(String pageToken) {
+        
+        BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+        Page<Job> jobs;
 
+        if (pageToken == null) {
+            // Means it is the first x jobs
+            jobs = bigquery.listJobs();
+        } else {
+            // Means it is the next x jobs
+            jobs = bigquery.listJobs(BigQuery.JobListOption.pageToken(pageToken));
+        }
+
+        if (jobs == null) {
+            System.out.println("Dataset does not contain any jobs.");
+            // return;
+        }
+
+        ModifiedPage resultPage = new ModifiedPage(jobs);
+
+        return resultPage;
+    }
 }

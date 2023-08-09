@@ -14,8 +14,9 @@ import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 import com.example.backend.model.ModifiedJob;
+import com.example.backend.model.ModifiedPage;
 import com.example.backend.service.BigQueryAPICalls;
-import com.google.cloud.bigquery.Job;
+// import com.google.cloud.bigquery.Job;
 
 /*
 HELPFUL LINKS:
@@ -58,7 +59,6 @@ public class BigQueryController {
     // return bigQueryAPICalls.getCostPricingExportPrivate();
     // }
 
-    
     @GetMapping("/api/all-data")
     public List<AllData> getAllData(@RequestParam(required = false) String range) throws Exception {
         return bigQueryAPICalls.getAllData(range);
@@ -101,4 +101,11 @@ public class BigQueryController {
             throws Exception {
         return bigQueryAPICalls.getJobsList(range);
     }
+
+    @GetMapping("/api/jobs-list2")
+    public ModifiedPage getJobsList2(@RequestParam(required = false) String pageToken)
+            throws Exception {
+        return bigQueryAPICalls.getJobsList2(pageToken);
+    }
+
 }

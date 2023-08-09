@@ -242,7 +242,7 @@ export const costByMonthColumns = () => {return useMemo<MRT_ColumnDef<CostByMont
     [],
   )};
 
-  export const bigQueryJobsListColumns = () => {return useMemo<MRT_ColumnDef<BigQueryJob>[]>(
+  export const bigQueryJobsListColumns2 = () => {return useMemo<MRT_ColumnDef<BigQueryJob>[]>(
     () => [
       {
         accessorKey: 'jobId', //access nested data with dot notation
@@ -289,3 +289,48 @@ export const costByMonthColumns = () => {return useMemo<MRT_ColumnDef<CostByMont
     ],
     [],
   )};
+
+  export const bigQueryJobsListColumns : MRT_ColumnDef<BigQueryJob>[] = [
+      {
+        accessorKey: 'jobId', //access nested data with dot notation
+        header: 'Job Id',
+      },
+      {
+        accessorKey: 'projectId',
+        header: 'Project Id',
+      },
+      {
+        accessorKey: 'email', //normal accessorKey
+        header: 'Email',
+        
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        
+      },
+      {
+        accessorKey: 'creationTime',
+        header: 'Creation Time',
+        Cell: ({ cell }) =>
+          <Text>
+            {dateToReadableMs(cell.getValue<string>())}
+          </Text>
+      },
+      {
+        accessorKey: 'startTime',
+        header: 'Start Time',
+        Cell: ({ cell }) =>
+          <Text>
+            {dateToReadableMs(cell.getValue<string>())}
+          </Text>
+      },
+      {
+        accessorKey: 'endTime',
+        header: 'End Time',
+        Cell: ({ cell }) =>
+          <Text>
+            {dateToReadableMs(cell.getValue<string>())}
+          </Text>
+      }
+    ]

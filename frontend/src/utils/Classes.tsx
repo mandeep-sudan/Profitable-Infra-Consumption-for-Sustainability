@@ -19,6 +19,11 @@ class CostByMonth {
     finalCost:number
 }
 
+class BigQueryPage {
+    jobsList:BigQueryJob[]
+    nextPageToken:string
+}
+
 class BigQueryJob {
     jobId:string
     projectId:string

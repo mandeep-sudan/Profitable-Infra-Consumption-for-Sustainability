@@ -3,9 +3,9 @@ package com.example.backend.model;
 import lombok.Data;
 
 import com.google.cloud.bigquery.Job;
-import com.google.cloud.bigquery.QueryJobConfiguration;
+// import com.google.cloud.bigquery.QueryJobConfiguration;
 
-import lombok.AllArgsConstructor;
+// import lombok.AllArgsConstructor;
 
 @Data
 // @AllArgsConstructor
