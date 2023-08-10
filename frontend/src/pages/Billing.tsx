@@ -13,6 +13,7 @@ import { getAllData, getCostByMonth, getCostByProject, getCostByService } from '
 import { allDataModifiers, costByMonthModifiers, costByProjectModifiers, costByServiceModifiers } from '../utils/formatAndModifyData';
 import TableTile from '../components/TableTile';
 import { allDataColumns, costByMonthColumns, costByProjectColumns, costByServiceColumns } from '../utils/TableColumns';
+import InfiniteTableTile from '../components/InfiniteTableTile';
 // import { getDataFromEndpoint } from '../../utils';
 
 const data = [
@@ -32,9 +33,9 @@ const Billing = () => {
     const [costByProject, setCostByProject] = useState<CostByProject[]>([])
 
     useEffect(() => {
-        getAllData("5-DAY",false).then(response => {
+        getAllData("0").then(response => {
             // console.log(response.data);
-            setAllData(response.data);
+            setAllData(response.data.rowList);
         })
         getCostByMonth("5-DAY").then(response => {
             setCostByMonth(response.data);
@@ -52,12 +53,13 @@ const Billing = () => {
             <TinyTile item={data[2]} stat={2356} color={"orange"} percentage={-2.22} />
             <TinyTile item={data[3]} stat={90} color={"yellow"} percentage={5.29} />
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
-
-            <TableTile title={"Full Data"} data={allData} bigSize={true} columnsHelper={allDataColumns}/>
+            {/* <InfiniteTableTile title={"Infinite Full Data"} bigSize={true} columns={allDataColumns}/> */}
+            <TableTile title={"Full Data"} data={allData} bigSize={true} columns={allDataColumns}/>
+            <InfiniteTableTile title={"Infinite Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
             {/* <NewTableTile title={"Cost by Month"} data={costByMonth} modifiers={costByMonthModifiers} bigSize={false}  columnsHelper={costByServiceColumns}/> */}
-            <TableTile title={"Cost by Project"} data={costByProject} bigSize={false}  columnsHelper={costByProjectColumns}/>
-            <TableTile title={"Cost by Service"} data={costByService} bigSize={false} columnsHelper={costByServiceColumns}/>
-            <TableTile title={"Cost by Month"} data={costByMonth} bigSize={false} columnsHelper={costByMonthColumns}/>
+            <TableTile title={"Cost by Project"} data={costByProject} bigSize={false}  columns={costByProjectColumns}/>
+            <TableTile title={"Cost by Service"} data={costByService} bigSize={false} columns={costByServiceColumns}/>
+            <TableTile title={"Cost by Month"} data={costByMonth} bigSize={false} columns={costByMonthColumns}/>
         </>
     );
 }

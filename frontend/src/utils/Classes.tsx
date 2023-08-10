@@ -36,12 +36,6 @@ class BigQueryJob {
     endTime:number
 }
 
-class BigQueryPage implements ITablePage<BigQueryJob> {
-    rowList:BigQueryJob[]
-    nextPageInfo:string
-    // getPageInfo():string {return this.nextPageInfo}
-    // getRowList():BigQueryJob[] {return this.rowList}
-}
 
 class AllData {
     billingAccountId:string
@@ -69,4 +63,14 @@ class AllData {
     }]
     // TO DO: Ensure that this is the correct unit
     invoiceMonth:number   
+}
+
+class BigQueryPage implements ITablePage<BigQueryJob> {
+    rowList:BigQueryJob[]
+    nextPageInfo:string
+}
+
+class AllDataPage implements ITablePage<AllData> {
+    rowList:AllData[]
+    nextPageInfo:string
 }

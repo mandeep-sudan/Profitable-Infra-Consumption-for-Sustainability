@@ -16,7 +16,6 @@ import {
 } from 'mantine-react-table';
 import { Button, Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
-import { getBigQueryJobsList } from '../utils/APICalls';
 import { AxiosResponse } from 'axios';
 
 type InfiniteTableTileProps<T> = {
@@ -67,7 +66,7 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
     try { //to initiate loading
       // let temp : ITablePage<T>
       apiCall(nextPageInfo).then(response => {
-        setData(oldData => [...response.data.rowList, ...oldData]);
+        setData(oldData => [ ...oldData,...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)
       })
     }
@@ -80,6 +79,7 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
     }
   }
 
+  console.log(nextPageInfo)
 
   // const flatData = useMemo(
   //   () => pagesData.flatMap((page) => page.rowList),

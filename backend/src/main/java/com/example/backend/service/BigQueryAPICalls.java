@@ -15,6 +15,7 @@ import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.ModifiedPage;
+import com.example.backend.model.QueryPage;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
 // import com.google.cloud.bigquery.BigQueryException;
@@ -33,7 +34,7 @@ public class BigQueryAPICalls {
     BigQuery bigQuery;
     @Autowired
     Gson gson;
-    int limit = 15;
+    int pageSize = 50;
 
     String detailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41";
 
@@ -130,6 +131,51 @@ public class BigQueryAPICalls {
         return resultSet;
     }
 
+    // helper function to get JSON string from a given query
+    <T> QueryPage<T> getDataFromQueryPaginated(String oldQuery, Class<T> resultType, int pageNum) throws Exception {
+        // modify query to make json configuration easier
+        // https://stackoverflow.com/questions/44150064/how-to-get-query-result-in-json-form-using-java-api-of-google-bigquery
+        String query = "WITH MyTable AS (" + oldQuery +
+                ") SELECT TO_JSON_STRING(t) AS json " +
+                "FROM MyTable AS t";
+
+        // create query job configuration based on input
+        // https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
+        QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(query)
+                // Use standard SQL syntax for queries.
+                // See: https://cloud.google.com/bigquery/sql-reference/
+                .setUseLegacySql(false)
+                .build();
+
+        // Create a job ID so that we can safely retry.
+        JobId jobId = JobId.of(UUID.randomUUID().toString());
+        Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
+
+        // Wait for the query to complete.
+        queryJob = queryJob.waitFor();
+
+        // Check for errors
+        if (queryJob == null) {
+            throw new RuntimeException("Job no longer exists");
+        } else if (queryJob.getStatus().getError() != null) {
+            // You can also look at queryJob.getStatus().getExecutionErrors() for all
+            // errors, not just the latest one.
+            throw new RuntimeException(queryJob.getStatus().getError().toString());
+        }
+
+        // Get the results.
+        TableResult result = queryJob.getQueryResults();
+
+        // transform TableResult into Iterable object
+        Iterator<FieldValueList> iterator = result.iterateAll().iterator();
+
+        List<T> resultSet = Stream.generate(() -> null)
+                .takeWhile(x -> iterator.hasNext())
+                .map(n -> gson.fromJson(iterator.next().get("json").getStringValue(), resultType)).toList();
+
+        return new QueryPage<T>(resultSet, pageNum + 1);
+    }
+
     String restrictDate(String oldString) {
         if (oldString == null) {
             return " ";
@@ -143,8 +189,13 @@ public class BigQueryAPICalls {
     // ********************* BIGQUERY CALLS ***************************
     // ****************************************************************
 
-    public List<AllData> getAllData(String range) throws Exception {
-
+    public QueryPage<AllData> getAllData(String range,String currPageNum) throws Exception {
+        int pageNum;
+        if (currPageNum=="") {
+            pageNum=0;
+        } else {
+            pageNum= Integer.parseInt(currPageNum);
+        }
         String query = """
             SELECT billing_account_id,
                     service.description as service,
@@ -167,9 +218,9 @@ public class BigQueryAPICalls {
                     FROM
         """
                 + detailedString +
-                restrictDate(range) + " LIMIT " + limit;
-
-        return getDataFromQuery(query,AllData.class);
+                restrictDate(range) + " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
+        System.out.println(query);
+        return getDataFromQueryPaginated(query,AllData.class,pageNum);
     }
 
     // public String getImportantColumns(String range) throws Exception {
@@ -185,7 +236,7 @@ public class BigQueryAPICalls {
     // FROM
     // """ +
     // " " + detailedString +
-    // restrictDate(range) + " LIMIT " + limit;
+    // restrictDate(range) + " LIMIT " + pageSize;
     // return getDataFromQuery(query);
     // }
 
@@ -204,7 +255,7 @@ public class BigQueryAPICalls {
                         GROUP BY 1
                         ORDER BY 1
                         LIMIT
-                        """ + " " + limit;
+                        """ + " " + pageSize;
 
         return getDataFromQuery(query, CostByMonth.class);
     }
@@ -226,7 +277,7 @@ public class BigQueryAPICalls {
                         GROUP BY 1
                         ORDER BY 1
                         LIMIT
-                        """ + " " + limit;
+                        """ + " " + pageSize;
 
         return getDataFromQuery(query, CostByService.class);
     }
@@ -249,7 +300,7 @@ public class BigQueryAPICalls {
                         GROUP BY 1
                         ORDER BY 1
                         LIMIT
-                        """ + " " + limit;
+                        """ + " " + pageSize;
         return getDataFromQuery(query, CostByProject.class);
     }
 
@@ -272,7 +323,7 @@ public class BigQueryAPICalls {
     // GROUP BY 1
     // ORDER BY 1
     // LIMIT
-    // """ + " " + limit;
+    // """ + " " + pageSize;
     // System.out.println(query);
     // return getJSONFromQueryNew(query);
     // }
@@ -295,7 +346,7 @@ public class BigQueryAPICalls {
     // ORDER BY week
     // LIMIT
     // """ +
-    // " " + limit;
+    // " " + pageSize;
 
     // return getDataFromQuery(query);
     // }
@@ -319,40 +370,13 @@ public class BigQueryAPICalls {
     // ORDER BY 1,2
     // LIMIT
     // """ +
-    // " " + limit;
+    // " " + pageSize;
 
     // return getDataFromQuery(query);
     // }
 
-    public List<ModifiedJob> getJobsList(String range) {
-        // TO DO: try catch logic
-        // try {
-            // Initialize client that will be used to send requests. This client only needs
-            // to be created
-            // once, and can be reused for multiple requests.
-            BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+    public ModifiedPage getJobsList(String pageToken) {
 
-            Page<Job> jobs = bigquery.listJobs(BigQuery.JobListOption.pageSize(10));
-            if (jobs == null) {
-                System.out.println("Dataset does not contain any jobs.");
-                // return;
-            }
-
-            List<ModifiedJob> resultSet = new ArrayList<ModifiedJob>();
-
-            for (Job job : jobs.getValues()) {
-                resultSet.add(new ModifiedJob(job));
-            }
-
-            return resultSet;
-            // modify joined strings by turning them into a list of jobs in JSON format
-            // return strJoinAll.toString();
-        // } catch (BigQueryException e) {
-        //     System.out.println("Jobs not listed in dataset due to error: \n" + e.toString());
-        // }
-    }
-    public ModifiedPage getJobsList2(String pageToken) {
-        
         BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
         Page<Job> jobs;
 

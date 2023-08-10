@@ -24,13 +24,12 @@ import "./Tiles.css"
 type NewTableTileProps = {
   title:string
   data:any
-  columnsHelper:any // TO DO: make the class not any
+  columns:any // TO DO: make the class not any
   bigSize:boolean
 }
 
-const TableTile = ({title,data,columnsHelper,bigSize}:NewTableTileProps) => {
+const TableTile = ({title,data,columns,bigSize}:NewTableTileProps) => {
 
-  const columns = columnsHelper()
   const renderTopToolbarCustomActions = ({ }) => (
     <Title order={2} style={{padding:"10px"}}>{title}</Title>
     )

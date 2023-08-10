@@ -15,6 +15,7 @@ import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.ModifiedPage;
+import com.example.backend.model.QueryPage;
 import com.example.backend.service.BigQueryAPICalls;
 // import com.google.cloud.bigquery.Job;
 
@@ -60,8 +61,9 @@ public class BigQueryController {
     // }
 
     @GetMapping("/api/all-data")
-    public List<AllData> getAllData(@RequestParam(required = false) String range) throws Exception {
-        return bigQueryAPICalls.getAllData(range);
+    public QueryPage<AllData> getAllData(@RequestParam(required = false) String range,
+                                    @RequestParam(required = false) String currPageNum) throws Exception {
+        return bigQueryAPICalls.getAllData(range,currPageNum);
     }
 
     // @GetMapping("/api/all-data")
@@ -97,15 +99,9 @@ public class BigQueryController {
     }
 
     @GetMapping("/api/jobs-list")
-    public List<ModifiedJob> getJobsList(@RequestParam(required = false) String range)
+    public ModifiedPage getJobsList(@RequestParam(required = false) String pageToken)
             throws Exception {
-        return bigQueryAPICalls.getJobsList(range);
-    }
-
-    @GetMapping("/api/jobs-list2")
-    public ModifiedPage getJobsList2(@RequestParam(required = false) String pageToken)
-            throws Exception {
-        return bigQueryAPICalls.getJobsList2(pageToken);
+        return bigQueryAPICalls.getJobsList(pageToken);
     }
 
 }
