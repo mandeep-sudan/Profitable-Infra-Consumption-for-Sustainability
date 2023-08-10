@@ -325,6 +325,7 @@ public class BigQueryAPICalls {
     // }
 
     public List<ModifiedJob> getJobsList(String range) {
+        // TO DO: try catch logic
         // try {
             // Initialize client that will be used to send requests. This client only needs
             // to be created
@@ -336,26 +337,13 @@ public class BigQueryAPICalls {
                 System.out.println("Dataset does not contain any jobs.");
                 // return;
             }
-            
-            // Gson gson = new Gson();
-            // String jsonResults = gson.toJson(result);
-            // System.out.println("jsonResults from GSON: " + jsonResults);
 
-            // convert iterable result into JSON string joiner
-            // System.out.println("Anything");
-            // Iterator<Job> iterator = jobs.iterateAll().iterator();
             List<ModifiedJob> resultSet = new ArrayList<ModifiedJob>();
-            // System.out.println(jobs.getValues().iterator().toString());
+
             for (Job job : jobs.getValues()) {
-                // System.out.println(job.toString());
                 resultSet.add(new ModifiedJob(job));
             }
-            // iterator.forEachRemaining();
-            // List<ModifiedJob> resultSet = Stream.generate(() -> null)
-            //     .takeWhile(x -> iterator.hasNext())
-            //     .map(n -> new ModifiedJob(iterator.next())).toList();
-            // System.out.println("else");
-            // return gson.toJson(jobs.getValues().iterator().next());
+
             return resultSet;
             // modify joined strings by turning them into a list of jobs in JSON format
             // return strJoinAll.toString();

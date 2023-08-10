@@ -17,22 +17,22 @@ import {
 import { Button, Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { getBigQueryJobsList } from '../utils/APICalls';
-import { AxiosResponse } from 'axios';
 
-type InfiniteTableTileProps<T> = {
+type InfiniteTableTileProps = {
   title: string
-  columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
+  columns: any // TO DO: make the class not any
   bigSize: boolean
-  apiCall: (pageToken:string)=>Promise<AxiosResponse<ITablePage<T>, any>>
+  apiCall: Function
+  dataClass:any
 }
 
-const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTableTileProps<T>) => {
+const InfiniteTableTile = ({ title, columns, bigSize,apiCall ,dataClass}: InfiniteTableTileProps) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [noFilters, setNoFilters] = useState<boolean>(true);
-  const [nextPageInfo, setNextPageInfo] = useState<string>("");
+  
 
-  const [data, setData] = useState<T[]>([]);
+  const [pagesData, setPagesData] = useState<BigQueryPage[]>([]);
 
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
@@ -65,11 +65,15 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
     setIsError(false)
     setIsFetching(true)
     try { //to initiate loading
-      // let temp : ITablePage<T>
-      apiCall(nextPageInfo).then(response => {
-        setData(oldData => [...response.data.rowList, ...oldData]);
-        setNextPageInfo(response.data.nextPageInfo)
-      })
+      if (pagesData.length > 0) {
+        getBigQueryJobsList(pagesData[0].nextPageInfo).then(response => { // TO DO: handle case where there is no zeroeth page
+          setPagesData(oldData => [response.data,...oldData]);
+        })
+      } else {
+        getBigQueryJobsList("").then(response => { // TO DO: handle case where there is no zeroeth page
+          setPagesData([response.data]);
+        })
+      }
     }
     catch (err) {
       setIsError(true)
@@ -81,14 +85,14 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
   }
 
 
-  // const flatData = useMemo(
-  //   () => pagesData.flatMap((page) => page.rowList),
-  //   [pagesData],
-  // );
+  const flatData = useMemo(
+    () => pagesData.flatMap((page) => page.rowList),
+    [pagesData],
+  );
 
   //  TO DO: get the total number of rows in the database total (meta data somehow)
   // const totalDBRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0;
-  const totalFetched = data.length;
+  const totalFetched = flatData.length;
 
   //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
   const fetchMoreOnBottomReached = useCallback(
@@ -134,7 +138,7 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
     <MantineReactTable 
       // MY OWN ATTRIBUTES
       columns={columns}
-      data={data}
+      data={flatData}
       initialState={{
         density: 'xs'
       }}

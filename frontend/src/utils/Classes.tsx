@@ -19,9 +19,11 @@ class CostByMonth {
     finalCost:number
 }
 
-class BigQueryPage {
-    jobsList:BigQueryJob[]
-    nextPageToken:string
+interface ITablePage<T,> {
+    rowList:T[]
+    nextPageInfo:string
+    // getPageInfo: ()=>string 
+    // getRowList: ()=>T[] 
 }
 
 class BigQueryJob {
@@ -32,6 +34,13 @@ class BigQueryJob {
     creationTime:number
     startTime:number
     endTime:number
+}
+
+class BigQueryPage implements ITablePage<BigQueryJob> {
+    rowList:BigQueryJob[]
+    nextPageInfo:string
+    // getPageInfo():string {return this.nextPageInfo}
+    // getRowList():BigQueryJob[] {return this.rowList}
 }
 
 class AllData {

@@ -17,7 +17,7 @@ const BigQuery = () => {
     return (
         <>
             <TableTile title={"BigQuery Jobs"} data={bigQueryJobsList} bigSize={true}  columnsHelper={bigQueryJobsListColumns2}/>
-            <InfiniteTableTile title={"BigQuery Jobs"} bigSize={true} columns={bigQueryJobsListColumns}/>
+            <InfiniteTableTile title={"BigQuery Jobs"} bigSize={true} apiCall={getBigQueryJobsList} columns={bigQueryJobsListColumns}/>
         </>
     );
 }
