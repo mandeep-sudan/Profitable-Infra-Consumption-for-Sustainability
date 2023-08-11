@@ -177,12 +177,13 @@ public class BigQueryAPICalls {
     }
 
     String restrictDate(String oldString) {
-        if (oldString == null) {
-            return " ";
-        }
-        String temp = " WHERE usage_start_time >= CURRENT_TIMESTAMP() - INTERVAL " +
-                oldString.replace("-", " ") + " ";
-        return temp;
+        return " ";
+        // if (oldString == null) {
+        //     return " ";
+        // }
+        // String temp = " WHERE usage_start_time >= CURRENT_TIMESTAMP() - INTERVAL " +
+        //         oldString.replace("-", " ") + " ";
+        // return temp;
     }
 
     // ****************************************************************
@@ -218,8 +219,8 @@ public class BigQueryAPICalls {
                     FROM
         """
                 + detailedString +
-                restrictDate(range) + " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
-        System.out.println(query);
+                restrictDate(range) + " ORDER BY usage_start_time DESC LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
+        // System.out.println(query);
         return getDataFromQueryPaginated(query,AllData.class,pageNum);
     }
 

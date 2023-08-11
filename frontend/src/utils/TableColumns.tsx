@@ -41,6 +41,7 @@ export const costByMonthColumns: MRT_ColumnDef<CostByMonth>[] = [
   {
     accessorKey: 'month', //access nested data with dot notation
     header: 'Month',
+    size:100,
     Cell: ({ cell }) =>
       <Text>
         {monthToReadable(cell.getValue<string>())}
@@ -48,7 +49,8 @@ export const costByMonthColumns: MRT_ColumnDef<CostByMonth>[] = [
   },
   {
     accessorKey: 'totalCost',
-    header: 'Total Cost',
+    header: 'Cost',
+    size:80,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -56,7 +58,8 @@ export const costByMonthColumns: MRT_ColumnDef<CostByMonth>[] = [
   },
   {
     accessorKey: 'totalCredits', //normal accessorKey
-    header: 'Total Credits',
+    header: 'Credits',
+    size:90,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -65,6 +68,7 @@ export const costByMonthColumns: MRT_ColumnDef<CostByMonth>[] = [
   {
     accessorKey: 'finalCost',
     header: 'Final Cost',
+    size:120,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -79,7 +83,8 @@ export const costByProjectColumns: MRT_ColumnDef<CostByProject>[] = [
   },
   {
     accessorKey: 'totalCost',
-    header: 'Total Cost',
+    header: 'Cost',
+    size:80,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -87,7 +92,8 @@ export const costByProjectColumns: MRT_ColumnDef<CostByProject>[] = [
   },
   {
     accessorKey: 'totalCredits', //normal accessorKey
-    header: 'Total Credits',
+    header: 'Credits',
+    size:90,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -96,6 +102,7 @@ export const costByProjectColumns: MRT_ColumnDef<CostByProject>[] = [
   {
     accessorKey: 'finalCost',
     header: 'Final Cost',
+    size:120,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -108,10 +115,12 @@ export const costByServiceColumns: MRT_ColumnDef<CostByService>[] = [
   {
     accessorKey: 'description', //access nested data with dot notation
     header: 'Service',
+    size: 100
   },
   {
     accessorKey: 'totalCost',
-    header: 'Total Cost',
+    header: 'Cost',
+    size:80,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -119,7 +128,8 @@ export const costByServiceColumns: MRT_ColumnDef<CostByService>[] = [
   },
   {
     accessorKey: 'totalCredits', //normal accessorKey
-    header: 'Total Credits',
+    header: 'Credits',
+    size:90,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}
@@ -128,6 +138,7 @@ export const costByServiceColumns: MRT_ColumnDef<CostByService>[] = [
   {
     accessorKey: 'finalCost',
     header: 'Final Cost',
+    size:120,
     Cell: ({ cell }) =>
       <Text>
         {numToCost(cell.getValue<number>())}

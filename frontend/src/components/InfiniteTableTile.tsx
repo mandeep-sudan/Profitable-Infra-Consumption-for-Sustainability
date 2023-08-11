@@ -75,11 +75,11 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
       console.log("err",err)
     }
     finally {
-      setIsFetching(false) //to turn off loading
+      setIsFetching(false) //to turn off loading ; TO DO: make sure fetching works
     }
   }
 
-  console.log(nextPageInfo)
+  // console.log(nextPageInfo)
 
   // const flatData = useMemo(
   //   () => pagesData.flatMap((page) => page.rowList),
@@ -105,12 +105,14 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
           // totalFetched < totalDBRowCount
           // TO DO: FIX THIS RIGHT HERE
         ) {
+          console.log("about to fetch",nextPageInfo)
           throttle(fetchNextPage);
+          console.log("finished fetch",nextPageInfo)
           // TO DO: doesn't really actually do anything
         }
       }
     },
-    [fetchNextPage, isFetching,totalFetched], // TO DO: add totalDBRowCount,totalFetched back here
+    [fetchNextPage, totalFetched], // TO DO: add totalDBRowCount,totalFetched,isFetching, back here
   );
 
   //scroll to top of table when sorting or filters change

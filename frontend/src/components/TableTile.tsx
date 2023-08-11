@@ -41,8 +41,10 @@ const TableTile = ({title,data,columns,bigSize}:NewTableTileProps) => {
                         initialState={{
                           density: 'xs'
                         }}
-                        enableColumnResizing={true}
+                        // enableColumnResizing={true}
                         layoutMode={'grid'}
+                        enablePagination={false}
+                        enableBottomToolbar={false}
     />
   </div>;
 };

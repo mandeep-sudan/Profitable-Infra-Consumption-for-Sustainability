@@ -54,11 +54,12 @@ const Billing = () => {
             <TinyTile item={data[3]} stat={90} color={"yellow"} percentage={5.29} />
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
             {/* <InfiniteTableTile title={"Infinite Full Data"} bigSize={true} columns={allDataColumns}/> */}
-            <TableTile title={"Full Data"} data={allData} bigSize={true} columns={allDataColumns}/>
-            <InfiniteTableTile title={"Infinite Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
+            {/* <TableTile title={"Full Data"} data={allData} bigSize={true} columns={allDataColumns}/> */}
+            <InfiniteTableTile title={"Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
             {/* <NewTableTile title={"Cost by Month"} data={costByMonth} modifiers={costByMonthModifiers} bigSize={false}  columnsHelper={costByServiceColumns}/> */}
-            <TableTile title={"Cost by Project"} data={costByProject} bigSize={false}  columns={costByProjectColumns}/>
             <TableTile title={"Cost by Service"} data={costByService} bigSize={false} columns={costByServiceColumns}/>
+            <TableTile title={"Cost by Project"} data={costByProject} bigSize={false}  columns={costByProjectColumns}/>
+            
             <TableTile title={"Cost by Month"} data={costByMonth} bigSize={false} columns={costByMonthColumns}/>
         </>
     );
