@@ -68,23 +68,14 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
       apiCall(nextPageInfo).then(response => {
         setData(oldData => [ ...oldData,...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)
+        setIsFetching(false)
       })
     }
     catch (err) {
       setIsError(true)
       console.log("err",err)
     }
-    finally {
-      setIsFetching(false) //to turn off loading ; TO DO: make sure fetching works
-    }
   }
-
-  // console.log(nextPageInfo)
-
-  // const flatData = useMemo(
-  //   () => pagesData.flatMap((page) => page.rowList),
-  //   [pagesData],
-  // );
 
   //  TO DO: get the total number of rows in the database total (meta data somehow)
   // const totalDBRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0;
