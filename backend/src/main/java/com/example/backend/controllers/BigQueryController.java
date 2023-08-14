@@ -14,7 +14,7 @@ import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 // import com.example.backend.model.ModifiedJob;
-import com.example.backend.model.ModifiedPage;
+import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.QueryPage;
 import com.example.backend.service.BigQueryAPICalls;
 // import com.google.cloud.bigquery.Job;
@@ -99,7 +99,7 @@ public class BigQueryController {
     }
 
     @GetMapping("/api/jobs-list")
-    public ModifiedPage getJobsList(@RequestParam(required = false) String pageToken)
+    public BigQueryJobsPage getJobsList(@RequestParam(required = false) String pageToken)
             throws Exception {
         return bigQueryAPICalls.getJobsList(pageToken);
     }

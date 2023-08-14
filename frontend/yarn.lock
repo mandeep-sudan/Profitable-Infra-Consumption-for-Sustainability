@@ -593,12 +593,12 @@
   resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-6.0.16.tgz"
   integrity sha512-DnfMYSTSjYxbQJ80TzKHO5gRXGTIQKxBnRQVc+n4RANTwgWMiwEmxIwqRjbulfLzIhEvplskhqGgElunIAfw7g==
 
-"@mantine/prism@^6.0.16":
-  version "6.0.16"
-  resolved "https://registry.npmjs.org/@mantine/prism/-/prism-6.0.16.tgz"
-  integrity sha512-bWnwRMA7fBfSMpZO2YHIsJ4yt3JTZmPp1nQ62JKpey7rfCJMMuzuCXagCHZthEChZZoQnwmndr4agEzuNIIxmA==
+"@mantine/prism@^6.0.19":
+  version "6.0.19"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-6.0.19.tgz#6d8525d5e8e63acba2a9853b62be6cc60e1e1366"
+  integrity sha512-IsXPeNtoPuns+zB5kI3gY5ioEMmzFWcogWoUIOwaZpNMj5nn6OM6ihKPYpsEmHFiGIyR2qzFRF/VPMDhv9m7pg==
   dependencies:
-    "@mantine/utils" "6.0.16"
+    "@mantine/utils" "6.0.19"
     prism-react-renderer "^1.2.1"
 
 "@mantine/styles@6.0.16":
@@ -618,6 +618,11 @@
   version "6.0.18"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.18.tgz#da9ac8b13364277ad1a41b1ad5681fceebc89871"
   integrity sha512-xvTnAUUHsdpsBm7OrcBueGEPdBwDm7wzUBsHweqSZMjT/HQOf4w4iirefNrFhMD2wNVetNL42kEngEBe6t63/w==
+
+"@mantine/utils@6.0.19":
+  version "6.0.19"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.19.tgz#0197fccc5649259787d5468228139f8815909803"
+  integrity sha512-duvtnaW1gDR2gnvUqnWhl6DMW7sN0HEWqS8Z/BbwaMi75U+Xp17Q72R9JtiIrxQbzsq+KvH9L9B/pxMVwbLirg==
 
 "@nicolo-ribaudo/semver-v6@^6.3.3":
   version "6.3.3"

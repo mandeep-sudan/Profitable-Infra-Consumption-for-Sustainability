@@ -1,7 +1,10 @@
 import { MRT_ColumnDef } from "mantine-react-table";
 import React, { useMemo } from "react";
 import { format } from "date-fns";
-import { Button, Group, Title, Text } from '@mantine/core';
+import { Button, Group, Title, Text, ScrollArea, CopyButton,ActionIcon, Tooltip } from '@mantine/core';
+import { Prism } from "@mantine/prism";
+import { useResizeObserver } from "@mantine/hooks";
+import { IconCopy, IconCheck } from '@tabler/icons-react';
 
 // ****************************************************************
 // ******************** HELPER FUNCTION(S) ************************
@@ -259,6 +262,29 @@ export const bigQueryJobsListColumns: MRT_ColumnDef<BigQueryJob>[] = [
     accessorKey: 'status',
     header: 'Status',
 
+  },
+  {
+    accessorKey: 'query', //access nested data with dot notation
+    header: 'Query',
+    Cell: ({ cell }) => (
+      <>
+        <ScrollArea h={30} w={1000}>
+          <Prism language="sql" noCopy>
+            {cell.getValue<string>()}
+          </Prism>
+        </ScrollArea>
+        <CopyButton value={cell.getValue<string>()}>
+          {({ copied, copy }) => (
+            <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
+              <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                {copied ? <IconCheck size="1rem" /> : <IconCopy size="1rem" />}
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </CopyButton>
+      </>
+      
+    ),
   },
   {
     accessorKey: 'creationTime',

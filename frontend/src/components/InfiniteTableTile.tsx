@@ -22,7 +22,7 @@ type InfiniteTableTileProps<T> = {
   title: string
   columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
   bigSize: boolean
-  apiCall: (pageToken:string)=>Promise<AxiosResponse<ITablePage<T>, any>>
+  apiCall: (pageToken:string)=>Promise<AxiosResponse<IInfTablePage<T>, any>>
 }
 
 const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTableTileProps<T>) => {
@@ -64,7 +64,7 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
     setIsError(false)
     setIsFetching(true)
     try { //to initiate loading
-      // let temp : ITablePage<T>
+      // let temp : IInfTablePage<T>
       apiCall(nextPageInfo).then(response => {
         setData(oldData => [ ...oldData,...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)

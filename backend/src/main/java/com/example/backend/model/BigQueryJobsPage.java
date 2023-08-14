@@ -10,15 +10,15 @@ import com.google.cloud.bigquery.Job;
 
 @Data
 // @AllArgsConstructor
-public class ModifiedPage {
-    private List<ModifiedJob> rowList;
+public class BigQueryJobsPage {
+    private List<BigQueryJob> rowList;
     private String nextPageInfo;
     
-    public ModifiedPage(Page<Job> jobPage) {
+    public BigQueryJobsPage(Page<Job> jobPage) {
         this.nextPageInfo = jobPage.getNextPageToken();
-        this.rowList = new ArrayList<ModifiedJob>();
+        this.rowList = new ArrayList<BigQueryJob>();
         for (Job job : jobPage.getValues()) {
-            this.rowList.add(new ModifiedJob(job));
+            this.rowList.add(new BigQueryJob(job));
         }
     }
 

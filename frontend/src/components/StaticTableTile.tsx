@@ -1,4 +1,4 @@
-import React,{ useMemo } from 'react';
+import React,{ useEffect, useMemo, useState } from 'react';
 import {
   MantineReactTable,
   useMantineReactTable,
@@ -6,6 +6,7 @@ import {
 } from 'mantine-react-table';
 import {Button,Group,Title} from '@mantine/core';
 import "./Tiles.css"
+import { AxiosResponse } from 'axios';
 
 // type Person = {
 //   name: {
@@ -21,14 +22,24 @@ import "./Tiles.css"
 
 
 
-type NewTableTileProps = {
+type NewTableTileProps<T> = {
   title:string
-  data:any
-  columns:any // TO DO: make the class not any
+  apiCall: (pageToken:string)=>Promise<AxiosResponse<T[], any>>
+  columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
   bigSize:boolean
+  apiStr:string
 }
 
-const TableTile = ({title,data,columns,bigSize}:NewTableTileProps) => {
+const StaticTableTile = <T,>({title,apiCall,apiStr,columns,bigSize}:NewTableTileProps<T>) => {
+  const [data,setData] = useState<T[]>([]);
+  const [isFetching,setIsFetching] = useState<boolean>(true);
+  
+  useEffect(() => {
+    apiCall(apiStr).then(response => {
+      setData(response.data)
+      setIsFetching(false)
+    })
+}, [])
 
   const renderTopToolbarCustomActions = ({ }) => (
     <Title order={2} style={{padding:"10px"}}>{title}</Title>
@@ -41,6 +52,9 @@ const TableTile = ({title,data,columns,bigSize}:NewTableTileProps) => {
                         initialState={{
                           density: 'xs'
                         }}
+                        state={{
+                          showProgressBars: isFetching,
+                        }}
                         // enableColumnResizing={true}
                         layoutMode={'grid'}
                         enablePagination={false}
@@ -49,4 +63,4 @@ const TableTile = ({title,data,columns,bigSize}:NewTableTileProps) => {
   </div>;
 };
 
-export default TableTile;
+export default StaticTableTile;

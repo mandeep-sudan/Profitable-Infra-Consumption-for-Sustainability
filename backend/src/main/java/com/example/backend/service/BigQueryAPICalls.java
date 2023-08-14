@@ -13,8 +13,10 @@ import com.example.backend.model.AllData;
 import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
+
+import com.example.backend.model.BigQueryJob;
 // import com.example.backend.model.ModifiedJob;
-import com.example.backend.model.ModifiedPage;
+import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.QueryPage;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
@@ -376,17 +378,17 @@ public class BigQueryAPICalls {
     // return getDataFromQuery(query);
     // }
 
-    public ModifiedPage getJobsList(String pageToken) {
+    public BigQueryJobsPage getJobsList(String pageToken) {
 
-        BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+        // BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
         Page<Job> jobs;
 
         if (pageToken == null) {
             // Means it is the first x jobs
-            jobs = bigquery.listJobs();
+            jobs = bigQuery.listJobs();
         } else {
             // Means it is the next x jobs
-            jobs = bigquery.listJobs(BigQuery.JobListOption.pageToken(pageToken));
+            jobs = bigQuery.listJobs(BigQuery.JobListOption.pageToken(pageToken));
         }
 
         if (jobs == null) {
@@ -394,7 +396,7 @@ public class BigQueryAPICalls {
             // return;
         }
 
-        ModifiedPage resultPage = new ModifiedPage(jobs);
+        BigQueryJobsPage resultPage = new BigQueryJobsPage(jobs);
 
         return resultPage;
     }

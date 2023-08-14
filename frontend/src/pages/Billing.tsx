@@ -11,7 +11,7 @@ import {
 } from '@tabler/icons-react';
 import { getAllData, getCostByMonth, getCostByProject, getCostByService } from '../utils/APICalls';
 import { allDataModifiers, costByMonthModifiers, costByProjectModifiers, costByServiceModifiers } from '../utils/formatAndModifyData';
-import TableTile from '../components/TableTile';
+import StaticTableTile from '../components/StaticTableTile';
 import { allDataColumns, costByMonthColumns, costByProjectColumns, costByServiceColumns } from '../utils/TableColumns';
 import InfiniteTableTile from '../components/InfiniteTableTile';
 // import { getDataFromEndpoint } from '../../utils';
@@ -53,14 +53,11 @@ const Billing = () => {
             <TinyTile item={data[2]} stat={2356} color={"orange"} percentage={-2.22} />
             <TinyTile item={data[3]} stat={90} color={"yellow"} percentage={5.29} />
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
-            {/* <InfiniteTableTile title={"Infinite Full Data"} bigSize={true} columns={allDataColumns}/> */}
-            {/* <TableTile title={"Full Data"} data={allData} bigSize={true} columns={allDataColumns}/> */}
             <InfiniteTableTile title={"Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
-            {/* <NewTableTile title={"Cost by Month"} data={costByMonth} modifiers={costByMonthModifiers} bigSize={false}  columnsHelper={costByServiceColumns}/> */}
-            <TableTile title={"Cost by Service"} data={costByService} bigSize={false} columns={costByServiceColumns}/>
-            <TableTile title={"Cost by Project"} data={costByProject} bigSize={false}  columns={costByProjectColumns}/>
             
-            <TableTile title={"Cost by Month"} data={costByMonth} bigSize={false} columns={costByMonthColumns}/>
+            <StaticTableTile title={"Cost by Service"} bigSize={false} apiCall={getCostByService}  apiStr={"5-DAY"} columns={costByServiceColumns}/>
+            <StaticTableTile title={"Cost by Project"} bigSize={false} apiCall={getCostByProject} apiStr={"5-DAY"} columns={costByProjectColumns}/>
+            <StaticTableTile title={"Cost by Month"} bigSize={false} apiCall={getCostByMonth}  apiStr={"5-DAY"} columns={costByMonthColumns}/>
         </>
     );
 }

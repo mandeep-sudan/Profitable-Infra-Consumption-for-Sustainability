@@ -19,7 +19,7 @@ class CostByMonth {
     finalCost:number
 }
 
-interface ITablePage<T,> {
+interface IInfTablePage<T,> {
     rowList:T[]
     nextPageInfo:string
     // getPageInfo: ()=>string 
@@ -31,6 +31,7 @@ class BigQueryJob {
     projectId:string
     email:string
     status:string
+    query:string
     creationTime:number
     startTime:number
     endTime:number
@@ -65,12 +66,12 @@ class AllData {
     invoiceMonth:number   
 }
 
-class BigQueryPage implements ITablePage<BigQueryJob> {
+class BigQueryPage implements IInfTablePage<BigQueryJob> {
     rowList:BigQueryJob[]
     nextPageInfo:string
 }
 
-class AllDataPage implements ITablePage<AllData> {
+class AllDataPage implements IInfTablePage<AllData> {
     rowList:AllData[]
     nextPageInfo:string
 }
