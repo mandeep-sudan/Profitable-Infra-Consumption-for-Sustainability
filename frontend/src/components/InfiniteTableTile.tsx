@@ -96,9 +96,7 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
           // totalFetched < totalDBRowCount
           // TO DO: FIX THIS RIGHT HERE
         ) {
-          console.log("about to fetch",nextPageInfo)
           throttle(fetchNextPage);
-          console.log("finished fetch",nextPageInfo)
           // TO DO: doesn't really actually do anything
         }
       }

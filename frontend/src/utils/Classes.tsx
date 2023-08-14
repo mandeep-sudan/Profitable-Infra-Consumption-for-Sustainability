@@ -1,3 +1,7 @@
+// **********************************************
+// ******************** DATA ********************
+// **********************************************
+
 class CostByProject {
     name:string
     totalCost:number
@@ -74,4 +78,13 @@ class BigQueryPage implements IInfTablePage<BigQueryJob> {
 class AllDataPage implements IInfTablePage<AllData> {
     rowList:AllData[]
     nextPageInfo:string
+}
+
+// **********************************************
+// ******************** HELPERS ********************
+// **********************************************
+
+class AxesKeysAndLabels {
+    x: {key: string, label: string}
+    y: {key: string, label: string}
 }

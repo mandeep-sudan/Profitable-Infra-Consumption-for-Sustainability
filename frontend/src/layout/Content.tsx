@@ -6,6 +6,7 @@ import Dataflow from '../pages/Dataflow';
 import React from 'react';
 import BigQuery from '../pages/BigQuery';
 import NewTableTile from '../components/StaticTableTile';
+import Dashboard from '../pages/Dashboard';
 
 
 type ContentProps = {
@@ -18,7 +19,7 @@ const Content = ({active} : ContentProps) => {
     <div id="content">
         {
           {
-            'Dashboard':<Text>Dashboard Information</Text>,
+            'Dashboard':<Dashboard/>,
             'Dataflow': <Dataflow/>,
             'Airflow': <Text>Airflow Information</Text>,
             'BigQuery': <BigQuery/>,

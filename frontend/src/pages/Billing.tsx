@@ -27,26 +27,26 @@ const data = [
 ];
 
 const Billing = () => {
-    const [allData, setAllData] = useState<AllData[]>([])
-    const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
-    const [costByService, setCostByService] = useState<CostByService[]>([])
-    const [costByProject, setCostByProject] = useState<CostByProject[]>([])
+    // const [allData, setAllData] = useState<AllData[]>([])
+    // const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
+    // const [costByService, setCostByService] = useState<CostByService[]>([])
+    // const [costByProject, setCostByProject] = useState<CostByProject[]>([])
 
-    useEffect(() => {
-        getAllData("0").then(response => {
-            // console.log(response.data);
-            setAllData(response.data.rowList);
-        })
-        getCostByMonth("5-DAY").then(response => {
-            setCostByMonth(response.data);
-        })
-        getCostByService("5-DAY").then(response => {
-            setCostByService(response.data);
-        })
-        getCostByProject("5-DAY").then(response => {
-            setCostByProject(response.data);
-        })
-    }, [])
+    // useEffect(() => {
+    //     getAllData("0").then(response => {
+    //         // console.log(response.data);
+    //         setAllData(response.data.rowList);
+    //     })
+    //     getCostByMonth("5-DAY").then(response => {
+    //         setCostByMonth(response.data);
+    //     })
+    //     getCostByService("5-DAY").then(response => {
+    //         setCostByService(response.data);
+    //     })
+    //     getCostByProject("5-DAY").then(response => {
+    //         setCostByProject(response.data);
+    //     })
+    // }, [])
     return (
         <>
             {/* <TinyTile item={data[1]} stat={878} color={"red"} percentage={3.48} />
