@@ -7,7 +7,8 @@ import {
 import {Button,Group,Title} from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
-
+import { IconChartBar } from '@tabler/icons-react';
+// import {IconArrowNarrowUp, IconArrowNarrowDown} from '@tabler/icons-react';
 // type Person = {
 //   name: {
 //     firstName: string;
@@ -22,37 +23,28 @@ import { AxiosResponse } from 'axios';
 
 
 
-type NewTableTileProps<T> = {
-  title:string
+type StaticTableTileProps<T> = {
   columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
-  bigSize:boolean
   data:T[]
-  isFetching:boolean
 }
 
-const StaticTableTile = <T,>({title,data,columns,bigSize,isFetching}:NewTableTileProps<T>) => {
-  
+const StaticTableTile = <T,>({data,columns}:StaticTableTileProps<T>) => {
 
-  const renderTopToolbarCustomActions = ({ }) => (
-    <Title order={2} style={{padding:"10px"}}>{title}</Title>
-    )
-
-  return <div className={bigSize ? "tile full-tile" : "tile half-tile"}>
+  return (
     <MantineReactTable columns={columns}
-                        renderTopToolbarCustomActions={renderTopToolbarCustomActions}
+                        // renderTopToolbarCustomActions={renderTopToolbarCustomActions}
                         data={data}
                         initialState={{
                           density: 'xs'
                         }}
-                        state={{
-                          showProgressBars: isFetching,
-                        }}
+                        // state={{
+                        //   showProgressBars: isFetching,
+                        // }}
                         // enableColumnResizing={true}
                         layoutMode={'grid'}
                         enablePagination={false}
                         enableBottomToolbar={false}
-    />
-  </div>;
+    />);
 };
 
 export default StaticTableTile;

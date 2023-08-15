@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from "mantine-react-table";
 import React, { useMemo } from "react";
 import { format } from "date-fns";
-import { Button, Group, Title, Text, ScrollArea, CopyButton,ActionIcon, Tooltip } from '@mantine/core';
+import { Badge, Group, Title, Text, ScrollArea, CopyButton,ActionIcon, Tooltip } from '@mantine/core';
 import { Prism } from "@mantine/prism";
 import { useResizeObserver } from "@mantine/hooks";
 import { IconCopy, IconCheck } from '@tabler/icons-react';
@@ -9,6 +9,19 @@ import { IconCopy, IconCheck } from '@tabler/icons-react';
 // ****************************************************************
 // ******************** HELPER FUNCTION(S) ************************
 // ****************************************************************
+
+
+const statusToColor = (status:string) : string => {
+  const statusToColorHelper : Record<string,string> = {
+    "DONE":"green",
+    "PENDING":"orange",
+    "RUNNING":"blue"
+  }
+  if (status in statusToColorHelper) {
+    return statusToColorHelper[status]
+  }
+  return "red"
+}
 
 // takes a string of the form "2023-07-30T05:00:00Z" to the form "Thu, 01 Jan 1970 00:00:00 GMT"
 const dateToReadable = (inputString: string) => {
@@ -261,7 +274,10 @@ export const bigQueryJobsListColumns: MRT_ColumnDef<BigQueryJob>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-
+    size:80,
+    Cell: ({ cell }) => <Badge color={statusToColor(cell.getValue<string>())}>
+        {cell.getValue<string>()}
+      </Badge>
   },
   {
     accessorKey: 'query', //access nested data with dot notation

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getCostByProject, getCostByService } from '../utils/APICalls';
+import { getCostByMonth, getCostByProject, getCostByService } from '../utils/APICalls';
 // import { getDataFromEndpoint } from '../../utils';
-import ExampleBarGraph from '../components/ExampleBarGraph';
+import StaticBarGraph from '../components/StaticBarGraph';
+import StaticGraphAndTableTile from '../components/StaticBarGraphAndTableTile';
+import { costByMonthColumns, costByProjectColumns, costByServiceColumns } from '../utils/TableColumns';
 
 const stringsToAxesClass = (xKey:string,xLabel:string,yKey:string,yLabel:string) : AxesKeysAndLabels => {
     return { x: { key: xKey, label: xLabel }, y: { key: yKey, label: yLabel } }
@@ -10,12 +12,34 @@ const stringsToAxesClass = (xKey:string,xLabel:string,yKey:string,yLabel:string)
 const Dashboard = () => {
     const costByServiceAxes : AxesKeysAndLabels = stringsToAxesClass("description","Service","totalCost","Total Cost")
     const costByProjectAxes : AxesKeysAndLabels = stringsToAxesClass("name","Project","totalCost","Total Cost")
+    const costByMonthAxes : AxesKeysAndLabels = stringsToAxesClass("month","Month","totalCost","Total Cost")
     
+    const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
+    // const [isFetchingCostByMonth, setIsFetchingCostByMonth] = useState<boolean>(true)
+    
+    const [costByService, setCostByService] = useState<CostByService[]>([])
+
+
+    const [costByProject, setCostByProject] = useState<CostByProject[]>([])
+    
+
+    useEffect(() => {
+        getCostByMonth("5-DAY").then(response => {
+            setCostByMonth(response.data);
+        })
+        getCostByService("5-DAY").then(response => {
+            setCostByService(response.data);
+        })
+        getCostByProject("5-DAY").then(response => {
+            setCostByProject(response.data);
+        })
+    }, [])
+
     return (
         <>
-            <ExampleBarGraph title={"Cost By Service"} apiCall={getCostByService} apiStr={"5-DAY"} axesKeysAndLabels={costByServiceAxes}/>
-            <ExampleBarGraph title={"Cost By Project"} apiCall={getCostByProject} apiStr={"5-DAY"} axesKeysAndLabels={costByProjectAxes}/>
-            
+            <StaticGraphAndTableTile title={"Cost By Month"} data={costByMonth} columns={costByMonthColumns} axesKeysAndLabels={costByMonthAxes} bigSize={false}/>
+            <StaticGraphAndTableTile title={"Cost By Project"} data={costByProject} columns={costByProjectColumns} axesKeysAndLabels={costByProjectAxes} bigSize={false}/>
+            <StaticGraphAndTableTile title={"Cost By Service"} data={costByService} columns={costByServiceColumns} axesKeysAndLabels={costByServiceAxes} bigSize={false}/>
         </>
     );
 }
