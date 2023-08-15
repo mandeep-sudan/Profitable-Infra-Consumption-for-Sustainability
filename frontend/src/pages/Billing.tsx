@@ -14,6 +14,7 @@ import { allDataColumns, costByMonthColumns, costByProjectColumns, costByService
 import InfiniteTableTile from '../components/InfiniteTableTile';
 import StaticBarGraphAndTableTile from '../components/StaticBarGraphAndTableTile';
 import { stringsToAxesClass } from '../utils/utils';
+import NewInfiniteTableTile from '../components/NewInfiniteTableTile';
 // import { getDataFromEndpoint } from '../../utils';
 
 const data = [
@@ -53,7 +54,8 @@ const Billing = () => {
             <TinyTile item={data[2]} stat={2356} color={"orange"} percentage={-2.22} />
             <TinyTile item={data[3]} stat={90} color={"yellow"} percentage={5.29} />
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
-            <InfiniteTableTile title={"Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
+            <NewInfiniteTableTile title={"New Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
+            {/* <InfiniteTableTile title={"Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/> */}
             <StaticBarGraphAndTableTile title={"Cost By Month"} data={costByMonth} columns={costByMonthColumns} axesKeysAndLabels={costByMonthAxes} bigSize={false}/>
             <StaticBarGraphAndTableTile title={"Cost By Project"} data={costByProject} columns={costByProjectColumns} axesKeysAndLabels={costByProjectAxes} bigSize={false}/>
             <StaticBarGraphAndTableTile title={"Cost By Service"} data={costByService} columns={costByServiceColumns} axesKeysAndLabels={costByServiceAxes} bigSize={false}/>
