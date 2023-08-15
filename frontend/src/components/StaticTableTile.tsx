@@ -24,22 +24,14 @@ import { AxiosResponse } from 'axios';
 
 type NewTableTileProps<T> = {
   title:string
-  apiCall: (pageToken:string)=>Promise<AxiosResponse<T[], any>>
   columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
   bigSize:boolean
-  apiStr:string
+  data:T[]
+  isFetching:boolean
 }
 
-const StaticTableTile = <T,>({title,apiCall,apiStr,columns,bigSize}:NewTableTileProps<T>) => {
-  const [data,setData] = useState<T[]>([]);
-  const [isFetching,setIsFetching] = useState<boolean>(true);
+const StaticTableTile = <T,>({title,data,columns,bigSize,isFetching}:NewTableTileProps<T>) => {
   
-  useEffect(() => {
-    apiCall(apiStr).then(response => {
-      setData(response.data)
-      setIsFetching(false)
-    })
-}, [])
 
   const renderTopToolbarCustomActions = ({ }) => (
     <Title order={2} style={{padding:"10px"}}>{title}</Title>

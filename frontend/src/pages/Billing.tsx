@@ -27,26 +27,30 @@ const data = [
 ];
 
 const Billing = () => {
-    // const [allData, setAllData] = useState<AllData[]>([])
-    // const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
-    // const [costByService, setCostByService] = useState<CostByService[]>([])
-    // const [costByProject, setCostByProject] = useState<CostByProject[]>([])
+    const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
+    const [isFetchingCostByMonth, setIsFetchingCostByMonth] = useState<boolean>(true)
+    
+    const [costByService, setCostByService] = useState<CostByService[]>([])
+    const [isFetchingCostByService, setIsFetchingCostByService] = useState<boolean>(true)
 
-    // useEffect(() => {
-    //     getAllData("0").then(response => {
-    //         // console.log(response.data);
-    //         setAllData(response.data.rowList);
-    //     })
-    //     getCostByMonth("5-DAY").then(response => {
-    //         setCostByMonth(response.data);
-    //     })
-    //     getCostByService("5-DAY").then(response => {
-    //         setCostByService(response.data);
-    //     })
-    //     getCostByProject("5-DAY").then(response => {
-    //         setCostByProject(response.data);
-    //     })
-    // }, [])
+    const [isFetchingCostByProject, setIsFetchingCostByProject] = useState<boolean>(true)
+    const [costByProject, setCostByProject] = useState<CostByProject[]>([])
+    
+
+    useEffect(() => {
+        getCostByMonth("5-DAY").then(response => {
+            setCostByMonth(response.data);
+            setIsFetchingCostByMonth(false);
+        })
+        getCostByService("5-DAY").then(response => {
+            setCostByService(response.data);
+            setIsFetchingCostByService(false);
+        })
+        getCostByProject("5-DAY").then(response => {
+            setCostByProject(response.data);
+            setIsFetchingCostByProject(false);
+        })
+    }, [])
     return (
         <>
             {/* <TinyTile item={data[1]} stat={878} color={"red"} percentage={3.48} />
@@ -55,9 +59,9 @@ const Billing = () => {
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
             <InfiniteTableTile title={"Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
             
-            <StaticTableTile title={"Cost by Service"} bigSize={false} apiCall={getCostByService}  apiStr={"5-DAY"} columns={costByServiceColumns}/>
-            <StaticTableTile title={"Cost by Project"} bigSize={false} apiCall={getCostByProject} apiStr={"5-DAY"} columns={costByProjectColumns}/>
-            <StaticTableTile title={"Cost by Month"} bigSize={false} apiCall={getCostByMonth}  apiStr={"5-DAY"} columns={costByMonthColumns}/>
+            <StaticTableTile title={"Cost by Service"} data={costByService} bigSize={false} columns={costByServiceColumns} isFetching={isFetchingCostByService}/>
+            <StaticTableTile title={"Cost by Project"} data={costByProject} bigSize={false} columns={costByProjectColumns} isFetching={isFetchingCostByProject}/>
+            <StaticTableTile title={"Cost by Month"} data={costByMonth} bigSize={false} columns={costByMonthColumns} isFetching={isFetchingCostByMonth}/>
         </>
     );
 }
