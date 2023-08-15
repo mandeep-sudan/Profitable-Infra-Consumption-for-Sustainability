@@ -7,7 +7,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CostByService {
+public class CostByWeekAndService {
+    private String week;
     private String name;
     private Double totalCost;
     private Double totalCredits;

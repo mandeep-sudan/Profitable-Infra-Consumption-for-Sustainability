@@ -27,6 +27,12 @@ export const getCostByService = (range:string) => {
     return axios.get<CostByService[]>(baseURL+endpoint,{params})
 }
 
+export const getCostByWeekAndService = (range:string) => {
+    const params = {range : range}
+    let endpoint : string = "api/cost-by-week-and-service"
+    return axios.get<CostByWeekAndService[]>(baseURL+endpoint,{params})
+}
+
 export const getBigQueryJobsList = (pageToken:string) => {
     const params = {pageToken : pageToken}
     let endpoint : string = "api/jobs-list"

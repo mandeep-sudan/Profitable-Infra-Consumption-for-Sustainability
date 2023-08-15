@@ -2,26 +2,51 @@
 // ******************** DATA ********************
 // **********************************************
 
-class CostByProject {
+interface ICostBySomething {
     name:string
     totalCost:number
     totalCredits:number
     finalCost:number
 }
 
-class CostByService {
-    description:string
+class CostByProject implements ICostBySomething {
+    name:string
     totalCost:number
     totalCredits:number
     finalCost:number
 }
 
-class CostByMonth {
-    month:number
+class CostByService implements ICostBySomething {
+    name:string
     totalCost:number
     totalCredits:number
     finalCost:number
 }
+
+
+class CostByMonth implements ICostBySomething {
+    name:string
+    totalCost:number
+    totalCredits:number
+    finalCost:number
+}
+
+interface ICostByWeekAndSomething {
+    week:string
+    name:string
+    totalCost:number
+    totalCredits:number
+    finalCost:number
+}
+
+class CostByWeekAndService implements ICostByWeekAndSomething {
+    week:string
+    name:string
+    totalCost:number
+    totalCredits:number
+    finalCost:number
+}
+
 
 interface IInfTablePage<T,> {
     rowList:T[]

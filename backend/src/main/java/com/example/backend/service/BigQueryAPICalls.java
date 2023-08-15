@@ -13,7 +13,7 @@ import com.example.backend.model.AllData;
 import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
-
+import com.example.backend.model.CostByWeekAndService;
 import com.example.backend.model.BigQueryJob;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
@@ -40,53 +40,6 @@ public class BigQueryAPICalls {
 
     String detailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41";
 
-    // helper function to get JSON string from a given query
-    List<FieldValueList> getJSONFromQueryNew(String query) throws Exception {
-
-        // create query job configuration based on input
-        // https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
-        QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(query)
-                // Use standard SQL syntax for queries.
-                // See: https://cloud.google.com/bigquery/sql-reference/
-                .setUseLegacySql(false)
-                .build();
-
-        // Create a job ID so that we can safely retry.
-        JobId jobId = JobId.of(UUID.randomUUID().toString());
-        Job queryJob = bigQuery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());
-
-        // Wait for the query to complete.
-        queryJob = queryJob.waitFor();
-
-        // Check for errors
-        if (queryJob == null) {
-            throw new RuntimeException("Job no longer exists");
-        } else if (queryJob.getStatus().getError() != null) {
-            // You can also look at queryJob.getStatus().getExecutionErrors() for all
-            // errors, not just the latest one.
-            throw new RuntimeException(queryJob.getStatus().getError().toString());
-        }
-
-        // Get the results.
-        TableResult result = queryJob.getQueryResults();
-
-        // return jsonResults;
-        // transform TableResult into Iterable object
-        Iterable<FieldValueList> iterable = result.iterateAll();
-
-        List<FieldValueList> retVal = new ArrayList<FieldValueList>();
-
-        String jsonResults = gson.toJson(result, result.getClass());
-        System.out.println("jsonResults from GSON: " + jsonResults);
-
-        // // convert iterable result into JSON string joiner
-        iterable.forEach(s -> {
-            retVal.add(s);
-            // jsonResults.add(gson.toJson(s, s.getClass()));
-        });
-
-        return retVal;
-    }
 
     // helper function to get JSON string from a given query
     <T> List<T> getDataFromQuery(String oldQuery, Class<T> resultType) throws Exception {
@@ -247,7 +200,7 @@ public class BigQueryAPICalls {
         // gets full table data for our private data (up to 100 jobs)
         String query = """
                 SELECT
-                invoice.month,
+                invoice.month as name,
                 sum(cost) as total_cost,
                 SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as total_credits,
                 sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as final_cost,
@@ -267,7 +220,7 @@ public class BigQueryAPICalls {
 
         String query = """
                 SELECT
-                service.description,
+                service.description as name,
                 sum(cost) as total_cost,
                 SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as
                 total_credits,
@@ -290,7 +243,7 @@ public class BigQueryAPICalls {
         // wasn't needed
         String query = """
                 SELECT
-                project.name,
+                project.name as name,
                 sum(cost) as total_cost,
                 SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as
                 total_credits,
@@ -354,29 +307,27 @@ public class BigQueryAPICalls {
     // return getDataFromQuery(query);
     // }
 
-    // public String getCostByWeekAndService(String range) throws Exception {
-    // // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels,
-    // // wasn't needed
-    // String query = """
-    // SELECT
-    // service.description,
-    // DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week,
-    // sum(cost) as total_cost,
-    // SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as
-    // total_credits,
-    // sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as
-    // final_cost,
-    // FROM
-    // """ + " " + detailedString + restrictDate(range) +
-    // """
-    // GROUP BY 1,2
-    // ORDER BY 1,2
-    // LIMIT
-    // """ +
-    // " " + pageSize;
-
-    // return getDataFromQuery(query);
-    // }
+    public List<CostByWeekAndService> getCostByWeekAndService(String range) throws Exception {
+        // gets full table data for our private data (up to 100 jobs)
+        String query = """
+                SELECT
+                service.description as name,
+                DATE(TIMESTAMP_TRUNC(usage_start_time,WEEK)) as week,
+                sum(cost) as total_cost,
+                SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as
+                total_credits,
+                sum(cost) + SUM(IFNULL((SELECT SUM(c.amount) FROM UNNEST(credits) c), 0)) as
+                final_cost,
+                FROM
+                """ + " " + detailedString + restrictDate(range) +
+                """
+                        GROUP BY 1,2
+                        ORDER BY 2,1
+                        LIMIT
+                        """ +
+                " " + pageSize;
+        return getDataFromQuery(query, CostByWeekAndService.class);
+    }
 
     public BigQueryJobsPage getJobsList(String pageToken) {
 

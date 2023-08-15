@@ -13,6 +13,7 @@ import com.example.backend.model.AllData;
 import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
+import com.example.backend.model.CostByWeekAndService;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.QueryPage;
@@ -96,6 +97,12 @@ public class BigQueryController {
     public List<CostByService> getCostByService(@RequestParam(required = false) String range)
             throws Exception {
         return bigQueryAPICalls.getCostByService(range);
+    }
+
+    @GetMapping("/api/cost-by-week-and-service")
+    public List<CostByWeekAndService> getCostByWeekAndService(@RequestParam(required = false) String range)
+            throws Exception {
+        return bigQueryAPICalls.getCostByWeekAndService(range);
     }
 
     @GetMapping("/api/jobs-list")

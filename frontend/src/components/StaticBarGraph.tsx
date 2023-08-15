@@ -34,7 +34,7 @@ const StaticBarGraph = <T,>({ data, axesKeysAndLabels}: BarGraphProps<T>) => {
                         <Tooltip labelClassName='textWithFont' />
                         {/* <Legend className='textWithFont' /> */}
                         {/* <Bar dataKey="pv" stackId="a" fill="#8884d8" /> */}
-                        <Bar dataKey={axesKeysAndLabels.y.key} name={axesKeysAndLabels.y.label} fill="#82ca9d" />
+                        <Bar dataKey={axesKeysAndLabels.y.key} name={axesKeysAndLabels.y.label} fill="#40c057" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

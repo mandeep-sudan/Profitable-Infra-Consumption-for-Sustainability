@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 @Data
 @AllArgsConstructor
 public class CostByMonth {
-    private String month;
+    private String name;
     private Double totalCost;
     private Double totalCredits;
     private Double finalCost;

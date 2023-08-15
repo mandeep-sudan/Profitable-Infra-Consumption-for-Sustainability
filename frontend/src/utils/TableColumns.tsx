@@ -55,7 +55,7 @@ export const camelCaseToReadable = (inputString: string) => {
 
 export const costByMonthColumns: MRT_ColumnDef<CostByMonth>[] = [
   {
-    accessorKey: 'month', //access nested data with dot notation
+    accessorKey: 'name', //access nested data with dot notation
     header: 'Month',
     size:100,
     Cell: ({ cell }) =>
@@ -129,8 +129,48 @@ export const costByProjectColumns: MRT_ColumnDef<CostByProject>[] = [
 
 export const costByServiceColumns: MRT_ColumnDef<CostByService>[] = [
   {
-    accessorKey: 'description', //access nested data with dot notation
+    accessorKey: 'name', //access nested data with dot notation
     header: 'Service',
+    size: 100
+  },
+  {
+    accessorKey: 'totalCost',
+    header: 'Cost',
+    size:80,
+    Cell: ({ cell }) =>
+      <Text>
+        {numToCost(cell.getValue<number>())}
+      </Text>
+  },
+  {
+    accessorKey: 'totalCredits', //normal accessorKey
+    header: 'Credits',
+    size:90,
+    Cell: ({ cell }) =>
+      <Text>
+        {numToCost(cell.getValue<number>())}
+      </Text>
+  },
+  {
+    accessorKey: 'finalCost',
+    header: 'Final Cost',
+    size:120,
+    Cell: ({ cell }) =>
+      <Text>
+        {numToCost(cell.getValue<number>())}
+      </Text>
+  }
+]
+
+export const costByWeekAndServiceColumns: MRT_ColumnDef<CostByWeekAndService>[] = [
+  {
+    accessorKey: 'name', //access nested data with dot notation
+    header: 'Service',
+    size: 100
+  },
+  {
+    accessorKey: 'week', //access nested data with dot notation
+    header: 'Week',
     size: 100
   },
   {
