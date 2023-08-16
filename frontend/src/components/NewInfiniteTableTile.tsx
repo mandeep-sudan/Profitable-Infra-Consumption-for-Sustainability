@@ -18,21 +18,24 @@ import { Button, Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
 import TableTileModal from './TableTileModal';
+import { getAllDataNew } from '../utils/APICalls';
 
-type InfiniteTableTileProps<T> = {
+type InfiniteTableTileProps = {
   title: string
-  columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
+  columns: MRT_ColumnDef<AllData>[] // TO DO: make the class not any
   bigSize: boolean
-  apiCall: (pageToken:string)=>Promise<AxiosResponse<IInfTablePage<T>, any>>
+  apiCall: (pageToken:string)=>Promise<AxiosResponse<IInfTablePage<AllData>, any>>
 }
 
-const NewInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTableTileProps<T>) => {
+const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableTileProps) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [noFilters, setNoFilters] = useState<boolean>(true);
+  const [thereWasAFetch, setThereWasAFetch] = useState<boolean>(false);
   const [nextPageInfo, setNextPageInfo] = useState<string>("");
+  const [queryParams, setQueryParams] = useState<QueryParams>({matches:[]});
 
-  const [data, setData] = useState<T[]>([]);
+  const [data, setData] = useState<AllData[]>([]);
 
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
@@ -55,9 +58,8 @@ const NewInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTa
   const renderTopToolbarCustomActions = ({ }) => (
     <Group>
       <Title order={2} style={{ padding: "10px" }}>{title}</Title>
-      <TableTileModal/>
+      <TableTileModal setQueryParams={setQueryParams}/>
     </Group>
-    
   )
 
   const tableContainerRef = useRef<HTMLDivElement>(null); //we can get access to the underlying TableContainer element and react to its scroll events
@@ -70,14 +72,20 @@ const NewInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTa
     setIsFetching(true)
     try { //to initiate loading
       // let temp : IInfTablePage<T>
-      apiCall(nextPageInfo).then(response => {
+      getAllDataNew(nextPageInfo,queryParams).then(response => {
         setData(oldData => [ ...oldData,...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)
         setIsFetching(false)
+        setThereWasAFetch(true)
       })
+      // .catch(response => {
+      //   console.log("uh oh")
+      // }
+      // )
     }
     catch (err) {
       setIsError(true)
+      console.log("ay de mi")
       console.log("err",err)
     }
   }
@@ -97,7 +105,7 @@ const NewInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTa
         setNoFilters(noFiltersTemp)
         if (
           scrollHeight - scrollTop - clientHeight < 400 &&
-          !isFetching && noFiltersTemp
+          !isFetching && noFiltersTemp && !(thereWasAFetch && data.length===0)
           // totalFetched < totalDBRowCount
           // TO DO: FIX THIS RIGHT HERE
         ) {
@@ -125,6 +133,13 @@ const NewInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTa
   useEffect(() => {
     fetchMoreOnBottomReached(tableContainerRef.current);
   }, [fetchMoreOnBottomReached]);
+
+  useEffect(() => {
+    setThereWasAFetch(false)
+    setData([])
+     setNextPageInfo("")
+
+  }, [queryParams]);
 
   return <div className={bigSize ? "tile full-tile" : "tile half-tile"}>
     <MantineReactTable 
@@ -178,6 +193,7 @@ const NewInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTa
       rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //get access to the virtualizer instance
       rowVirtualizerProps={{ overscan: 10 }}
     />
+    <Text>{JSON.stringify(queryParams)}</Text>
   </div>;
 };
 

@@ -113,3 +113,29 @@ class AxesKeysAndLabels {
     x: {key: string, label: string}
     y: {key: string, label: string}
 }
+
+interface IQueryParamInfo {
+    field: string
+}
+
+class Match implements IQueryParamInfo{
+    field: string
+    value: string
+    operator: string
+}
+
+class BetweenDates implements IQueryParamInfo{
+    field: string
+    startDateTime: Date
+    endDateTime: Date
+}
+
+class BetweenValues implements IQueryParamInfo{
+    field: string
+    lowNumber: number
+    highNumber: number
+}
+
+class QueryParams {
+    matches: Match[]
+}

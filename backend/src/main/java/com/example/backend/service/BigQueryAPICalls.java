@@ -3,6 +3,7 @@ package com.example.backend.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -18,6 +19,8 @@ import com.example.backend.model.BigQueryJob;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.QueryPage;
+import com.example.backend.model.QueryParams;
+import com.example.backend.model.QueryParams.Match;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
 // import com.google.cloud.bigquery.BigQueryException;
@@ -141,6 +144,27 @@ public class BigQueryAPICalls {
         // return temp;
     }
 
+    String getMatchesString(QueryParams queryParams) {
+        if (queryParams == null || queryParams.getMatches() == null || 
+        queryParams.getMatches().size() == 0) {
+            return " ";
+        }
+        List<Match> matches = queryParams.getMatches();
+        StringJoiner output = new StringJoiner(" AND ");
+        
+        for (int i=0;i<matches.size();i++) {
+            Match currMatch = matches.get(i);
+            String wrappedValue;
+            if (currMatch.getOperator()=="LIKE") {
+                wrappedValue = "\'%"+currMatch.getValue()+"%\'";
+            } else { // operator is '='
+                wrappedValue = "\'"+currMatch.getValue()+"\'";
+            }
+            output.add(currMatch.getField()+" "+currMatch.getOperator()+" "+wrappedValue);
+        }
+        return " WHERE " + output.toString() + " ";
+    }
+
     // ****************************************************************
     // ********************* BIGQUERY CALLS ***************************
     // ****************************************************************
@@ -175,6 +199,41 @@ public class BigQueryAPICalls {
         """
                 + detailedString +
                 restrictDate(range) + " ORDER BY usage_start_time DESC LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
+        // System.out.println(query);
+        return getDataFromQueryPaginated(query,AllData.class,pageNum);
+    }
+    
+
+    public QueryPage<AllData> getAllDataNew(String currPageNum, QueryParams queryParams) throws Exception {
+        int pageNum;
+        if (currPageNum=="") {
+            pageNum=0;
+        } else {
+            pageNum= Integer.parseInt(currPageNum);
+        }
+        String query = """
+            SELECT billing_account_id,
+                    service.description as service,
+                    sku.description as sku,
+                    usage_start_time,
+                    usage_end_time,
+                    TIMESTAMP_DIFF(usage_end_time, usage_start_time, SECOND) AS usage_duration_seconds,
+                    project.id as project_id,
+                    project.name as project_name,
+                    location.location as location,
+                    resource.name as resource_name,
+                    resource.global_name as resource_global_name,
+                    export_time,
+                    cost,
+                    currency,
+                    usage.amount as usage_amount,
+                    usage.unit as usage_unit,
+                    credits,
+                    invoice.month as invoice_month,
+                    FROM
+        """
+                + detailedString + getMatchesString(queryParams) +
+                " ORDER BY usage_start_time DESC LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
         // System.out.println(query);
         return getDataFromQueryPaginated(query,AllData.class,pageNum);
     }

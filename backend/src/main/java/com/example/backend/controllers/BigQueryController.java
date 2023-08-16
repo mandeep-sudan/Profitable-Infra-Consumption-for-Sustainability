@@ -17,6 +17,7 @@ import com.example.backend.model.CostByWeekAndService;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.QueryPage;
+import com.example.backend.model.QueryParams;
 import com.example.backend.service.BigQueryAPICalls;
 // import com.google.cloud.bigquery.Job;
 
@@ -65,6 +66,19 @@ public class BigQueryController {
     public QueryPage<AllData> getAllData(@RequestParam(required = false) String range,
                                     @RequestParam(required = false) String currPageNum) throws Exception {
         return bigQueryAPICalls.getAllData(range,currPageNum);
+    }
+
+    @GetMapping("/api/all-data-new")
+    public QueryPage<AllData> getAllDataNew(@RequestParam(required = false) String currPageNum,
+                                    @RequestParam(required = false) QueryParams queryParams) throws Exception {
+        System.out.println("We got here with "+currPageNum);
+        if (queryParams != null) {
+            System.out.println("queryParams are "+queryParams.toString());
+        } else {
+            System.out.println("queryParams are null :(");
+        }
+        
+        return bigQueryAPICalls.getAllDataNew(currPageNum,queryParams);
     }
 
     // @GetMapping("/api/all-data")

@@ -24,7 +24,7 @@ const statusToColor = (status:string) : string => {
 }
 
 // takes a string of the form "2023-07-30T05:00:00Z" to the form "Thu, 01 Jan 1970 00:00:00 GMT"
-const dateToReadable = (inputString: string) => {
+export const dateToReadable = (inputString: string) => {
   let date = new Date(inputString)
   return format(date, "d LLL, yyy, h:mmaaa")
 }
