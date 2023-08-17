@@ -136,6 +136,13 @@ class BetweenValues implements IQueryParamInfo{
     highNumber: number
 }
 
+class Sorting implements IQueryParamInfo{
+    field: string
+    ascending: boolean
+}
+
 class QueryParams {
     matches: Match[]
+    betweenDates: BetweenDates[]
+    betweenValues: BetweenValues[]
 }

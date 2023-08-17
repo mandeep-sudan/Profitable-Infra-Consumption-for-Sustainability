@@ -31,10 +31,10 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [noFilters, setNoFilters] = useState<boolean>(true);
-  const [thereWasAFetch, setThereWasAFetch] = useState<boolean>(false);
+  const [fetchesLeft, setFetchesLeft] = useState<boolean>(true);
   const [nextPageInfo, setNextPageInfo] = useState<string>("");
-  const [queryParams, setQueryParams] = useState<QueryParams>({matches:[]});
-
+  const [queryParams, setQueryParams] = useState<QueryParams>({matches:[],betweenDates:[],betweenValues:[]});
+  
   const [data, setData] = useState<AllData[]>([]);
 
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -76,7 +76,9 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
         setData(oldData => [ ...oldData,...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)
         setIsFetching(false)
-        setThereWasAFetch(true)
+        if (response.data.rowList.length===0) {
+          setFetchesLeft(false)
+        }
       })
       // .catch(response => {
       //   console.log("uh oh")
@@ -105,7 +107,7 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
         setNoFilters(noFiltersTemp)
         if (
           scrollHeight - scrollTop - clientHeight < 400 &&
-          !isFetching && noFiltersTemp && !(thereWasAFetch && data.length===0)
+          !isFetching && noFiltersTemp && fetchesLeft
           // totalFetched < totalDBRowCount
           // TO DO: FIX THIS RIGHT HERE
         ) {
@@ -135,7 +137,7 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
   }, [fetchMoreOnBottomReached]);
 
   useEffect(() => {
-    setThereWasAFetch(false)
+    setFetchesLeft(true)
     setData([])
      setNextPageInfo("")
 

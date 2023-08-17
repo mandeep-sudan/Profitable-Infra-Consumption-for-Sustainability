@@ -20,6 +20,8 @@ import com.example.backend.model.BigQueryJob;
 import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.QueryPage;
 import com.example.backend.model.QueryParams;
+import com.example.backend.model.QueryParams.BetweenDates;
+import com.example.backend.model.QueryParams.BetweenValues;
 import com.example.backend.model.QueryParams.Match;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
@@ -144,23 +146,72 @@ public class BigQueryAPICalls {
         // return temp;
     }
 
-    String getMatchesString(QueryParams queryParams) {
+    void getMatchesString(QueryParams queryParams, StringJoiner output) {
         if (queryParams == null || queryParams.getMatches() == null || 
         queryParams.getMatches().size() == 0) {
-            return " ";
+            return;
         }
         List<Match> matches = queryParams.getMatches();
-        StringJoiner output = new StringJoiner(" AND ");
+        // StringJoiner output = new StringJoiner(" AND ");
         
         for (int i=0;i<matches.size();i++) {
             Match currMatch = matches.get(i);
             String wrappedValue;
-            if (currMatch.getOperator()=="LIKE") {
+            if (currMatch.getOperator().equals("LIKE")) {
                 wrappedValue = "\'%"+currMatch.getValue()+"%\'";
             } else { // operator is '='
                 wrappedValue = "\'"+currMatch.getValue()+"\'";
             }
             output.add(currMatch.getField()+" "+currMatch.getOperator()+" "+wrappedValue);
+        }
+    }
+
+    void getBetweenValuesString(QueryParams queryParams, StringJoiner output) {
+        if (queryParams == null || queryParams.getBetweenValues() == null || 
+        queryParams.getBetweenValues().size() == 0) {
+            return;
+        }
+        List<BetweenValues> betweenValues = queryParams.getBetweenValues();
+        // StringJoiner output = new StringJoiner(" AND ");
+        
+        for (int i=0;i<betweenValues.size();i++) {
+            BetweenValues currBetweenValues = betweenValues.get(i);
+            if (currBetweenValues.getLowNumber()!=null) {
+                output.add(currBetweenValues.getField()+" > "+currBetweenValues.getLowNumber());
+            }
+            if (currBetweenValues.getHighNumber()!=null) {
+                output.add(currBetweenValues.getField()+" < "+currBetweenValues.getHighNumber());
+            }
+        }
+    }
+
+    void getBetweenDatesString(QueryParams queryParams, StringJoiner output) {
+        if (queryParams == null || queryParams.getBetweenDates() == null || 
+        queryParams.getBetweenDates().size() == 0) {
+            return;
+        }
+        List<BetweenDates> betweenDates = queryParams.getBetweenDates();
+        // StringJoiner output = new StringJoiner(" AND ");
+        
+        for (int i=0;i<betweenDates.size();i++) {
+            BetweenDates currBetweenValues = betweenDates.get(i);
+            if (currBetweenValues.getStartDateTime()!=null) {
+                output.add(currBetweenValues.getField()+" > \'"+currBetweenValues.getStartDateTime()+"\'");
+            }
+            if (currBetweenValues.getEndDateTime()!=null) {
+                output.add(currBetweenValues.getField()+" < \'"+currBetweenValues.getEndDateTime()+"\'");
+            }
+        }
+    }
+
+    String getFullFiltering(QueryParams queryParams) {
+        StringJoiner output = new StringJoiner(" AND ");
+
+        getBetweenValuesString(queryParams, output);
+        getMatchesString(queryParams, output);
+        getBetweenDatesString(queryParams, output);
+        if (output.length()==0) {
+            return " ";
         }
         return " WHERE " + output.toString() + " ";
     }
@@ -199,7 +250,6 @@ public class BigQueryAPICalls {
         """
                 + detailedString +
                 restrictDate(range) + " ORDER BY usage_start_time DESC LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
-        // System.out.println(query);
         return getDataFromQueryPaginated(query,AllData.class,pageNum);
     }
     
@@ -232,9 +282,9 @@ public class BigQueryAPICalls {
                     invoice.month as invoice_month,
                     FROM
         """
-                + detailedString + getMatchesString(queryParams) +
+                + detailedString + getFullFiltering(queryParams) +
                 " ORDER BY usage_start_time DESC LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
-        // System.out.println(query);
+        System.out.println(query);
         return getDataFromQueryPaginated(query,AllData.class,pageNum);
     }
 

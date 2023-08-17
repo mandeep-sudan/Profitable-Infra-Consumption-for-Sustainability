@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,9 +70,9 @@ public class BigQueryController {
         return bigQueryAPICalls.getAllData(range,currPageNum);
     }
 
-    @GetMapping("/api/all-data-new")
-    public QueryPage<AllData> getAllDataNew(@RequestParam(required = false) String currPageNum,
-                                    @RequestParam(required = false) QueryParams queryParams) throws Exception {
+    @PostMapping("/api/all-data-new")
+    public QueryPage<AllData> getAllDataNew(@RequestBody(required = false) QueryParams queryParams,
+                                    @RequestParam(required = false) String currPageNum) throws Exception {
         System.out.println("We got here with "+currPageNum);
         if (queryParams != null) {
             System.out.println("queryParams are "+queryParams.toString());
@@ -80,6 +82,18 @@ public class BigQueryController {
         
         return bigQueryAPICalls.getAllDataNew(currPageNum,queryParams);
     }
+    // @PostMapping("/api/all-data-new")
+    // public QueryPage<AllData> getAllDataNew(@RequestBody(required = false) QueryParams queryParams,
+    //                                 @RequestParam(required = false) String currPageNum) throws Exception {
+    //     System.out.println("We got here with "+currPageNum);
+    //     if (queryParams != null) {
+    //         System.out.println("queryParams are "+queryParams.toString());
+    //     } else {
+    //         System.out.println("queryParams are null :(");
+    //     }
+        
+    //     return bigQueryAPICalls.getAllDataNew(currPageNum,queryParams);
+    // }
 
     // @GetMapping("/api/all-data")
     // public String getAllData(@RequestParam(required = false) String range,

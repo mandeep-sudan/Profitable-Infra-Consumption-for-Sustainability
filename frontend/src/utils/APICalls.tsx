@@ -6,12 +6,11 @@ const baseURL: string = "http://localhost:8080/"
 
 export const getAllDataNew = (currPageNum: string, queryParams: QueryParams) => {
     const params = {
-        currPageNum: currPageNum,
-        queryParams: queryParams
+        currPageNum: currPageNum
     }
     console.log(params)
     let endpoint: string = "api/all-data-new"
-    return axios.get<AllDataPage>(baseURL + endpoint, { params })
+    return axios.post<AllDataPage>(baseURL + endpoint, queryParams, { params })
 }
 
 export const getAllData = (currPageNum: string) => {

@@ -18,3 +18,24 @@ export const betweenValuesFieldsForGlobalFilter: string[] = [
     "cost",
     "usage.amount",
 ] 
+
+export const sortingFieldsForGlobalFilter: string[] = [
+    "billing_account_id",
+    "service",
+    "sku",
+    "usage_start_time",
+    "usage_end_time",
+    "usage_duration_seconds",
+    "project_id",
+    "project_name",
+    "location",
+    "resource_name",
+    "resource_global_name",
+    "export_time",
+    "cost",
+    "currency",
+    "usage_amount",
+    "usage_unit",
+    "credits",
+    "invoice_month"
+] 

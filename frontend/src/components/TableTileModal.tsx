@@ -1,12 +1,13 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Radio, Text, TextInput, ActionIcon } from '@mantine/core';
 import React, { useState } from 'react';
-import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter } from '../utils/utils';
+import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter, sortingFieldsForGlobalFilter } from '../utils/utils';
 import "./TableTileModal.css"
 import { IconPlus } from '@tabler/icons-react';
 import TableTileModalMatch from './TableTileModalMatch';
 import TableTileModalBetweenDates from './TableTileModalBetweenDates';
 import TableTileModalBetweenValues from './TableTileModalBetweenValues';
+import TableTileModalSorting from './TableTileModalSorting';
 
 
 type TableTileModalProps = {
@@ -31,8 +32,13 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
     const [currBetweenValuesOptions, setCurrBetweenValuesOptions] = useState<string[]>(betweenValuesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
     const [betweenValues, setBetweenValues] = useState<BetweenValues[]>([]);
 
+    // SORTING
+    const [currSortingFields, setCurrSortingFields] = useState<string[]>([]);
+    const [fieldToBoolDict, setFieldToBoolDict] = useState<Record<string,boolean>>({});
+    const [sortings, setSortings] = useState<Sorting[]>([]);
+
     const submitFilter = () => {
-        setQueryParams({ matches: matches })
+        setQueryParams({ matches: matches,betweenDates: betweenDates, betweenValues: betweenValues })
         close() // closes modal
     }
 
@@ -43,6 +49,7 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
         setBetweenDates([])
         setCurrBetweenValuesOptions(betweenValuesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
         setBetweenValues([])
+
     }
 
     return (
@@ -71,9 +78,25 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
                     </Modal.Header>
                     <Modal.Body>
                         <div className='global-filter-modal'>
-                            <TableTileModalBetweenDates betweenDates={betweenDates} setBetweenDates={setBetweenDates} currBetweenDatesOptions={currBetweenDatesOptions} setCurrBetweenDatesOptions={setCurrBetweenDatesOptions} />
-                            <TableTileModalBetweenValues betweenValues={betweenValues} setBetweenValues={setBetweenValues} currBetweenValuesOptions={currBetweenValuesOptions} setCurrBetweenValuesOptions={setCurrBetweenValuesOptions} />
-                            <TableTileModalMatch matches={matches} setMatches={setMatches} currMatchOptions={currMatchOptions} setCurrMatchOptions={setCurrMatchOptions} />
+                            <TableTileModalBetweenDates betweenDates={betweenDates}
+                                setBetweenDates={setBetweenDates}
+                                currBetweenDatesOptions={currBetweenDatesOptions}
+                                setCurrBetweenDatesOptions={setCurrBetweenDatesOptions} />
+                            <TableTileModalBetweenValues betweenValues={betweenValues}
+                                setBetweenValues={setBetweenValues}
+                                currBetweenValuesOptions={currBetweenValuesOptions}
+                                setCurrBetweenValuesOptions={setCurrBetweenValuesOptions} />
+                            <TableTileModalMatch matches={matches}
+                                setMatches={setMatches}
+                                currMatchOptions={currMatchOptions}
+                                setCurrMatchOptions={setCurrMatchOptions} />
+                            <TableTileModalSorting sortings={sortings}
+                                setSortings={setSortings}
+                                currSortingFields={currSortingFields}
+                                setCurrSortingFields={setCurrSortingFields}
+                                fieldToBoolDict={fieldToBoolDict}
+                                setFieldToBoolDict={setFieldToBoolDict} 
+                                />
 
                             {/* <div style={{ height: "500px" }}></div> */}
                         </div>
