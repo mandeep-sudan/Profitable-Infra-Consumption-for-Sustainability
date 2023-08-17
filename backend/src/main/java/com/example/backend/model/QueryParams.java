@@ -14,6 +14,7 @@ public class QueryParams {
     private List<Match> matches;
     private List<BetweenValues> betweenValues;
     private List<BetweenDates> betweenDates;
+    private List<Sorting> sortings;
 
     @Data
     @AllArgsConstructor
@@ -37,6 +38,15 @@ public class QueryParams {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class BetweenDates {
+        private String field;
+        private String startDateTime;
+        private String endDateTime;
+    }
+    
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Sorting {
         private String field;
         private String startDateTime;
         private String endDateTime;

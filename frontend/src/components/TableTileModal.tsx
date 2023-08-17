@@ -38,7 +38,7 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
     const [sortings, setSortings] = useState<Sorting[]>([]);
 
     const submitFilter = () => {
-        setQueryParams({ matches: matches,betweenDates: betweenDates, betweenValues: betweenValues })
+        setQueryParams({ matches: matches,betweenDates: betweenDates, betweenValues: betweenValues, sortings: sortings })
         close() // closes modal
     }
 

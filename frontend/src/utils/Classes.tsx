@@ -145,4 +145,5 @@ class QueryParams {
     matches: Match[]
     betweenDates: BetweenDates[]
     betweenValues: BetweenValues[]
+    sortings: Sorting[]
 }
