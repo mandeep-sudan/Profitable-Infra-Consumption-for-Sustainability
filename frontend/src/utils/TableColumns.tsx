@@ -206,14 +206,17 @@ export const allDataColumns: MRT_ColumnDef<AllData>[] = [
   {
     accessorKey: 'billingAccountId',
     header: 'Billing Account Id',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'service',
     header: 'Service',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'sku',
     header: 'SKU',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'usageStartTime',
@@ -238,22 +241,27 @@ export const allDataColumns: MRT_ColumnDef<AllData>[] = [
   {
     accessorKey: 'projectId',
     header: 'Project Id',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'projectName',
     header: 'Project Name',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'location',
     header: 'Location',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'resourceName',
     header: 'Resource Name',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'resourceGlobalName',
     header: 'Resource Global Name',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'exportTime',
@@ -274,18 +282,22 @@ export const allDataColumns: MRT_ColumnDef<AllData>[] = [
   {
     accessorKey: 'currency',
     header: 'Currency',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'usageAmount',
     header: 'Usage Amount',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'usageUnit',
     header: 'Usage Unit',
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'credits.0.amount',
     header: 'Credits Amount', // TO DO: make credits nicer
+    enableClickToCopy: true,
   },
   {
     accessorKey: 'invoiceMonth',
