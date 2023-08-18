@@ -33,8 +33,8 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
     const [betweenValues, setBetweenValues] = useState<BetweenValues[]>([]);
 
     // SORTING
-    const [currSortingFields, setCurrSortingFields] = useState<string[]>([]);
-    const [fieldToBoolDict, setFieldToBoolDict] = useState<Record<string,boolean>>({});
+    const [currSortingFields, setCurrSortingFields] = useState<string[]>(["usage_start_time"]);
+    const [fieldToBoolDict, setFieldToBoolDict] = useState<Record<string,boolean>>({usage_start_time:false});
     const [sortings, setSortings] = useState<Sorting[]>([]);
 
     const submitFilter = () => {

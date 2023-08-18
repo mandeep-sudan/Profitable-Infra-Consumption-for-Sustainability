@@ -23,6 +23,7 @@ import com.example.backend.model.QueryParams;
 import com.example.backend.model.QueryParams.BetweenDates;
 import com.example.backend.model.QueryParams.BetweenValues;
 import com.example.backend.model.QueryParams.Match;
+import com.example.backend.model.QueryParams.Sorting;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
 // import com.google.cloud.bigquery.BigQueryException;
@@ -204,16 +205,45 @@ public class BigQueryAPICalls {
         }
     }
 
+    StringJoiner getOrderingString(QueryParams queryParams) {
+        StringJoiner output = new StringJoiner(", ");
+        if (queryParams == null || queryParams.getSortings() == null || 
+        queryParams.getSortings().size() == 0) {
+            return output;
+        }
+        List<Sorting> sortings = queryParams.getSortings();
+        
+        // StringJoiner output = new StringJoiner(" AND ");
+        
+        for (int i=0;i<sortings.size();i++) {
+            Sorting currSorting = sortings.get(i);
+
+            if (currSorting.isAscending()) {
+                output.add(currSorting.getField());
+            } else {
+                output.add(currSorting.getField()+ " DESC");
+            }
+        }
+        return output;
+    }
+
     String getFullFiltering(QueryParams queryParams) {
         StringJoiner output = new StringJoiner(" AND ");
 
         getBetweenValuesString(queryParams, output);
         getMatchesString(queryParams, output);
         getBetweenDatesString(queryParams, output);
-        if (output.length()==0) {
+        StringJoiner sortingStringJoiner = getOrderingString(queryParams);
+        if (output.length()==0 && sortingStringJoiner.length()==0) {
             return " ";
         }
-        return " WHERE " + output.toString() + " ";
+        if (output.length()==0) {
+            return " ORDER BY "+ sortingStringJoiner.toString() + " ";
+        }
+        if (sortingStringJoiner.length()==0) {
+            return " WHERE " + output.toString() + " ";
+        }
+        return " WHERE " + output.toString() + " ORDER BY " + sortingStringJoiner.toString() + " ";
     }
 
     // ****************************************************************
@@ -283,7 +313,7 @@ public class BigQueryAPICalls {
                     FROM
         """
                 + detailedString + getFullFiltering(queryParams) +
-                " ORDER BY usage_start_time DESC LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
+                " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
         System.out.println(query);
         return getDataFromQueryPaginated(query,AllData.class,pageNum);
     }

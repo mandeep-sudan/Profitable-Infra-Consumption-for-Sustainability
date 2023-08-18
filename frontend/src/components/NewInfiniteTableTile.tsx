@@ -33,7 +33,7 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
   const [noFilters, setNoFilters] = useState<boolean>(true);
   const [fetchesLeft, setFetchesLeft] = useState<boolean>(true);
   const [nextPageInfo, setNextPageInfo] = useState<string>("");
-  const [queryParams, setQueryParams] = useState<QueryParams>({matches:[],betweenDates:[],betweenValues:[],sortings:[]});
+  const [queryParams, setQueryParams] = useState<QueryParams>({matches:[],betweenDates:[],betweenValues:[],sortings:[{field:"usage_start_time",ascending:false}]});
   
   const [data, setData] = useState<AllData[]>([]);
 

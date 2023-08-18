@@ -48,7 +48,6 @@ public class QueryParams {
     @NoArgsConstructor
     public static class Sorting {
         private String field;
-        private String startDateTime;
-        private String endDateTime;
+        private boolean ascending;
     }
 }
