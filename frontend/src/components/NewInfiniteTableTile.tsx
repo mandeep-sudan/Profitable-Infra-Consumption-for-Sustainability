@@ -195,7 +195,6 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
       rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //get access to the virtualizer instance
       rowVirtualizerProps={{ overscan: 10 }}
     />
-    <Text>{JSON.stringify(queryParams)}</Text>
   </div>;
 };
 
