@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { getAllData, getCostByMonth, getCostByProject, getCostByService, getCostByWeekAndService } from '../utils/APICalls';
+import React from 'react';
+import { getAllData } from '../utils/APICalls';
 // import { getDataFromEndpoint } from '../../utils';
-import StaticBarGraph from '../components/StaticBarGraph';
-import StaticGraphAndTableTile from '../components/StaticBarGraphAndTableTile';
-import { allDataColumns, costByMonthColumns, costByProjectColumns, costByServiceColumns, costByWeekAndServiceColumns } from '../utils/TableColumns';
-import { Card, Text } from '@mantine/core';
-import StaticTableTile from '../components/StaticTableTile';
-import StackedTimeBarGraph from '../components/StackedTimeBarGraph';
+import { allDataColumns} from '../utils/TableColumns';
 import NewInfiniteTableTile from '../components/NewInfiniteTableTile';
 
 const Dashboard = () => {

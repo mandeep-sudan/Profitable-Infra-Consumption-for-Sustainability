@@ -3,7 +3,7 @@ import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Rad
 import React, { useState } from 'react';
 import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter, sortingFieldsForGlobalFilter } from '../utils/utils';
 import "./TableTileModal.css"
-import { IconPlus } from '@tabler/icons-react';
+import { IconGlobe, IconPlus, IconWorld } from '@tabler/icons-react';
 import TableTileModalMatch from './TableTileModalMatch';
 import TableTileModalBetweenDates from './TableTileModalBetweenDates';
 import TableTileModalBetweenValues from './TableTileModalBetweenValues';
@@ -105,7 +105,9 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
             </Modal.Root>
 
             <Group position="center">
-                <Button onClick={open}>Open modal</Button>
+                <Button
+                    leftIcon={<IconWorld />}
+                    onClick={open}>Global Filtering</Button>
             </Group>
         </>
     );
