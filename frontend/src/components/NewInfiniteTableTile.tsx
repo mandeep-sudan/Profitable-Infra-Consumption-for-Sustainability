@@ -8,16 +8,15 @@ import React, {
 } from 'react';
 import {
   MantineReactTable,
-  useMantineReactTable,
   type MRT_ColumnDef,
   type MRT_ColumnFiltersState,
   type MRT_SortingState,
   type MRT_Virtualizer,
 } from 'mantine-react-table';
-import { Button, Group, Text, Title } from '@mantine/core';
+import { Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
-import TableTileModal from './TableTileModal';
+import TableTileModal from './InfiniteTableTileModal/TableTileModal';
 import { getAllDataNew } from '../utils/APICalls';
 
 type InfiniteTableTileProps = {

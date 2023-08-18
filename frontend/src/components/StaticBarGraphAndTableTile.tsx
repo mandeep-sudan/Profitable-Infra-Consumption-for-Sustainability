@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-    MantineReactTable,
-    useMantineReactTable,
     type MRT_ColumnDef,
 } from 'mantine-react-table';
-import { Box, Button, Card, Center, Group, SegmentedControl, Title } from '@mantine/core';
+import { Card, Center, Group, SegmentedControl, Title } from '@mantine/core';
 import "./Tiles.css"
-import { AxiosResponse } from 'axios';
 import StaticTableTile from './StaticTableTile';
 import StaticBarGraph from './StaticBarGraph';
 import { Prism } from '@mantine/prism';

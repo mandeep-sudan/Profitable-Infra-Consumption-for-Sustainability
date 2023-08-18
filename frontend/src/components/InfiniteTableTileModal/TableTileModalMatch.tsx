@@ -1,9 +1,7 @@
-import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Radio, Text, TextInput, ActionIcon, Table, SegmentedControl, Switch } from '@mantine/core';
-import React, { useEffect, useState } from 'react';
-import { matchFieldsForGlobalFilter } from '../utils/utils';
+import {  Group, Title, Select, TextInput, ActionIcon, Table, SegmentedControl, Switch, ThemeIcon, Badge } from '@mantine/core';
+import React, { useState } from 'react';
 import "./TableTileModal.css"
-import { IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 
 
 
@@ -43,8 +41,12 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
     const rows: React.ReactElement[] = matches.map((match) => (
         <tr key={match.field}>
             <td>{match.field}</td>
-            <td>{JSON.stringify(match.not)}</td>
-            <td>{match.operator}</td>
+            <td>{match.not ?
+                <ThemeIcon color="green" variant="light">
+                    <IconCheck />
+                </ThemeIcon> :
+                <></>}</td>
+            <td><Badge color={(match.operator)==="LIKE" ? "orange" : "blue"}>{(match.operator)==="LIKE" ? "partial" : "exact"}</Badge></td>
             <td>{match.value}</td>
 
             <td>
@@ -83,7 +85,7 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
                             style={{ marginBottom: "10px" }}
                         />
                     </Group>
-                
+
                     <SegmentedControl
                         color="blue"
                         value={currMatchOperator}

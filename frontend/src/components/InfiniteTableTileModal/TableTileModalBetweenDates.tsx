@@ -1,8 +1,6 @@
-import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Radio, Text, TextInput, ActionIcon, Table } from '@mantine/core';
+import {  Group,  Title, Select, ActionIcon, Table } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates'
-import React, { useEffect, useState } from 'react';
-import { matchFieldsForGlobalFilter } from '../utils/utils';
+import React, {  useState } from 'react';
 import "./TableTileModal.css"
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
@@ -89,6 +87,7 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
                     <DateTimePicker
                         label="Start datetime"
                         placeholder="Pick date and time"
+                        maxDate={new Date()}
                         clearable
                         value={currBetweenDatesStartDateTime}
                         onChange={(event) => setCurrBetweenDatesStartDateTime(event)}
@@ -97,6 +96,7 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
                     <DateTimePicker
                         label="End datetime"
                         placeholder="Pick date and time"
+                        maxDate={new Date()}
                         clearable
                         value={currBetweenDatesEndDateTime}
                         onChange={(event) => setCurrBetweenDatesEndDateTime(event)}

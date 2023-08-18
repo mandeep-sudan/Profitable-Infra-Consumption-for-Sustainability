@@ -1,11 +1,7 @@
-import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Radio, Text, TextInput, ActionIcon, Table, NumberInput } from '@mantine/core';
-import { DateTimePicker } from '@mantine/dates'
-import React, { useEffect, useState } from 'react';
-import { matchFieldsForGlobalFilter } from '../utils/utils';
+import {  Group,  Title, Select, ActionIcon, Table, NumberInput } from '@mantine/core';
+import React, { useState } from 'react';
 import "./TableTileModal.css"
 import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { format } from 'date-fns';
 
 
 type TableTileModalBetweenValuesProps = {
@@ -78,7 +74,7 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
                 <Select
                     value={currBetweenValuesField}
                     onChange={setCurrBetweenValuesField}
-                    label="Select field to filter by datetime"
+                    label="Select field to filter by value"
                     placeholder="Pick one"
                     data={currBetweenValuesOptions}
                     withAsterisk

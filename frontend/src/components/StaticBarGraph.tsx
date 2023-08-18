@@ -1,8 +1,6 @@
-import React, { PureComponent, useEffect, useState } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from 'react';
+import { BarChart, Bar,  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './Example.css'
-import { Text, Card, Title } from '@mantine/core';
-import { AxiosResponse } from 'axios';
 
 type BarGraphProps<T> = {
     data:T[]

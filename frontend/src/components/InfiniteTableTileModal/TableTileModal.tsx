@@ -1,9 +1,9 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Radio, Text, TextInput, ActionIcon } from '@mantine/core';
+import { Button, Group, Modal, useMantineTheme, Title } from '@mantine/core';
 import React, { useState } from 'react';
-import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter, sortingFieldsForGlobalFilter } from '../utils/utils';
+import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter } from '../../utils/utils';
 import "./TableTileModal.css"
-import { IconGlobe, IconPlus, IconWorld } from '@tabler/icons-react';
+import {  IconWorld } from '@tabler/icons-react';
 import TableTileModalMatch from './TableTileModalMatch';
 import TableTileModalBetweenDates from './TableTileModalBetweenDates';
 import TableTileModalBetweenValues from './TableTileModalBetweenValues';
@@ -49,6 +49,8 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
         setBetweenDates([])
         setCurrBetweenValuesOptions(betweenValuesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
         setBetweenValues([])
+        setSortings([])
+        setCurrSortingFields([])
 
     }
 

@@ -1,6 +1,6 @@
-import React,{ useState, Fragment } from 'react';
+import React from 'react';
 
-import {Table, Text, Title, Card, ScrollArea, ThemeIcon, Group, GroupProps} from '@mantine/core';
+import { Text, Title, Card,  ThemeIcon, Group } from '@mantine/core';
 import "./Tiles.css"
 
 import {IconArrowNarrowUp, IconArrowNarrowDown} from '@tabler/icons-react';

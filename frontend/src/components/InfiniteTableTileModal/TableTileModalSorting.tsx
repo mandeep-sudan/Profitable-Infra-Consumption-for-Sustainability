@@ -1,9 +1,9 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title, Autocomplete, Select, Radio, Text, TextInput, ActionIcon, Table, MultiSelect } from '@mantine/core';
-import React, { useEffect, useState } from 'react';
-import { sortingFieldsForGlobalFilter } from '../utils/utils';
+import { Button, Title, ActionIcon, Table, MultiSelect } from '@mantine/core';
+import React, { useEffect } from 'react';
+import { sortingFieldsForGlobalFilter } from '../../utils/utils';
 import "./TableTileModal.css"
-import { IconArrowNarrowDown, IconArrowNarrowUp, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconArrowNarrowDown, IconArrowNarrowUp, IconArrowBigUp, IconTrash } from '@tabler/icons-react';
 
 
 
@@ -118,12 +118,9 @@ const TableTileModalSorting = ({ sortings, setSortings,currSortingFields,setCurr
                 {sortingToVisual(sorting)}
             </td>
             <td>
-                <Group >
-                <ActionIcon color="gray" disabled={sorting.field===sortings[0].field}>
-                    <IconArrowNarrowUp  onClick={() => increasePriority(sorting.field)} />
-                </ActionIcon>     
-                </Group>
-                
+                <ActionIcon color="gray" variant="light" disabled={sorting.field===sortings[0].field}>
+                    <IconArrowBigUp  onClick={() => increasePriority(sorting.field)} />
+                </ActionIcon>
             </td>
             <td>
                 <ActionIcon color="red">
