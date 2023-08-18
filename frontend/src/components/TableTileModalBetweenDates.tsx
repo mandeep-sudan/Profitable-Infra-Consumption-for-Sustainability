@@ -114,8 +114,8 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
                 <thead>
                     <tr>
                         <th>Field</th>
-                        <th>Start DateTime</th>
-                        <th>End DateTime</th>
+                        <th>Start</th>
+                        <th>End</th>
                         <th>Delete</th>
                     </tr>
                 </thead>

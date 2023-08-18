@@ -146,8 +146,6 @@ const TableTileModalSorting = ({ sortings, setSortings,currSortingFields,setCurr
                 data={currSortingOptions2}
                 withAsterisk
             />
-            <Text>{currSortingFields}</Text>
-            <Text>{JSON.stringify(fieldToBoolDict)}</Text>
             <Table>
                 <thead>
                     <tr>

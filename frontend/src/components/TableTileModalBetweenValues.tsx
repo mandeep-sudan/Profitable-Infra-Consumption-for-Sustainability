@@ -111,8 +111,8 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
                 <thead>
                     <tr>
                         <th>Field</th>
-                        <th>Low Value</th>
-                        <th>High Value</th>
+                        <th>Low</th>
+                        <th>High</th>
                         <th>Delete</th>
                     </tr>
                 </thead>

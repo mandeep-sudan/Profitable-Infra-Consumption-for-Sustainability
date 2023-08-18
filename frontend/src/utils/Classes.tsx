@@ -122,6 +122,7 @@ class Match implements IQueryParamInfo{
     field: string
     value: string
     operator: string
+    not: boolean
 }
 
 class BetweenDates implements IQueryParamInfo{

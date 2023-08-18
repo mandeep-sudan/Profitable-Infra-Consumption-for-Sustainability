@@ -23,6 +23,7 @@ public class QueryParams {
         private String field;
         private String value;
         private String operator;
+        private boolean not;
     }
 
     @Data

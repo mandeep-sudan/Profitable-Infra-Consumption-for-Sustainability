@@ -158,12 +158,16 @@ public class BigQueryAPICalls {
         for (int i=0;i<matches.size();i++) {
             Match currMatch = matches.get(i);
             String wrappedValue;
+            String not="";
             if (currMatch.getOperator().equals("LIKE")) {
                 wrappedValue = "\'%"+currMatch.getValue()+"%\'";
             } else { // operator is '='
                 wrappedValue = "\'"+currMatch.getValue()+"\'";
             }
-            output.add(currMatch.getField()+" "+currMatch.getOperator()+" "+wrappedValue);
+            if (currMatch.isNot()) {
+                not="NOT ";
+            }
+            output.add(not + currMatch.getField()+" "+currMatch.getOperator()+" "+wrappedValue);
         }
     }
 
