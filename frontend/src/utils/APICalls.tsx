@@ -13,11 +13,11 @@ export const getBillingData = (currPageNum: string, queryParams: BillingQueryPar
     return axios.post<AllDataPage>(baseURL + endpoint, queryParams, { params })
 }
 
-export const getAllDataOld = (currPageNum: string) => {
-    const params = { currPageNum: currPageNum }
-    let endpoint: string = "api/all-data"
-    return axios.get<AllDataPage>(baseURL + endpoint, { params })
-}
+// export const getAllDataOld = (currPageNum: string) => {
+//     const params = { currPageNum: currPageNum }
+//     let endpoint: string = "api/all-data"
+//     return axios.get<AllDataPage>(baseURL + endpoint, { params })
+// }
 
 export const getCostByMonth = (range: string) => {
     const params = { range: range }
@@ -46,4 +46,10 @@ export const getBigQueryJobsList = (pageToken: string) => {
     const params = { pageToken: pageToken }
     let endpoint: string = "api/jobs-list"
     return axios.get<BigQueryPage>(baseURL + endpoint, { params })
+}
+
+export const getBigQueryJobsListNew = (currPageNum: string, queryParams: BigQueryQueryParams) => {
+    const params = { pageToken: currPageNum }
+    let endpoint: string = "api/jobs-list-new"
+    return axios.post<BigQueryPage>(baseURL + endpoint, queryParams, { params })
 }

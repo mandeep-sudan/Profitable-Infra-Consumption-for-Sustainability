@@ -8,7 +8,6 @@ type BarGraphProps<T> = {
 }
 
 const StaticBarGraph = <T,>({ data, axesKeysAndLabels}: BarGraphProps<T>) => {
-    console.log(axesKeysAndLabels)
     return (
         
             <div style={{ width: "100%", height: "400px" }}>

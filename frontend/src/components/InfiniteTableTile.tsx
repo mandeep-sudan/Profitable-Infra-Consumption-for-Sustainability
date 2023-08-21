@@ -18,22 +18,22 @@ import { Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
 
-type InfiniteTableTileProps<T,U> = {
+type InfiniteTableTileProps<T, U> = {
   title: string
   columns: MRT_ColumnDef<T>[] // TO DO: make the class not any
-  apiCall: (currPageNum: string, queryParams: U)=>Promise<AxiosResponse<IInfTablePage<T>, any>>
-  queryParams:U
-  modal:ReactNode
+  apiCall: (currPageNum: string, queryParams: U) => Promise<AxiosResponse<IInfTablePage<T>, any>>
+  queryParams: U
+  modal: ReactNode
 }
 
-const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, modal}: InfiniteTableTileProps<T,U>) => {
+const InfiniteTableTile = <T, U,>({ title, columns, apiCall, queryParams, modal }: InfiniteTableTileProps<T, U>) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [noFilters, setNoFilters] = useState<boolean>(true);
   const [fetchesLeft, setFetchesLeft] = useState<boolean>(true);
   const [nextPageInfo, setNextPageInfo] = useState<string>("");
   // const [queryParams, setQueryParams] = useState<QueryParams>({matches:[],betweenDates:[],betweenValues:[],sortings:[{field:"usage_start_time",ascending:false}]});
-  
+
   const [data, setData] = useState<T[]>([]);
 
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -49,7 +49,7 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
     setTimeout(() => {
       shouldWait.current = false;
     }, delay);
-}, []);
+  }, []);
 
   const [globalFilter, setGlobalFilter] = useState<string>();
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -66,16 +66,16 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
     useRef<MRT_Virtualizer<HTMLDivElement, HTMLTableRowElement>>(null); //we can get access to the underlying Virtualizer instance and call its scrollToIndex method
 
   const fetchNextPage = () => {
-    
+
     setIsError(false)
     setIsFetching(true)
     try { //to initiate loading
       // let temp : IInfTablePage<T>
-      apiCall(nextPageInfo,queryParams).then(response => {
-        setData(oldData => [ ...oldData,...response.data.rowList]);
+      apiCall(nextPageInfo, queryParams).then(response => {
+        setData(oldData => [...oldData, ...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)
         setIsFetching(false)
-        if (response.data.rowList.length===0) {
+        if (response.data.rowList.length === 0) {
           setFetchesLeft(false)
         }
       })
@@ -87,7 +87,7 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
     catch (err) {
       setIsError(true)
       console.log("ay de mi")
-      console.log("err",err)
+      console.log("err", err)
     }
   }
 
@@ -98,11 +98,11 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
   //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
   const fetchMoreOnBottomReached = useCallback(
     (containerRefElement?: HTMLDivElement | null) => {
-      
+
       if (containerRefElement) {
         const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
         //once the user has scrolled within 400px of the bottom of the table, fetch more data if we can
-        let noFiltersTemp : boolean = JSON.stringify(columnFilters)==="[]" && JSON.stringify(sorting)==="[]" && globalFilter===undefined
+        let noFiltersTemp: boolean = JSON.stringify(columnFilters) === "[]" && JSON.stringify(sorting) === "[]" && globalFilter === undefined
         setNoFilters(noFiltersTemp)
         if (
           scrollHeight - scrollTop - clientHeight < 400 &&
@@ -120,7 +120,7 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
 
   //scroll to top of table when sorting or filters change
   useEffect(() => {
-    
+
     if (rowVirtualizerInstanceRef.current) {
       try {
         rowVirtualizerInstanceRef.current.scrollToIndex(0);
@@ -138,12 +138,12 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
   useEffect(() => {
     setFetchesLeft(true)
     setData([])
-     setNextPageInfo("")
+    setNextPageInfo("")
 
   }, [queryParams]);
 
   return <div className={"tile full-tile"}>
-    <MantineReactTable 
+    <MantineReactTable
       // MY OWN ATTRIBUTES
       columns={columns}
       data={data}
@@ -170,13 +170,13 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
         ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
       }}
       mantineToolbarAlertBannerProps={{
-        color: !noFilters ? 'blue': 'red',
+        color: !noFilters ? 'blue' : 'red',
         children: !noFilters ? 'Deselect filters to load more results' : 'Error loading data',
       }}
       onColumnFiltersChange={setColumnFilters}
       onGlobalFilterChange={setGlobalFilter}
       onSortingChange={setSorting}
-      
+
       renderBottomToolbarCustomActions={() => (
         <Text>
           Fetched {totalFetched} rows.
@@ -187,7 +187,7 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
         columnFilters,
         globalFilter,
         // isLoading,
-        showAlertBanner: isError||!noFilters,
+        showAlertBanner: isError || !noFilters,
         showProgressBars: isFetching,
         sorting,
       }}
@@ -198,4 +198,4 @@ const GeneralInfiniteTableTile = <T,U,>({ title, columns, apiCall, queryParams, 
   </div>;
 };
 
-export default GeneralInfiniteTableTile;
+export default InfiniteTableTile;

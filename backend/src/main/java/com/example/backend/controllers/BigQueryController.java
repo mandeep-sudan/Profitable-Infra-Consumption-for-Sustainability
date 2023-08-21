@@ -18,8 +18,9 @@ import com.example.backend.model.CostByService;
 import com.example.backend.model.CostByWeekAndService;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
+import com.example.backend.model.BigQueryQueryParams;
 import com.example.backend.model.QueryPage;
-import com.example.backend.model.QueryParams;
+import com.example.backend.model.BillingQueryParams;
 import com.example.backend.service.BigQueryAPICalls;
 // import com.google.cloud.bigquery.Job;
 
@@ -64,14 +65,14 @@ public class BigQueryController {
     // return bigQueryAPICalls.getCostPricingExportPrivate();
     // }
 
-    @GetMapping("/api/all-data")
-    public QueryPage<AllData> getAllData(@RequestParam(required = false) String range,
-                                    @RequestParam(required = false) String currPageNum) throws Exception {
-        return bigQueryAPICalls.getAllData(range,currPageNum);
-    }
+    // @GetMapping("/api/all-data")
+    // public QueryPage<AllData> getAllData(@RequestParam(required = false) String range,
+    //                                 @RequestParam(required = false) String currPageNum) throws Exception {
+    //     return bigQueryAPICalls.getAllData(range,currPageNum);
+    // }
 
     @PostMapping("/api/billing-data")
-    public QueryPage<AllData> getBillingData(@RequestBody(required = false) QueryParams queryParams,
+    public QueryPage<AllData> getBillingData(@RequestBody(required = false) BillingQueryParams queryParams,
                                     @RequestParam(required = false) String currPageNum) throws Exception {
         System.out.println("We got here with "+currPageNum);
         if (queryParams != null) {
@@ -137,6 +138,31 @@ public class BigQueryController {
     public BigQueryJobsPage getJobsList(@RequestParam(required = false) String pageToken)
             throws Exception {
         return bigQueryAPICalls.getJobsList(pageToken);
+    }
+
+    @GetMapping("/api/jobs-list-new")
+    public BigQueryJobsPage getJobsListNedw(@RequestBody(required = false) BigQueryQueryParams queryParams,
+                                    @RequestParam(required = false) String pageToken)
+            throws Exception {
+        System.out.println("We got here with "+pageToken);
+        if (queryParams != null) {
+            System.out.println("queryParams are "+queryParams.toString());
+        } else {
+            System.out.println("queryParams are null :(");
+        }
+        return bigQueryAPICalls.getJobsListNew(pageToken,queryParams);
+    }
+    @GetMapping("/api/jobs-list-new")
+    public BigQueryJobsPage getJobsListNew(@RequestBody(required = false) BigQueryQueryParams queryParams,
+                                    @RequestParam(required = false) String pageToken) throws Exception {
+        System.out.println("We got here with "+pageToken);
+        if (queryParams != null) {
+            System.out.println("queryParams are "+queryParams.toString());
+        } else {
+            System.out.println("queryParams are null :(");
+        }
+        
+        return bigQueryAPICalls.getJobsListNew(pageToken,queryParams);
     }
 
 }

@@ -14,8 +14,7 @@ import { allDataColumns, costByMonthColumns, costByProjectColumns, costByService
 import OldInfiniteTableTile from '../components/OldInfiniteTableTile';
 import StaticBarGraphAndTableTile from '../components/StaticBarGraphAndTableTile';
 import { stringsToAxesClass } from '../utils/utils';
-import NewInfiniteTableTile from '../old/BillingInfiniteTableTile';
-import GeneralInfiniteTableTile from '../components/GeneralInfiniteTableTile';
+import InfiniteTableTile from '../components/InfiniteTableTile';
 import BillingTableModal from '../components/BillingTableModal/BillingTableModal';
 // import { getDataFromEndpoint } from '../../utils';
 
@@ -59,7 +58,7 @@ const Billing = () => {
             <TinyTile item={data[4]} stat={78} color={"cyan"} percentage={-1.07} /> */}
             {/* <NewInfiniteTableTile title={"New Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/> */}
             {/* <OldInfiniteTableTile title={"Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/> */}
-            <GeneralInfiniteTableTile title={"New Full Data"} apiCall={getBillingData} columns={allDataColumns} queryParams={queryParams} modal={<BillingTableModal setQueryParams={setQueryParams}/>}/>
+            <InfiniteTableTile title={"All Billing Data"} apiCall={getBillingData} columns={allDataColumns} queryParams={queryParams} modal={<BillingTableModal setQueryParams={setQueryParams}/>}/>
             <StaticBarGraphAndTableTile title={"Cost By Month"} data={costByMonth} columns={costByMonthColumns} axesKeysAndLabels={costByMonthAxes} bigSize={false}/>
             <StaticBarGraphAndTableTile title={"Cost By Project"} data={costByProject} columns={costByProjectColumns} axesKeysAndLabels={costByProjectAxes} bigSize={false}/>
             <StaticBarGraphAndTableTile title={"Cost By Service"} data={costByService} columns={costByServiceColumns} axesKeysAndLabels={costByServiceAxes} bigSize={false}/>
