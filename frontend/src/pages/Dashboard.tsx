@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAllData, getAllDataNew } from '../utils/APICalls';
+import { getBillingData } from '../utils/APICalls';
 // import { getDataFromEndpoint } from '../../utils';
 import { allDataColumns} from '../utils/TableColumns';
 import BillingInfiniteTableTile from '../old/BillingInfiniteTableTile';
@@ -31,7 +31,7 @@ const Dashboard = () => {
         <StackedTimeBarGraph data={costByWeekAndService} columns={costByWeekAndServiceColumns}/>
         </Card> */}
 
-<GeneralInfiniteTableTile title={"New Full Data"} apiCall={getAllDataNew} columns={allDataColumns} queryParams={queryParams} modal={<BillingTableModal setQueryParams={setQueryParams}/>}/>
+<GeneralInfiniteTableTile title={"New Full Data"} apiCall={getBillingData} columns={allDataColumns} queryParams={queryParams} modal={<BillingTableModal setQueryParams={setQueryParams}/>}/>
         
         </>
     );

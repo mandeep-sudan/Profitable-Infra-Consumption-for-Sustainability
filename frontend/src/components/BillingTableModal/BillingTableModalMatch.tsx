@@ -5,8 +5,8 @@ import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 
 
 type TableTileModalMatchProps = {
-    matches: Match[]
-    setMatches: React.Dispatch<React.SetStateAction<Match[]>>
+    matches: BillingMatch[]
+    setMatches: React.Dispatch<React.SetStateAction<BillingMatch[]>>
     currMatchOptions: string[]
     setCurrMatchOptions: React.Dispatch<React.SetStateAction<string[]>>
 }

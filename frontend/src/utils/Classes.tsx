@@ -114,39 +114,47 @@ class AxesKeysAndLabels {
     y: {key: string, label: string}
 }
 
+// **********************************************
+// ******************** Queries ********************
+// **********************************************
+
+// Billing
+
 interface IQueryParamInfo {
     field: string
 }
 
-class Match implements IQueryParamInfo{
+class BillingMatch implements IQueryParamInfo{
     field: string
     value: string
     operator: string
     not: boolean
 }
 
-class BetweenDates implements IQueryParamInfo{
+class BillingBetweenDates implements IQueryParamInfo{
     field: string
     startDateTime: Date
     endDateTime: Date
     inclusive: boolean
 }
 
-class BetweenValues implements IQueryParamInfo{
+class BillingBetweenValues implements IQueryParamInfo{
     field: string
     lowNumber: number
     highNumber: number
     inclusive: boolean
 }
 
-class Sorting implements IQueryParamInfo{
+class BillingSorting implements IQueryParamInfo{
     field: string
     ascending: boolean
 }
 
 class BillingQueryParams {
-    matches: Match[]
-    betweenDates: BetweenDates[]
-    betweenValues: BetweenValues[]
-    sortings: Sorting[]
+    matches: BillingMatch[]
+    betweenDates: BillingBetweenDates[]
+    betweenValues: BillingBetweenValues[]
+    sortings: BillingSorting[]
 }
+
+// BigQuery

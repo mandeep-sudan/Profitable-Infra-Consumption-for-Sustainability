@@ -4,8 +4,8 @@ import { IconPlus, IconTrash } from '@tabler/icons-react';
 
 
 type TableTileModalBetweenValuesProps = {
-    betweenValues: BetweenValues[]
-    setBetweenValues: React.Dispatch<React.SetStateAction<BetweenValues[]>>
+    betweenValues: BillingBetweenValues[]
+    setBetweenValues: React.Dispatch<React.SetStateAction<BillingBetweenValues[]>>
     currBetweenValuesOptions: string[]
     setCurrBetweenValuesOptions: React.Dispatch<React.SetStateAction<string[]>>
 }

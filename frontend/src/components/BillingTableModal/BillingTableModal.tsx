@@ -22,20 +22,20 @@ const BillingTableModal = ({ setQueryParams }: TableTileModalProps) => {
 
     // MATCHES
     const [currMatchOptions, setCurrMatchOptions] = useState<string[]>(matchFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
-    const [matches, setMatches] = useState<Match[]>([]);
+    const [matches, setMatches] = useState<BillingMatch[]>([]);
 
     // BETWEEN DATES
     const [currBetweenDatesOptions, setCurrBetweenDatesOptions] = useState<string[]>(betweenDatesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
-    const [betweenDates, setBetweenDates] = useState<BetweenDates[]>([]);
+    const [betweenDates, setBetweenDates] = useState<BillingBetweenDates[]>([]);
 
     // BETWEEN VALUES
     const [currBetweenValuesOptions, setCurrBetweenValuesOptions] = useState<string[]>(betweenValuesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
-    const [betweenValues, setBetweenValues] = useState<BetweenValues[]>([]);
+    const [betweenValues, setBetweenValues] = useState<BillingBetweenValues[]>([]);
 
     // SORTING
     const [currSortingFields, setCurrSortingFields] = useState<string[]>(["usage_start_time"]);
     const [fieldToBoolDict, setFieldToBoolDict] = useState<Record<string,boolean>>({usage_start_time:false});
-    const [sortings, setSortings] = useState<Sorting[]>([]);
+    const [sortings, setSortings] = useState<BillingSorting[]>([]);
 
     const submitFilter = () => {
         setQueryParams({ matches: matches,betweenDates: betweenDates, betweenValues: betweenValues, sortings: sortings })

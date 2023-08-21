@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 
 const baseURL: string = "http://localhost:8080/"
 
-export const getAllDataNew = (currPageNum: string, queryParams: BillingQueryParams) => {
+export const getBillingData = (currPageNum: string, queryParams: BillingQueryParams) => {
     const params = {
         currPageNum: currPageNum
     }
@@ -13,7 +13,7 @@ export const getAllDataNew = (currPageNum: string, queryParams: BillingQueryPara
     return axios.post<AllDataPage>(baseURL + endpoint, queryParams, { params })
 }
 
-export const getAllData = (currPageNum: string) => {
+export const getAllDataOld = (currPageNum: string) => {
     const params = { currPageNum: currPageNum }
     let endpoint: string = "api/all-data"
     return axios.get<AllDataPage>(baseURL + endpoint, { params })

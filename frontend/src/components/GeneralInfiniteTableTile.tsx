@@ -17,8 +17,6 @@ import {
 import { Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
-import TableTileModal from './BillingTableModal/BillingTableModal';
-import { getAllDataNew } from '../utils/APICalls';
 
 type InfiniteTableTileProps<T,U> = {
   title: string

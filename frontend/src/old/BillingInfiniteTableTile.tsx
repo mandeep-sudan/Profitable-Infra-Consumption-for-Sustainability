@@ -17,7 +17,7 @@ import { Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
 import TableTileModal from '../components/BillingTableModal/BillingTableModal';
-import { getAllDataNew } from '../utils/APICalls';
+import { getBillingData } from '../utils/APICalls';
 
 type InfiniteTableTileProps = {
   title: string
@@ -71,7 +71,7 @@ const BillingInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTa
     setIsFetching(true)
     try { //to initiate loading
       // let temp : IInfTablePage<T>
-      getAllDataNew(nextPageInfo,queryParams).then(response => {
+      getBillingData(nextPageInfo,queryParams).then(response => {
         setData(oldData => [ ...oldData,...response.data.rowList]);
         setNextPageInfo(response.data.nextPageInfo)
         setIsFetching(false)

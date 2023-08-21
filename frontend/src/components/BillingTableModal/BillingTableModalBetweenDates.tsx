@@ -6,8 +6,8 @@ import { format } from 'date-fns';
 
 
 type TableTileModalBetweenDatesProps = {
-    betweenDates: BetweenDates[]
-    setBetweenDates: React.Dispatch<React.SetStateAction<BetweenDates[]>>
+    betweenDates: BillingBetweenDates[]
+    setBetweenDates: React.Dispatch<React.SetStateAction<BillingBetweenDates[]>>
     currBetweenDatesOptions: string[]
     setCurrBetweenDatesOptions: React.Dispatch<React.SetStateAction<string[]>>
 }

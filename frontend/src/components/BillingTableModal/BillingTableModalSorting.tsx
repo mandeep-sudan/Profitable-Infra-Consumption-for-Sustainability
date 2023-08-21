@@ -6,8 +6,8 @@ import { IconArrowNarrowDown, IconArrowNarrowUp, IconArrowBigUp, IconTrash } fro
 
 
 type TableTileModalSortingProps = {
-    sortings: Sorting[]
-    setSortings: React.Dispatch<React.SetStateAction<Sorting[]>>
+    sortings: BillingSorting[]
+    setSortings: React.Dispatch<React.SetStateAction<BillingSorting[]>>
     currSortingFields: string[]
     setCurrSortingFields: React.Dispatch<React.SetStateAction<string[]>>
     fieldToBoolDict: Record<string,boolean>
@@ -100,7 +100,7 @@ const BillingTableModalSorting = ({ sortings, setSortings,currSortingFields,setC
         setSortings(sortings.slice(0,myInt-1).concat([sortings[myInt],sortings[myInt-1]]).concat(sortings.slice(myInt+1)))
     }
 
-    const sortingToVisual = (sorting: Sorting) => {
+    const sortingToVisual = (sorting: BillingSorting) => {
 
         return <Button variant="subtle"
             onClick={() => reverseSortingDirection(sorting.field)}
