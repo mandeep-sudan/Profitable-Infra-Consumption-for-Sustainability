@@ -70,8 +70,8 @@ public class BigQueryController {
         return bigQueryAPICalls.getAllData(range,currPageNum);
     }
 
-    @PostMapping("/api/all-data-new")
-    public QueryPage<AllData> getAllDataNew(@RequestBody(required = false) QueryParams queryParams,
+    @PostMapping("/api/billing-data")
+    public QueryPage<AllData> getBillingData(@RequestBody(required = false) QueryParams queryParams,
                                     @RequestParam(required = false) String currPageNum) throws Exception {
         System.out.println("We got here with "+currPageNum);
         if (queryParams != null) {
@@ -80,7 +80,7 @@ public class BigQueryController {
             System.out.println("queryParams are null :(");
         }
         
-        return bigQueryAPICalls.getAllDataNew(currPageNum,queryParams);
+        return bigQueryAPICalls.getBillingData(currPageNum,queryParams);
     }
     // @PostMapping("/api/all-data-new")
     // public QueryPage<AllData> getAllDataNew(@RequestBody(required = false) QueryParams queryParams,

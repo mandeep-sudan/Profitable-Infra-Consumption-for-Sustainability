@@ -9,7 +9,7 @@ export const getBillingData = (currPageNum: string, queryParams: BillingQueryPar
         currPageNum: currPageNum
     }
     console.log(params)
-    let endpoint: string = "api/all-data-new"
+    let endpoint: string = "api/billing-data"
     return axios.post<AllDataPage>(baseURL + endpoint, queryParams, { params })
 }
 

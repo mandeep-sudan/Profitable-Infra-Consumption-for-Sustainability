@@ -309,7 +309,7 @@ public class BigQueryAPICalls {
     }
     
 
-    public QueryPage<AllData> getAllDataNew(String currPageNum, QueryParams queryParams) throws Exception {
+    public QueryPage<AllData> getBillingData(String currPageNum, QueryParams queryParams) throws Exception {
         int pageNum;
         if (currPageNum=="") {
             pageNum=0;
