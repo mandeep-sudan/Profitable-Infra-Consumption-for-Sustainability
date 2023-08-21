@@ -25,7 +25,7 @@ type InfiniteTableTileProps<T> = {
   apiCall: (pageToken:string)=>Promise<AxiosResponse<IInfTablePage<T>, any>>
 }
 
-const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTableTileProps<T>) => {
+const OldInfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTableTileProps<T>) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [noFilters, setNoFilters] = useState<boolean>(true);
@@ -176,4 +176,4 @@ const InfiniteTableTile = <T,>({ title, columns, bigSize,apiCall}: InfiniteTable
   </div>;
 };
 
-export default InfiniteTableTile;
+export default OldInfiniteTableTile;

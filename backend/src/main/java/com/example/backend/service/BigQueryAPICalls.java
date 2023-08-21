@@ -181,12 +181,22 @@ public class BigQueryAPICalls {
         
         for (int i=0;i<betweenValues.size();i++) {
             BetweenValues currBetweenValues = betweenValues.get(i);
+
             if (currBetweenValues.getLowNumber()!=null) {
-                output.add(currBetweenValues.getField()+" > "+currBetweenValues.getLowNumber());
+                if (currBetweenValues.isInclusive()) {
+                    output.add(currBetweenValues.getField()+" >= "+currBetweenValues.getLowNumber());
+                } else {
+                    output.add(currBetweenValues.getField()+" > "+currBetweenValues.getLowNumber());
+                }
             }
             if (currBetweenValues.getHighNumber()!=null) {
-                output.add(currBetweenValues.getField()+" < "+currBetweenValues.getHighNumber());
+                if (currBetweenValues.isInclusive()) {
+                    output.add(currBetweenValues.getField()+" <= "+currBetweenValues.getHighNumber());
+                } else {
+                    output.add(currBetweenValues.getField()+" < "+currBetweenValues.getHighNumber());
+                }
             }
+
         }
     }
 
@@ -199,12 +209,23 @@ public class BigQueryAPICalls {
         // StringJoiner output = new StringJoiner(" AND ");
         
         for (int i=0;i<betweenDates.size();i++) {
-            BetweenDates currBetweenValues = betweenDates.get(i);
-            if (currBetweenValues.getStartDateTime()!=null) {
-                output.add(currBetweenValues.getField()+" > \'"+currBetweenValues.getStartDateTime()+"\'");
+            BetweenDates currBetweenDates = betweenDates.get(i);
+
+            if (currBetweenDates.getStartDateTime()!=null) {
+                if (currBetweenDates.isInclusive()) {
+                    output.add(currBetweenDates.getField()+" >= \'"+currBetweenDates.getStartDateTime()+"\'");
+                } else {
+                    output.add(currBetweenDates.getField()+" > \'"+currBetweenDates.getStartDateTime()+"\'");
+                }
             }
-            if (currBetweenValues.getEndDateTime()!=null) {
-                output.add(currBetweenValues.getField()+" < \'"+currBetweenValues.getEndDateTime()+"\'");
+            if (currBetweenDates.getEndDateTime()!=null) {
+                if (currBetweenDates.isInclusive()) {
+                    output.add(currBetweenDates.getField()+" <= \'"+currBetweenDates.getEndDateTime()+"\'");
+                } else {
+                    output.add(currBetweenDates.getField()+" < \'"+currBetweenDates.getEndDateTime()+"\'");
+                }
+                
+                
             }
         }
     }

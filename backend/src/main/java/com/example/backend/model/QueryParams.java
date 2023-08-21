@@ -33,6 +33,7 @@ public class QueryParams {
         private String field;
         private Double lowNumber;
         private Double highNumber;
+        private boolean inclusive;
     }
 
     @Data
@@ -42,6 +43,7 @@ public class QueryParams {
         private String field;
         private String startDateTime;
         private String endDateTime;
+        private boolean inclusive;
     }
     
     @Data

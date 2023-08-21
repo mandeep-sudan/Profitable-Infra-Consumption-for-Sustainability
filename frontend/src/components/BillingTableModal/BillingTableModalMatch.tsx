@@ -1,6 +1,5 @@
-import {  Group, Title, Select, TextInput, ActionIcon, Table, SegmentedControl, Switch, ThemeIcon, Badge } from '@mantine/core';
+import { Group, Title, Select, TextInput, ActionIcon, Table, SegmentedControl, Switch, ThemeIcon, Badge } from '@mantine/core';
 import React, { useState } from 'react';
-import "./TableTileModal.css"
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 
 
@@ -12,7 +11,7 @@ type TableTileModalMatchProps = {
     setCurrMatchOptions: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMatchOptions }: TableTileModalMatchProps) => {
+const BillingTableModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMatchOptions }: TableTileModalMatchProps) => {
     // MATCHES
     // const [currMatchOptions, setCurrMatchOptions] = useState<string[]>(matchFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
     const [currMatchOperator, setCurrMatchOperator] = useState<string>("=");
@@ -31,7 +30,6 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
         setCurrMatchOptions(currMatchOptions.filter(item => item !== currMatchField))
         setCurrMatchField("")
         setCurrMatchValue("")
-        setCurrMatchNot(false)
     }
     const removeFieldFromMatches = (field: string) => {
         setMatches(matches.filter(item => item.field !== field))
@@ -41,13 +39,14 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
     const rows: React.ReactElement[] = matches.map((match) => (
         <tr key={match.field}>
             <td>{match.field}</td>
+            <td>{match.value}</td>
             <td>{match.not ?
                 <ThemeIcon color="green" variant="light">
                     <IconCheck />
                 </ThemeIcon> :
                 <></>}</td>
-            <td><Badge color={(match.operator)==="LIKE" ? "orange" : "blue"}>{(match.operator)==="LIKE" ? "partial" : "exact"}</Badge></td>
-            <td>{match.value}</td>
+            <td><Badge color={(match.operator) === "LIKE" ? "orange" : "blue"}>{(match.operator) === "LIKE" ? "partial" : "exact"}</Badge></td>
+            
 
             <td>
                 <ActionIcon color="red">
@@ -60,7 +59,7 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
     return (
         <>
 
-            <Title order={3}>Match Filters</Title>
+            <Title order={3}>Matches</Title>
             <Group >
                 <Select
                     value={currMatchField}
@@ -76,26 +75,24 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
                     value={currMatchValue}
                     onChange={(event) => setCurrMatchValue(event.currentTarget.value)}
                 />
-                <div>
-                    <Group position="center">
-                        <Switch
-                            checked={currMatchNot}
-                            onChange={(event) => setCurrMatchNot(event.currentTarget.checked)}
-                            label="NOT"
-                            style={{ marginBottom: "10px" }}
-                        />
-                    </Group>
+                <Switch
+                    checked={currMatchNot}
+                    onChange={(event) => setCurrMatchNot(event.currentTarget.checked)}
+                    label="NOT"
+                    style={{ marginBottom: "10px" }}
+                />
+                <SegmentedControl
+                    color="blue"
+                    value={currMatchOperator}
+                    onChange={setCurrMatchOperator}
+                    data={[
+                        { label: "Exact match", value: "=" },
+                        { label: "Partial match", value: "LIKE" }
+                    ]}
+                />
 
-                    <SegmentedControl
-                        color="blue"
-                        value={currMatchOperator}
-                        onChange={setCurrMatchOperator}
-                        data={[
-                            { label: "Exact Match", value: "=" },
-                            { label: "Partial Match", value: "LIKE" }
-                        ]}
-                    />
-                </div>
+
+
                 <ActionIcon variant="filled"
                     color="blue"
                     onClick={() => addCurrMatchInputToList()}
@@ -105,9 +102,9 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
                 <thead>
                     <tr>
                         <th>Field</th>
+                        <th>Value</th>
                         <th>Not</th>
                         <th>Operator</th>
-                        <th>Value</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -118,4 +115,4 @@ const TableTileModalMatch = ({ matches, setMatches, currMatchOptions, setCurrMat
     );
 }
 
-export default TableTileModalMatch;
+export default BillingTableModalMatch;

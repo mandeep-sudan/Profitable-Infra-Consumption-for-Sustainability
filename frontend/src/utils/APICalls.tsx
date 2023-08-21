@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 
 const baseURL: string = "http://localhost:8080/"
 
-export const getAllDataNew = (currPageNum: string, queryParams: QueryParams) => {
+export const getAllDataNew = (currPageNum: string, queryParams: BillingQueryParams) => {
     const params = {
         currPageNum: currPageNum
     }

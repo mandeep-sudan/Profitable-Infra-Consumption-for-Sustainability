@@ -1,8 +1,6 @@
-import { useDisclosure } from '@mantine/hooks';
 import { Button, Title, ActionIcon, Table, MultiSelect } from '@mantine/core';
 import React, { useEffect } from 'react';
 import { sortingFieldsForGlobalFilter } from '../../utils/utils';
-import "./TableTileModal.css"
 import { IconArrowNarrowDown, IconArrowNarrowUp, IconArrowBigUp, IconTrash } from '@tabler/icons-react';
 
 
@@ -16,7 +14,7 @@ type TableTileModalSortingProps = {
     setFieldToBoolDict: React.Dispatch<React.SetStateAction<Record<string,boolean>>>
 }
 
-const TableTileModalSorting = ({ sortings, setSortings,currSortingFields,setCurrSortingFields,fieldToBoolDict,setFieldToBoolDict }: TableTileModalSortingProps) => {
+const BillingTableModalSorting = ({ sortings, setSortings,currSortingFields,setCurrSortingFields,fieldToBoolDict,setFieldToBoolDict }: TableTileModalSortingProps) => {
     // MATCHES
     
     const currSortingOptions2 : string[] = (sortingFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
@@ -133,7 +131,7 @@ const TableTileModalSorting = ({ sortings, setSortings,currSortingFields,setCurr
     return (
         <>
 
-            <Title order={3}>Sorting Filters</Title>
+            <Title order={3}>Sorting</Title>
             <MultiSelect
                 value={currSortingFields}
                 onChange={setCurrSortingFields}
@@ -159,4 +157,4 @@ const TableTileModalSorting = ({ sortings, setSortings,currSortingFields,setCurr
     );
 }
 
-export default TableTileModalSorting;
+export default BillingTableModalSorting;

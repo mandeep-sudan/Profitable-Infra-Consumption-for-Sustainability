@@ -1,7 +1,6 @@
-import {  Group,  Title, Select, ActionIcon, Table } from '@mantine/core';
+import {  Group,  Title, Select, ActionIcon, Table, SegmentedControl, Badge } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates'
 import React, {  useState } from 'react';
-import "./TableTileModal.css"
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 
@@ -28,18 +27,26 @@ const invalidDateRange = (startDateTime: Date, endDateTime: Date): boolean => {
             (startDateTime > endDateTime))
 }
 
-const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetweenDatesOptions, setCurrBetweenDatesOptions }: TableTileModalBetweenDatesProps) => {
+const BillingTableModalBetweenDates = ({ betweenDates, setBetweenDates, currBetweenDatesOptions, setCurrBetweenDatesOptions }: TableTileModalBetweenDatesProps) => {
     // BETWEEN DATES
     const [currBetweenDatesField, setCurrBetweenDatesField] = useState<string>("");
     const [currBetweenDatesStartDateTime, setCurrBetweenDatesStartDateTime] = useState<Date>(null);
     const [currBetweenDatesEndDateTime, setCurrBetweenDatesEndDateTime] = useState<Date>(null);
+    const [currBetweenDatesInclusive,setCurrBetweenDatesInclusive] = useState<string>('true');
     // const [isValidDateRange,setIsValidDateRange] = useState<boolean>(false)
 
     const addCurrBetweenDatesInputToList = () => {
+        let startDateTime = currBetweenDatesStartDateTime
+        let endDateTime = currBetweenDatesEndDateTime
+        
+        startDateTime.setSeconds(0,0)
+        endDateTime.setSeconds(0,0)
+
         setBetweenDates(betweenDates.concat({
             field: currBetweenDatesField,
-            startDateTime: currBetweenDatesStartDateTime,
-            endDateTime: currBetweenDatesEndDateTime,
+            startDateTime: startDateTime,
+            endDateTime: endDateTime,
+            inclusive: currBetweenDatesInclusive === 'true'
         }))
         setCurrBetweenDatesOptions(currBetweenDatesOptions.filter(item => item !== currBetweenDatesField))
         setCurrBetweenDatesField("")
@@ -57,6 +64,7 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
             <td>{betweenDate.field}</td>
             <td>{dateToReadable(betweenDate.startDateTime)}</td>
             <td>{dateToReadable(betweenDate.endDateTime)}</td>
+            <td><Badge color={!betweenDate.inclusive ? "orange" : "blue"}>{betweenDate.inclusive ? "inclusive" : "exclusive"}</Badge></td>
             <td>
                 <ActionIcon color="red">
                     <IconTrash size="1.125rem" onClick={() => removeFieldFromMatches(betweenDate.field)} />
@@ -72,7 +80,7 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
     return (
         <>
 
-            <Title order={3}>Between Dates Filters</Title>
+            <Title order={3}>Between Dates</Title>
             <Group >
                 <Select
                     value={currBetweenDatesField}
@@ -104,6 +112,16 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
                     />
                 </Group>
 
+                <SegmentedControl
+                        color="blue"
+                        value={currBetweenDatesInclusive}
+                        onChange={setCurrBetweenDatesInclusive}
+                        data={[
+                            { label: "Inclusive range", value: 'true' },
+                            { label: "Exclusive range", value: 'false' }
+                        ]}
+                    /> 
+
 
                 <ActionIcon variant="filled"
                     color="blue"
@@ -116,6 +134,7 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
                         <th>Field</th>
                         <th>Start</th>
                         <th>End</th>
+                        <th>Inclusive/Exclusive</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -125,4 +144,4 @@ const TableTileModalBetweenDates = ({ betweenDates, setBetweenDates, currBetween
     );
 }
 
-export default TableTileModalBetweenDates;
+export default BillingTableModalBetweenDates;

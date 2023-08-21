@@ -1,6 +1,5 @@
-import {  Group,  Title, Select, ActionIcon, Table, NumberInput } from '@mantine/core';
+import {  Group,  Title, Select, ActionIcon, Table, NumberInput, SegmentedControl, Stack, Text, Badge } from '@mantine/core';
 import React, { useState } from 'react';
-import "./TableTileModal.css"
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 
 
@@ -24,11 +23,12 @@ const convertOrTypeToNumber = (num:number|'') : number=> {
     return null
 }
 
-const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetweenValuesOptions, setCurrBetweenValuesOptions }: TableTileModalBetweenValuesProps) => {
+const BillingTableModalBetweenValues = ({ betweenValues, setBetweenValues, currBetweenValuesOptions, setCurrBetweenValuesOptions }: TableTileModalBetweenValuesProps) => {
     // BETWEEN Values
     const [currBetweenValuesField, setCurrBetweenValuesField] = useState<string>("");
     const [currBetweenValuesLowNumber, setCurrBetweenValuesLowNumber] = useState<number | ''>('');
     const [currBetweenValuesHighNumber, setCurrBetweenValuesHighNumber] = useState<number | ''>('');
+    const [currBetweenValuesInclusive,setCurrBetweenValuesInclusive] = useState<string>('true');
     // const [isValidDateRange,setIsValidDateRange] = useState<boolean>(false)
 
     const addCurrBetweenValuesInputToList = () => {
@@ -37,6 +37,7 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
             field: currBetweenValuesField,
             lowNumber: convertOrTypeToNumber(currBetweenValuesLowNumber),
             highNumber: convertOrTypeToNumber(currBetweenValuesHighNumber),
+            inclusive: currBetweenValuesInclusive === 'true'
         }))
         setCurrBetweenValuesOptions(currBetweenValuesOptions.filter(item => item !== currBetweenValuesField))
         setCurrBetweenValuesField("")
@@ -54,6 +55,7 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
             <td>{betweenValue.field}</td>
             <td>{betweenValue.lowNumber}</td>
             <td>{betweenValue.highNumber}</td>
+            <td><Badge color={!betweenValue.inclusive ? "orange" : "blue"}>{!betweenValue.inclusive ? "inclusive" : "exclusive"}</Badge></td>
             <td>
                 <ActionIcon color="red">
                     <IconTrash size="1.125rem" onClick={() => removeFieldFromValues(betweenValue.field)} />
@@ -69,7 +71,7 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
     return (
         <>
 
-            <Title order={3}>Between Values Filters</Title>
+            <Title order={3}>Between Values</Title>
             <Group >
                 <Select
                     value={currBetweenValuesField}
@@ -85,19 +87,30 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
                         hideControls
                         label="Low Value"
                         precision={4}
+                        style={{width:"140px"}}
                         value={currBetweenValuesLowNumber}
                         onChange={setCurrBetweenValuesLowNumber}
                     />
                     <NumberInput
                         hideControls
                         label="High Value"
+                        style={{width:"140px"}}
                         precision={4}
                         value={currBetweenValuesHighNumber}
                         onChange={setCurrBetweenValuesHighNumber}
                     />
                 </Group>
-
-
+                
+                <SegmentedControl
+                        color="blue"
+                        value={currBetweenValuesInclusive}
+                        onChange={setCurrBetweenValuesInclusive}
+                        data={[
+                            { label: "Inclusive range", value: 'true' },
+                            { label: "Exclusive range", value: 'false' }
+                        ]}
+                    /> 
+                
                 <ActionIcon variant="filled"
                     color="blue"
                     onClick={() => addCurrBetweenValuesInputToList()}
@@ -109,6 +122,7 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
                         <th>Field</th>
                         <th>Low</th>
                         <th>High</th>
+                        <th>Inclusive/Exclusive</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -118,4 +132,4 @@ const TableTileModalBetweenValues = ({ betweenValues, setBetweenValues, currBetw
     );
 }
 
-export default TableTileModalBetweenValues;
+export default BillingTableModalBetweenValues;

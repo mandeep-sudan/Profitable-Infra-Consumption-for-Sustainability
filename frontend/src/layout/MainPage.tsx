@@ -18,7 +18,7 @@ import "./MainPage.css"
 const MainPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  const [active, setActive] = useState('Dashboard');
+  const [active, setActive] = useState('Dataflow'); // Dashboard
   return (
     <AppShell
     id="app-shell" // TO DO: Fix the fact that the id is registering an error even though it shouldn't

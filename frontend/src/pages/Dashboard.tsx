@@ -1,15 +1,18 @@
-import React from 'react';
-import { getAllData } from '../utils/APICalls';
+import React, { useState } from 'react';
+import { getAllData, getAllDataNew } from '../utils/APICalls';
 // import { getDataFromEndpoint } from '../../utils';
 import { allDataColumns} from '../utils/TableColumns';
-import NewInfiniteTableTile from '../components/NewInfiniteTableTile';
+import BillingInfiniteTableTile from '../old/BillingInfiniteTableTile';
+import GeneralInfiniteTableTile from '../components/GeneralInfiniteTableTile';
+import TableTileModal from '../components/BillingTableModal/BillingTableModal';
+import BillingTableModal from '../components/BillingTableModal/BillingTableModal';
 
 const Dashboard = () => {
 
     // const [costByMonth, setCostByMonth] = useState<CostByMonth[]>([])
     // const [costByWeekAndService, setCostByWeekAndService] = useState<CostByWeekAndService[]>([])
     // const [costByProject, setCostByProject] = useState<CostByProject[]>([])
-    
+    const [queryParams, setQueryParams] = useState<BillingQueryParams>({matches:[],betweenDates:[],betweenValues:[],sortings:[{field:"usage_start_time",ascending:false}]});
 
     // useEffect(() => {
     //     getCostByWeekAndService("5-DAY").then(response => {
@@ -28,7 +31,7 @@ const Dashboard = () => {
         <StackedTimeBarGraph data={costByWeekAndService} columns={costByWeekAndServiceColumns}/>
         </Card> */}
 
-        <NewInfiniteTableTile title={"New Full Data"} bigSize={true} apiCall={getAllData} columns={allDataColumns}/>
+<GeneralInfiniteTableTile title={"New Full Data"} apiCall={getAllDataNew} columns={allDataColumns} queryParams={queryParams} modal={<BillingTableModal setQueryParams={setQueryParams}/>}/>
         
         </>
     );

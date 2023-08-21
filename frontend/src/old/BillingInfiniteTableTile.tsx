@@ -16,7 +16,7 @@ import {
 import { Group, Text, Title } from '@mantine/core';
 import "./Tiles.css"
 import { AxiosResponse } from 'axios';
-import TableTileModal from './InfiniteTableTileModal/TableTileModal';
+import TableTileModal from '../components/BillingTableModal/BillingTableModal';
 import { getAllDataNew } from '../utils/APICalls';
 
 type InfiniteTableTileProps = {
@@ -26,13 +26,13 @@ type InfiniteTableTileProps = {
   apiCall: (pageToken:string)=>Promise<AxiosResponse<IInfTablePage<AllData>, any>>
 }
 
-const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableTileProps) => {
+const BillingInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableTileProps) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [noFilters, setNoFilters] = useState<boolean>(true);
   const [fetchesLeft, setFetchesLeft] = useState<boolean>(true);
   const [nextPageInfo, setNextPageInfo] = useState<string>("");
-  const [queryParams, setQueryParams] = useState<QueryParams>({matches:[],betweenDates:[],betweenValues:[],sortings:[{field:"usage_start_time",ascending:false}]});
+  const [queryParams, setQueryParams] = useState<BillingQueryParams>({matches:[],betweenDates:[],betweenValues:[],sortings:[{field:"usage_start_time",ascending:false}]});
   
   const [data, setData] = useState<AllData[]>([]);
 
@@ -194,7 +194,8 @@ const NewInfiniteTableTile = ({ title, columns, bigSize,apiCall}: InfiniteTableT
       rowVirtualizerInstanceRef={rowVirtualizerInstanceRef} //get access to the virtualizer instance
       rowVirtualizerProps={{ overscan: 10 }}
     />
+    {/* <Text>{JSON.stringify(queryParams)}</Text> */}
   </div>;
 };
 
-export default NewInfiniteTableTile;
+export default BillingInfiniteTableTile;

@@ -2,20 +2,20 @@ import { useDisclosure } from '@mantine/hooks';
 import { Button, Group, Modal, useMantineTheme, Title } from '@mantine/core';
 import React, { useState } from 'react';
 import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter } from '../../utils/utils';
-import "./TableTileModal.css"
+import "./BillingTableModal.css"
 import {  IconWorld } from '@tabler/icons-react';
-import TableTileModalMatch from './TableTileModalMatch';
-import TableTileModalBetweenDates from './TableTileModalBetweenDates';
-import TableTileModalBetweenValues from './TableTileModalBetweenValues';
-import TableTileModalSorting from './TableTileModalSorting';
+import BillingTableModalBetweenDates from './BillingTableModalBetweenDates';
+import BillingTableModalBetweenValues from './BillingTableModalBetweenValues';
+import BillingTableModalMatch from './BillingTableModalMatch';
+import BillingTableModalSorting from './BillingTableModalSorting';
 
 
 type TableTileModalProps = {
-    setQueryParams: React.Dispatch<React.SetStateAction<QueryParams>>
+    setQueryParams: React.Dispatch<React.SetStateAction<BillingQueryParams>>
 }
 
 
-const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
+const BillingTableModal = ({ setQueryParams }: TableTileModalProps) => {
     // FORMATTING
     const [opened, { open, close }] = useDisclosure(false);
     const theme = useMantineTheme();
@@ -59,7 +59,7 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
 
             <Modal.Root opened={opened}
                 onClose={close}
-                size={850}>
+                size={905}>
                 <Modal.Overlay
                     color={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
                     opacity={0.55}
@@ -80,19 +80,19 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
                     </Modal.Header>
                     <Modal.Body>
                         <div className='global-filter-modal'>
-                            <TableTileModalBetweenDates betweenDates={betweenDates}
+                            <BillingTableModalBetweenDates betweenDates={betweenDates}
                                 setBetweenDates={setBetweenDates}
                                 currBetweenDatesOptions={currBetweenDatesOptions}
                                 setCurrBetweenDatesOptions={setCurrBetweenDatesOptions} />
-                            <TableTileModalBetweenValues betweenValues={betweenValues}
+                            <BillingTableModalBetweenValues betweenValues={betweenValues}
                                 setBetweenValues={setBetweenValues}
                                 currBetweenValuesOptions={currBetweenValuesOptions}
                                 setCurrBetweenValuesOptions={setCurrBetweenValuesOptions} />
-                            <TableTileModalMatch matches={matches}
+                            <BillingTableModalMatch matches={matches}
                                 setMatches={setMatches}
                                 currMatchOptions={currMatchOptions}
                                 setCurrMatchOptions={setCurrMatchOptions} />
-                            <TableTileModalSorting sortings={sortings}
+                            <BillingTableModalSorting sortings={sortings}
                                 setSortings={setSortings}
                                 currSortingFields={currSortingFields}
                                 setCurrSortingFields={setCurrSortingFields}
@@ -115,4 +115,4 @@ const TableTileModal = ({ setQueryParams }: TableTileModalProps) => {
     );
 }
 
-export default TableTileModal;
+export default BillingTableModal;

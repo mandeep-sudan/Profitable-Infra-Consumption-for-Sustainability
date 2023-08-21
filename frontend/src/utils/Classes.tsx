@@ -129,12 +129,14 @@ class BetweenDates implements IQueryParamInfo{
     field: string
     startDateTime: Date
     endDateTime: Date
+    inclusive: boolean
 }
 
 class BetweenValues implements IQueryParamInfo{
     field: string
     lowNumber: number
     highNumber: number
+    inclusive: boolean
 }
 
 class Sorting implements IQueryParamInfo{
@@ -142,7 +144,7 @@ class Sorting implements IQueryParamInfo{
     ascending: boolean
 }
 
-class QueryParams {
+class BillingQueryParams {
     matches: Match[]
     betweenDates: BetweenDates[]
     betweenValues: BetweenValues[]
