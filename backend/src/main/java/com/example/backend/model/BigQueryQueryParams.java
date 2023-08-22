@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 public class BigQueryQueryParams {
     private boolean allUsers;
-    private int maxResults;
     private String minCreationTime;
     private String maxCreationTime;
     // private Projection projection;

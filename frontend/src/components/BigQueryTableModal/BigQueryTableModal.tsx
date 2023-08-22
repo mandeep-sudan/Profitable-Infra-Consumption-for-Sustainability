@@ -1,16 +1,20 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title } from '@mantine/core';
+import { Button, Group, Modal, useMantineTheme, Title, SegmentedControl, Switch, TextInput, Space } from '@mantine/core';
 import React, { useState } from 'react';
 import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter } from '../../utils/utils';
-import "./BillingTableModal.css"
+import "./BigQueryTableModal.css"
 import { IconWorld } from '@tabler/icons-react';
 import { DateTimePicker } from '@mantine/dates';
 
 
 type TableTileModalProps = {
-    setQueryParams: React.Dispatch<React.SetStateAction<BillingQueryParams>>
+    setQueryParams: React.Dispatch<React.SetStateAction<BigQueryQueryParams>>
 }
 
+const invalidDateRange = (startDateTime: Date, endDateTime: Date): boolean => {
+    return ((startDateTime !== null && endDateTime !== null) &&
+            (startDateTime > endDateTime))
+}
 
 const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
     // FORMATTING
@@ -21,23 +25,25 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
     const [currMinCreationTime, setCurrMinCreationTime] = useState<Date>(null);
     const [currMaxCreationTime, setCurrMaxCreationTime] = useState<Date>(null);
 
+    const [parentJobId, setParentJobId] = useState<string>("");
+    const [allUsers, setAllUsers] = useState<boolean>(false);
 
 
     const submitFilter = () => {
-        // setQueryParams({ matches: matches,betweenDates: betweenDates, betweenValues: betweenValues, sortings: sortings })
+        setQueryParams({
+            allUsers: allUsers,
+            minCreationTime: JSON.stringify(currMinCreationTime.getTime()),
+            maxCreationTime: JSON.stringify(currMaxCreationTime.getTime()),
+            parentJobId: parentJobId
+        })
         close() // closes modal
     }
 
     const clearFilter = () => {
-        // setCurrMatchOptions(matchFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
-        // setMatches([])
-        // setCurrBetweenDatesOptions(betweenDatesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
-        // setBetweenDates([])
-        // setCurrBetweenValuesOptions(betweenValuesFieldsForGlobalFilter.sort((a, b) => a.localeCompare(b)))
-        // setBetweenValues([])
-        // setSortings([])
-        // setCurrSortingFields([])
-
+        setCurrMinCreationTime(null)
+        setCurrMaxCreationTime(null)
+        setParentJobId("")
+        setAllUsers(false)
     }
 
     return (
@@ -58,7 +64,9 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                         </Group>
                         <Group position="right">
                             <Button
-                                onClick={() => submitFilter()}>Submit New Filter</Button>
+                                onClick={() => submitFilter()}
+                                disabled={invalidDateRange(currMinCreationTime,currMaxCreationTime)}
+                                >Submit New Filter</Button>
                             <Button color="red"
                                 onClick={() => clearFilter()}>Clear New Filter</Button>
                             <Modal.CloseButton />
@@ -66,27 +74,42 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                     </Modal.Header>
                     <Modal.Body>
                         <div className='global-filter-modal'>
-
-                            <Group>
+                            <Space h="xl"/>
+                            <Space h="xl"/>
+                            <Space h="xl"/>
+                            <Space h="xl"/>
+                            <Space h="xl"/>
+                            <Switch
+                                checked={allUsers}
+                                onChange={(event) => setAllUsers(event.currentTarget.checked)}
+                                label="All Users"
+                                description="Whether to display jobs owned by all users in the project."
+                            />
+                            <TextInput
+                                label="Parent Job Id"
+                                value={parentJobId}
+                                onChange={(event) => setParentJobId(event.currentTarget.value)}
+                            />
+                            <Group position="left">
                                 <DateTimePicker
-                                    label="Start datetime"
+                                    label="Min Creation Time"
                                     placeholder="Pick date and time"
                                     maxDate={new Date()}
                                     clearable
                                     value={currMinCreationTime}
                                     onChange={(event) => setCurrMinCreationTime(event)}
-                                    mx="auto"
+
                                 />
                                 <DateTimePicker
-                                    label="End datetime"
+                                    label="Max Creation Time"
                                     placeholder="Pick date and time"
                                     maxDate={new Date()}
                                     clearable
                                     value={currMaxCreationTime}
                                     onChange={(event) => setCurrMaxCreationTime(event)}
-                                    mx="auto"
                                 />
                             </Group>
+
                         </div>
                     </Modal.Body>
                 </Modal.Content>

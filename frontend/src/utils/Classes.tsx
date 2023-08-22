@@ -161,7 +161,6 @@ class BillingQueryParams {
 
 class BigQueryQueryParams {
     allUsers:boolean
-    maxResults:number
     minCreationTime:string
     maxCreationTime:string
     // private Projection projection;

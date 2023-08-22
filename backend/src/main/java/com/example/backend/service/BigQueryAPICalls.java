@@ -32,6 +32,7 @@ import com.google.cloud.bigquery.JobId;
 import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
+import com.google.cloud.bigquery.BigQuery.JobListOption;
 import com.google.gson.Gson;
 
 @Service
@@ -144,6 +145,8 @@ public class BigQueryAPICalls {
         //         oldString.replace("-", " ") + " ";
         // return temp;
     }
+
+    // BILLING HELPERS
 
     void getMatchesString(BillingQueryParams queryParams, StringJoiner output) {
         if (queryParams == null || queryParams.getMatches() == null || 
@@ -268,6 +271,13 @@ public class BigQueryAPICalls {
         }
         return " WHERE " + output.toString() + " ORDER BY " + sortingStringJoiner.toString() + " ";
     }
+
+    // BIGQUERY HELPERS
+    // JobListOption jobListOptionGivenParams(BigQueryQueryParams queryParams) {
+    //     JobListOption jobListOption = BigQuery.JobListOption.allUsers();
+    //     return jobListOption.maxCreationTime(100000000);
+    // }
+
 
     // ****************************************************************
     // ********************* BIGQUERY CALLS ***************************
@@ -423,7 +433,7 @@ public class BigQueryAPICalls {
 
         if (pageToken == null) {
             // Means it is the first x jobs
-            jobs = bigQuery.listJobs();
+            jobs = bigQuery.listJobs(BigQuery.JobListOption.allUsers());
         } else {
             // Means it is the next x jobs
             jobs = bigQuery.listJobs(BigQuery.JobListOption.pageToken(pageToken));

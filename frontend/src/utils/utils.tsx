@@ -2,6 +2,8 @@ export const stringsToAxesClass = (xKey: string, xLabel: string, yKey: string, y
     return { x: { key: xKey, label: xLabel }, y: { key: yKey, label: yLabel } }
 }
 
+// BILLING FIELDS
+
 export const matchFieldsForGlobalFilter: string[] = [
     "billing_account_id", "service.description", "sku.description", "project.id", "project.name", "location.location", "resource.name",
     "resource.global_name", "currency", "usage.units",

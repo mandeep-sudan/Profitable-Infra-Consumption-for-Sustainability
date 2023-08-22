@@ -4,6 +4,8 @@ import axios, { AxiosResponse } from 'axios';
 
 const baseURL: string = "http://localhost:8080/"
 
+// Billing
+
 export const getBillingData = (currPageNum: string, queryParams: BillingQueryParams) => {
     const params = {
         currPageNum: currPageNum
@@ -12,12 +14,6 @@ export const getBillingData = (currPageNum: string, queryParams: BillingQueryPar
     let endpoint: string = "api/billing-data"
     return axios.post<AllDataPage>(baseURL + endpoint, queryParams, { params })
 }
-
-// export const getAllDataOld = (currPageNum: string) => {
-//     const params = { currPageNum: currPageNum }
-//     let endpoint: string = "api/all-data"
-//     return axios.get<AllDataPage>(baseURL + endpoint, { params })
-// }
 
 export const getCostByMonth = (range: string) => {
     const params = { range: range }
@@ -41,6 +37,8 @@ export const getCostByWeekAndService = (range: string) => {
     let endpoint: string = "api/cost-by-week-and-service"
     return axios.get<CostByWeekAndService[]>(baseURL + endpoint, { params })
 }
+
+// BigQuery
 
 export const getBigQueryJobsList = (pageToken: string) => {
     const params = { pageToken: pageToken }
