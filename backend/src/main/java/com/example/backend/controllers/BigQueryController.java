@@ -101,6 +101,7 @@ public class BigQueryController {
         System.out.println("We got here with "+pageToken);
         if (queryParams != null) {
             System.out.println("queryParams are "+queryParams.toString());
+            System.out.println("pageToken is "+pageToken.toString());
         } else {
             System.out.println("queryParams are null :(");
         }

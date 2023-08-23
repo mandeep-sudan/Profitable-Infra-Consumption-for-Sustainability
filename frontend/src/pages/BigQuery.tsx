@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { getBigQueryJobsList } from '../utils/APICalls';
 import { bigQueryJobsListColumns } from '../utils/TableColumns';
-import OldInfiniteTableTile from '../components/OldInfiniteTableTile';
+import InfiniteTableTile from '../components/InfiniteTableTile';
+import BigQueryTableModal from '../components/BigQueryTableModal/BigQueryTableModal';
+import { Text } from '@mantine/core';
+import { getBigQueryJobsList } from '../utils/APICalls';
 
 const BigQuery = () => {
-
+    const [queryParams, setQueryParams] = useState<BigQueryQueryParams>({
+        allUsers: false,
+        minCreationTime: "",
+        maxCreationTime: "",
+        parentJobId: "",
+        stateFilters: ["DONE","PENDING","RUNNING"]
+    })
     return (
         <>
-            <OldInfiniteTableTile title={"BigQuery Jobs"} bigSize={true} apiCall={getBigQueryJobsList} columns={bigQueryJobsListColumns} />
+            <InfiniteTableTile title={"All Billing Data"} apiCall={getBigQueryJobsList} columns={bigQueryJobsListColumns} queryParams={queryParams} modal={<BigQueryTableModal setQueryParams={setQueryParams} />} />
+            {/* <Text>{JSON.stringify(queryParams)}</Text> */}
         </>
     );
 }

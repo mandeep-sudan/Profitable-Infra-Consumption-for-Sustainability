@@ -159,10 +159,17 @@ class BillingQueryParams {
 
 // BigQuery
 
+// const enum StateFilter {
+//     DONE="DONE",
+//     PENDING="PENDING",
+//     RUNNING="RUNNING"
+// }
+
 class BigQueryQueryParams {
     allUsers:boolean
     minCreationTime:string
     maxCreationTime:string
+    stateFilters:string[]
     // private Projection projection;
     // private StateFilter stateFilter;
     parentJobId:string

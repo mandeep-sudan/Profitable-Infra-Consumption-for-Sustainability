@@ -3,6 +3,8 @@ package com.example.backend.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 
 @Data
@@ -10,10 +12,10 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 public class BigQueryQueryParams {
     private boolean allUsers;
-    private String minCreationTime;
-    private String maxCreationTime;
+    private Long minCreationTime;
+    private Long maxCreationTime;
     // private Projection projection;
-    // private StateFilter stateFilter;
+    private List<String> stateFilters;
     private String parentJobId;
 
     public static enum Projection {

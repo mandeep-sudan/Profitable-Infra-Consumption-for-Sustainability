@@ -1,11 +1,10 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Group, Modal, useMantineTheme, Title, SegmentedControl, Switch, TextInput, Space } from '@mantine/core';
+import { Button, Group, Modal, useMantineTheme, Title, SegmentedControl, Switch, TextInput, Space, Radio, Checkbox } from '@mantine/core';
 import React, { useState } from 'react';
 import { betweenDatesFieldsForGlobalFilter, betweenValuesFieldsForGlobalFilter, matchFieldsForGlobalFilter } from '../../utils/utils';
 import "./BigQueryTableModal.css"
 import { IconWorld } from '@tabler/icons-react';
 import { DateTimePicker } from '@mantine/dates';
-
 
 type TableTileModalProps = {
     setQueryParams: React.Dispatch<React.SetStateAction<BigQueryQueryParams>>
@@ -13,7 +12,7 @@ type TableTileModalProps = {
 
 const invalidDateRange = (startDateTime: Date, endDateTime: Date): boolean => {
     return ((startDateTime !== null && endDateTime !== null) &&
-            (startDateTime > endDateTime))
+        (startDateTime > endDateTime))
 }
 
 const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
@@ -27,13 +26,24 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
 
     const [parentJobId, setParentJobId] = useState<string>("");
     const [allUsers, setAllUsers] = useState<boolean>(false);
+    const [stateFilters, setStateFilters] = useState<string[]>(["DONE","PENDING","RUNNING"]);
+
 
 
     const submitFilter = () => {
+        let minCreateTemp : string =""
+        let maxCreateTemp : string =""
+        if (currMinCreationTime!==null) {
+            minCreateTemp=JSON.stringify(currMinCreationTime.getTime())
+        }
+        if (currMaxCreationTime!==null) {
+            maxCreateTemp=JSON.stringify(currMaxCreationTime.getTime())
+        }
         setQueryParams({
             allUsers: allUsers,
-            minCreationTime: JSON.stringify(currMinCreationTime.getTime()),
-            maxCreationTime: JSON.stringify(currMaxCreationTime.getTime()),
+            minCreationTime: minCreateTemp,
+            maxCreationTime: maxCreateTemp,
+            stateFilters: stateFilters,
             parentJobId: parentJobId
         })
         close() // closes modal
@@ -44,6 +54,7 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
         setCurrMaxCreationTime(null)
         setParentJobId("")
         setAllUsers(false)
+        setStateFilters([])
     }
 
     return (
@@ -65,8 +76,8 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                         <Group position="right">
                             <Button
                                 onClick={() => submitFilter()}
-                                disabled={invalidDateRange(currMinCreationTime,currMaxCreationTime)}
-                                >Submit New Filter</Button>
+                                disabled={invalidDateRange(currMinCreationTime, currMaxCreationTime)}
+                            >Submit New Filter</Button>
                             <Button color="red"
                                 onClick={() => clearFilter()}>Clear New Filter</Button>
                             <Modal.CloseButton />
@@ -74,11 +85,11 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                     </Modal.Header>
                     <Modal.Body>
                         <div className='global-filter-modal'>
-                            <Space h="xl"/>
-                            <Space h="xl"/>
-                            <Space h="xl"/>
-                            <Space h="xl"/>
-                            <Space h="xl"/>
+                            <Space h="xl" />
+                            <Space h="xl" />
+                            <Space h="xl" />
+                            <Space h="xl" />
+                            <Space h="xl" />
                             <Switch
                                 checked={allUsers}
                                 onChange={(event) => setAllUsers(event.currentTarget.checked)}
@@ -90,6 +101,17 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                                 value={parentJobId}
                                 onChange={(event) => setParentJobId(event.currentTarget.value)}
                             />
+
+                            <Checkbox.Group
+                                value={stateFilters}
+                                onChange={setStateFilters}
+                                label="Filter by Job State">
+                                <Group>
+                                    <Checkbox value="DONE" label="Done" />
+                                    <Checkbox value="PENDING" label="Pending" />
+                                    <Checkbox value="RUNNING" label="Running" />
+                                </Group>
+                            </Checkbox.Group>
                             <Group position="left">
                                 <DateTimePicker
                                     label="Min Creation Time"
@@ -98,7 +120,6 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                                     clearable
                                     value={currMinCreationTime}
                                     onChange={(event) => setCurrMinCreationTime(event)}
-
                                 />
                                 <DateTimePicker
                                     label="Max Creation Time"

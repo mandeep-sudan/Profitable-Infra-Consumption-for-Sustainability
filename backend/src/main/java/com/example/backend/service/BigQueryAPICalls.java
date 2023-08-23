@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
@@ -30,6 +31,7 @@ import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.Job;
 import com.google.cloud.bigquery.JobId;
 import com.google.cloud.bigquery.JobInfo;
+import com.google.cloud.bigquery.JobStatus;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 import com.google.cloud.bigquery.BigQuery.JobListOption;
@@ -44,7 +46,6 @@ public class BigQueryAPICalls {
     int pageSize = 50;
 
     String detailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41";
-
 
     // helper function to get JSON string from a given query
     <T> List<T> getDataFromQuery(String oldQuery, Class<T> resultType) throws Exception {
@@ -139,62 +140,62 @@ public class BigQueryAPICalls {
     String restrictDate(String oldString) {
         return " ";
         // if (oldString == null) {
-        //     return " ";
+        // return " ";
         // }
         // String temp = " WHERE usage_start_time >= CURRENT_TIMESTAMP() - INTERVAL " +
-        //         oldString.replace("-", " ") + " ";
+        // oldString.replace("-", " ") + " ";
         // return temp;
     }
 
     // BILLING HELPERS
 
     void getMatchesString(BillingQueryParams queryParams, StringJoiner output) {
-        if (queryParams == null || queryParams.getMatches() == null || 
-        queryParams.getMatches().size() == 0) {
+        if (queryParams == null || queryParams.getMatches() == null ||
+                queryParams.getMatches().size() == 0) {
             return;
         }
         List<BillingMatch> matches = queryParams.getMatches();
         // StringJoiner output = new StringJoiner(" AND ");
-        
-        for (int i=0;i<matches.size();i++) {
+
+        for (int i = 0; i < matches.size(); i++) {
             BillingMatch currMatch = matches.get(i);
             String wrappedValue;
-            String not="";
+            String not = "";
             if (currMatch.getOperator().equals("LIKE")) {
-                wrappedValue = "\'%"+currMatch.getValue()+"%\'";
+                wrappedValue = "\'%" + currMatch.getValue() + "%\'";
             } else { // operator is '='
-                wrappedValue = "\'"+currMatch.getValue()+"\'";
+                wrappedValue = "\'" + currMatch.getValue() + "\'";
             }
             if (currMatch.isNot()) {
-                not="NOT ";
+                not = "NOT ";
             }
-            output.add(not + currMatch.getField()+" "+currMatch.getOperator()+" "+wrappedValue);
+            output.add(not + currMatch.getField() + " " + currMatch.getOperator() + " " + wrappedValue);
         }
     }
 
     void getBetweenValuesString(BillingQueryParams queryParams, StringJoiner output) {
-        if (queryParams == null || queryParams.getBetweenValues() == null || 
-        queryParams.getBetweenValues().size() == 0) {
+        if (queryParams == null || queryParams.getBetweenValues() == null ||
+                queryParams.getBetweenValues().size() == 0) {
             return;
         }
         List<BillingBetweenValues> betweenValues = queryParams.getBetweenValues();
         // StringJoiner output = new StringJoiner(" AND ");
-        
-        for (int i=0;i<betweenValues.size();i++) {
+
+        for (int i = 0; i < betweenValues.size(); i++) {
             BillingBetweenValues currBetweenValues = betweenValues.get(i);
 
-            if (currBetweenValues.getLowNumber()!=null) {
+            if (currBetweenValues.getLowNumber() != null) {
                 if (currBetweenValues.isInclusive()) {
-                    output.add(currBetweenValues.getField()+" >= "+currBetweenValues.getLowNumber());
+                    output.add(currBetweenValues.getField() + " >= " + currBetweenValues.getLowNumber());
                 } else {
-                    output.add(currBetweenValues.getField()+" > "+currBetweenValues.getLowNumber());
+                    output.add(currBetweenValues.getField() + " > " + currBetweenValues.getLowNumber());
                 }
             }
-            if (currBetweenValues.getHighNumber()!=null) {
+            if (currBetweenValues.getHighNumber() != null) {
                 if (currBetweenValues.isInclusive()) {
-                    output.add(currBetweenValues.getField()+" <= "+currBetweenValues.getHighNumber());
+                    output.add(currBetweenValues.getField() + " <= " + currBetweenValues.getHighNumber());
                 } else {
-                    output.add(currBetweenValues.getField()+" < "+currBetweenValues.getHighNumber());
+                    output.add(currBetweenValues.getField() + " < " + currBetweenValues.getHighNumber());
                 }
             }
 
@@ -202,52 +203,51 @@ public class BigQueryAPICalls {
     }
 
     void getBetweenDatesString(BillingQueryParams queryParams, StringJoiner output) {
-        if (queryParams == null || queryParams.getBetweenDates() == null || 
-        queryParams.getBetweenDates().size() == 0) {
+        if (queryParams == null || queryParams.getBetweenDates() == null ||
+                queryParams.getBetweenDates().size() == 0) {
             return;
         }
         List<BillingBetweenDates> betweenDates = queryParams.getBetweenDates();
         // StringJoiner output = new StringJoiner(" AND ");
-        
-        for (int i=0;i<betweenDates.size();i++) {
+
+        for (int i = 0; i < betweenDates.size(); i++) {
             BillingBetweenDates currBetweenDates = betweenDates.get(i);
 
-            if (currBetweenDates.getStartDateTime()!=null) {
+            if (currBetweenDates.getStartDateTime() != null) {
                 if (currBetweenDates.isInclusive()) {
-                    output.add(currBetweenDates.getField()+" >= \'"+currBetweenDates.getStartDateTime()+"\'");
+                    output.add(currBetweenDates.getField() + " >= \'" + currBetweenDates.getStartDateTime() + "\'");
                 } else {
-                    output.add(currBetweenDates.getField()+" > \'"+currBetweenDates.getStartDateTime()+"\'");
+                    output.add(currBetweenDates.getField() + " > \'" + currBetweenDates.getStartDateTime() + "\'");
                 }
             }
-            if (currBetweenDates.getEndDateTime()!=null) {
+            if (currBetweenDates.getEndDateTime() != null) {
                 if (currBetweenDates.isInclusive()) {
-                    output.add(currBetweenDates.getField()+" <= \'"+currBetweenDates.getEndDateTime()+"\'");
+                    output.add(currBetweenDates.getField() + " <= \'" + currBetweenDates.getEndDateTime() + "\'");
                 } else {
-                    output.add(currBetweenDates.getField()+" < \'"+currBetweenDates.getEndDateTime()+"\'");
+                    output.add(currBetweenDates.getField() + " < \'" + currBetweenDates.getEndDateTime() + "\'");
                 }
-                
-                
+
             }
         }
     }
 
     StringJoiner getOrderingString(BillingQueryParams queryParams) {
         StringJoiner output = new StringJoiner(", ");
-        if (queryParams == null || queryParams.getSortings() == null || 
-        queryParams.getSortings().size() == 0) {
+        if (queryParams == null || queryParams.getSortings() == null ||
+                queryParams.getSortings().size() == 0) {
             return output;
         }
         List<BillingSorting> sortings = queryParams.getSortings();
-        
+
         // StringJoiner output = new StringJoiner(" AND ");
-        
-        for (int i=0;i<sortings.size();i++) {
+
+        for (int i = 0; i < sortings.size(); i++) {
             BillingSorting currSorting = sortings.get(i);
 
             if (currSorting.isAscending()) {
                 output.add(currSorting.getField());
             } else {
-                output.add(currSorting.getField()+ " DESC");
+                output.add(currSorting.getField() + " DESC");
             }
         }
         return output;
@@ -260,24 +260,74 @@ public class BigQueryAPICalls {
         getMatchesString(queryParams, output);
         getBetweenDatesString(queryParams, output);
         StringJoiner sortingStringJoiner = getOrderingString(queryParams);
-        if (output.length()==0 && sortingStringJoiner.length()==0) {
+        if (output.length() == 0 && sortingStringJoiner.length() == 0) {
             return " ";
         }
-        if (output.length()==0) {
-            return " ORDER BY "+ sortingStringJoiner.toString() + " ";
+        if (output.length() == 0) {
+            return " ORDER BY " + sortingStringJoiner.toString() + " ";
         }
-        if (sortingStringJoiner.length()==0) {
+        if (sortingStringJoiner.length() == 0) {
             return " WHERE " + output.toString() + " ";
         }
         return " WHERE " + output.toString() + " ORDER BY " + sortingStringJoiner.toString() + " ";
     }
 
-    // BIGQUERY HELPERS
-    // JobListOption jobListOptionGivenParams(BigQueryQueryParams queryParams) {
-    //     JobListOption jobListOption = BigQuery.JobListOption.allUsers();
-    //     return jobListOption.maxCreationTime(100000000);
-    // }
+    void allUsersModifier(BigQueryQueryParams queryParams, List<JobListOption> jobListOptions) {
+        // if (queryParams)
+        if (queryParams.isAllUsers()) {
+            jobListOptions.add(JobListOption.allUsers());
+        }
+    }
 
+    void maxCreationTimeModifier(BigQueryQueryParams queryParams, List<JobListOption> jobListOptions) {
+        // if (queryParams)
+        if (queryParams.getMaxCreationTime() != null) {
+            jobListOptions.add(JobListOption.maxCreationTime(queryParams.getMaxCreationTime()));
+        }
+    }
+
+    void minCreationTimeModifier(BigQueryQueryParams queryParams, List<JobListOption> jobListOptions) {
+        // if (queryParams)
+        if (queryParams.getMinCreationTime() != null) {
+            jobListOptions.add(JobListOption.minCreationTime(queryParams.getMinCreationTime()));
+        }
+    }
+
+    void parentJobIdModifier(BigQueryQueryParams queryParams, List<JobListOption> jobListOptions) {
+        // if (queryParams)
+        if (queryParams.getParentJobId() != null && queryParams.getParentJobId() != "") {
+            jobListOptions.add(JobListOption.parentJobId(queryParams.getParentJobId()));
+        }
+    }
+
+    void stateFiltersModifier(BigQueryQueryParams queryParams, List<JobListOption> jobListOptions) {
+        // if (queryParams)
+        List<JobStatus.State> jobstates = new ArrayList<JobStatus.State>();
+        List<String> stateFilters = queryParams.getStateFilters();
+        for (int i=0;i<stateFilters.size();i++) {
+            jobstates.add(JobStatus.State.valueOf(stateFilters.get(i)));
+        }
+        queryParams.getStateFilters().stream().map(jobState->jobstates.add(JobStatus.State.valueOf(jobState)));
+        System.out.println(jobListOptions);
+        System.out.println(jobstates.toString());
+        // System.out.println(jobstates.toString());
+        if (queryParams.getStateFilters().size() > 0) {
+            jobListOptions.add(JobListOption.stateFilter(jobstates.toArray(new JobStatus.State[0])));
+        }
+    }
+
+    // BIGQUERY HELPERS
+    JobListOption[] jobListOptionGivenParams(BigQueryQueryParams queryParams) {
+        List<JobListOption> jobListOptions = new ArrayList<JobListOption>();
+        allUsersModifier(queryParams, jobListOptions);
+        maxCreationTimeModifier(queryParams, jobListOptions);
+        minCreationTimeModifier(queryParams, jobListOptions);
+        parentJobIdModifier(queryParams, jobListOptions);
+        stateFiltersModifier(queryParams,jobListOptions);
+        System.out.println("jobListOptions are "+jobListOptions.toString());
+        return jobListOptions.toArray(new JobListOption[0]);
+        // return jobListOption.maxCreationTime(100000000).allUsers();
+    }
 
     // ****************************************************************
     // ********************* BIGQUERY CALLS ***************************
@@ -285,36 +335,36 @@ public class BigQueryAPICalls {
 
     public QueryPage<AllData> getBillingData(String currPageNum, BillingQueryParams queryParams) throws Exception {
         int pageNum;
-        if (currPageNum=="") {
-            pageNum=0;
+        if (currPageNum == "") {
+            pageNum = 0;
         } else {
-            pageNum= Integer.parseInt(currPageNum);
+            pageNum = Integer.parseInt(currPageNum);
         }
         String query = """
-            SELECT billing_account_id,
-                    service.description as service,
-                    sku.description as sku,
-                    usage_start_time,
-                    usage_end_time,
-                    TIMESTAMP_DIFF(usage_end_time, usage_start_time, SECOND) AS usage_duration_seconds,
-                    project.id as project_id,
-                    project.name as project_name,
-                    location.location as location,
-                    resource.name as resource_name,
-                    resource.global_name as resource_global_name,
-                    export_time,
-                    cost,
-                    currency,
-                    usage.amount as usage_amount,
-                    usage.unit as usage_unit,
-                    credits,
-                    invoice.month as invoice_month,
-                    FROM
-        """
+                    SELECT billing_account_id,
+                            service.description as service,
+                            sku.description as sku,
+                            usage_start_time,
+                            usage_end_time,
+                            TIMESTAMP_DIFF(usage_end_time, usage_start_time, SECOND) AS usage_duration_seconds,
+                            project.id as project_id,
+                            project.name as project_name,
+                            location.location as location,
+                            resource.name as resource_name,
+                            resource.global_name as resource_global_name,
+                            export_time,
+                            cost,
+                            currency,
+                            usage.amount as usage_amount,
+                            usage.unit as usage_unit,
+                            credits,
+                            invoice.month as invoice_month,
+                            FROM
+                """
                 + detailedString + getFullFiltering(queryParams) +
                 " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
         System.out.println(query);
-        return getDataFromQueryPaginated(query,AllData.class,pageNum);
+        return getDataFromQueryPaginated(query, AllData.class, pageNum);
     }
 
     public List<CostByMonth> getCostByMonth(String range) throws Exception {
@@ -426,14 +476,13 @@ public class BigQueryAPICalls {
         return resultPage;
     }
 
-    public BigQueryJobsPage getJobsListNew(String pageToken,BigQueryQueryParams bigQueryQueryParams) {
-
+    public BigQueryJobsPage getJobsListNew(String pageToken, BigQueryQueryParams bigQueryQueryParams) {
         // BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
         Page<Job> jobs;
 
-        if (pageToken == null) {
+        if (pageToken == null || pageToken == "") {
             // Means it is the first x jobs
-            jobs = bigQuery.listJobs(BigQuery.JobListOption.allUsers());
+            jobs = bigQuery.listJobs(jobListOptionGivenParams(bigQueryQueryParams));
         } else {
             // Means it is the next x jobs
             jobs = bigQuery.listJobs(BigQuery.JobListOption.pageToken(pageToken));
@@ -449,5 +498,3 @@ public class BigQueryAPICalls {
         return resultPage;
     }
 }
-
-
