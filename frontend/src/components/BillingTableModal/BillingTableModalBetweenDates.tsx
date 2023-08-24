@@ -94,6 +94,7 @@ const BillingTableModalBetweenDates = ({ betweenDates, setBetweenDates, currBetw
                 <Group>
                     <DateTimePicker
                         label="Start datetime"
+                        valueFormat="DD MMM YYYY hh:mm A"
                         placeholder="Pick date and time"
                         maxDate={new Date()}
                         clearable
@@ -103,6 +104,7 @@ const BillingTableModalBetweenDates = ({ betweenDates, setBetweenDates, currBetw
                     />
                     <DateTimePicker
                         label="End datetime"
+                        valueFormat="DD MMM YYYY hh:mm A"
                         placeholder="Pick date and time"
                         maxDate={new Date()}
                         clearable

@@ -115,6 +115,7 @@ const BigQueryTableModal = ({ setQueryParams }: TableTileModalProps) => {
                             <Group position="left">
                                 <DateTimePicker
                                     label="Min Creation Time"
+                                    valueFormat="DD MMM YYYY hh:mm A"
                                     placeholder="Pick date and time"
                                     maxDate={new Date()}
                                     clearable

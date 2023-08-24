@@ -54,13 +54,6 @@ public class BigQueryController {
     @PostMapping("/api/billing-data")
     public QueryPage<AllData> getBillingData(@RequestBody(required = false) BillingQueryParams queryParams,
                                     @RequestParam(required = false) String currPageNum) throws Exception {
-        System.out.println("We got here with "+currPageNum);
-        if (queryParams != null) {
-            System.out.println("queryParams are "+queryParams.toString());
-        } else {
-            System.out.println("queryParams are null :(");
-        }
-        
         return bigQueryAPICalls.getBillingData(currPageNum,queryParams);
     }
 
@@ -98,14 +91,6 @@ public class BigQueryController {
     @PostMapping("/api/jobs-list-new")
     public BigQueryJobsPage getJobsListNew(@RequestBody(required = false) BigQueryQueryParams queryParams,
                                     @RequestParam(required = false) String pageToken) throws Exception {
-        System.out.println("We got here with "+pageToken);
-        if (queryParams != null) {
-            System.out.println("queryParams are "+queryParams.toString());
-            System.out.println("pageToken is "+pageToken.toString());
-        } else {
-            System.out.println("queryParams are null :(");
-        }
-        
         return bigQueryAPICalls.getJobsListNew(pageToken,queryParams);
     }
 

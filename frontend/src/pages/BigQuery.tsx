@@ -15,7 +15,7 @@ const BigQuery = () => {
     })
     return (
         <>
-            <InfiniteTableTile title={"All Billing Data"} apiCall={getBigQueryJobsList} columns={bigQueryJobsListColumns} queryParams={queryParams} modal={<BigQueryTableModal setQueryParams={setQueryParams} />} />
+            <InfiniteTableTile title={"BigQuery Jobs Data"} apiCall={getBigQueryJobsList} columns={bigQueryJobsListColumns} queryParams={queryParams} modal={<BigQueryTableModal setQueryParams={setQueryParams} />} />
             {/* <Text>{JSON.stringify(queryParams)}</Text> */}
         </>
     );

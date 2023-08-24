@@ -59,7 +59,7 @@ const BillingTableModal = ({ setQueryParams }: TableTileModalProps) => {
 
             <Modal.Root opened={opened}
                 onClose={close}
-                size={905}>
+                size={1000}>
                 <Modal.Overlay
                     color={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
                     opacity={0.55}

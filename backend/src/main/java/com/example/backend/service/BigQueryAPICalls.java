@@ -308,9 +308,6 @@ public class BigQueryAPICalls {
             jobstates.add(JobStatus.State.valueOf(stateFilters.get(i)));
         }
         queryParams.getStateFilters().stream().map(jobState->jobstates.add(JobStatus.State.valueOf(jobState)));
-        System.out.println(jobListOptions);
-        System.out.println(jobstates.toString());
-        // System.out.println(jobstates.toString());
         if (queryParams.getStateFilters().size() > 0) {
             jobListOptions.add(JobListOption.stateFilter(jobstates.toArray(new JobStatus.State[0])));
         }
@@ -324,7 +321,6 @@ public class BigQueryAPICalls {
         minCreationTimeModifier(queryParams, jobListOptions);
         parentJobIdModifier(queryParams, jobListOptions);
         stateFiltersModifier(queryParams,jobListOptions);
-        System.out.println("jobListOptions are "+jobListOptions.toString());
         return jobListOptions.toArray(new JobListOption[0]);
         // return jobListOption.maxCreationTime(100000000).allUsers();
     }
@@ -363,7 +359,6 @@ public class BigQueryAPICalls {
                 """
                 + detailedString + getFullFiltering(queryParams) +
                 " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
-        System.out.println(query);
         return getDataFromQueryPaginated(query, AllData.class, pageNum);
     }
 
@@ -480,11 +475,13 @@ public class BigQueryAPICalls {
         // BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
         Page<Job> jobs;
 
-        if (pageToken == null || pageToken == "") {
+        if (pageToken == "") {
             // Means it is the first x jobs
             jobs = bigQuery.listJobs(jobListOptionGivenParams(bigQueryQueryParams));
-        } else {
+        } else if (pageToken == null) {
             // Means it is the next x jobs
+            jobs = bigQuery.listJobs(JobListOption.maxCreationTime(0));
+        } else {
             jobs = bigQuery.listJobs(BigQuery.JobListOption.pageToken(pageToken));
         }
 
