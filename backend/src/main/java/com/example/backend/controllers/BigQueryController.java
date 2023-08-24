@@ -81,17 +81,11 @@ public class BigQueryController {
     }
 
     // BigQuery
-    
-    @GetMapping("/api/jobs-list")
-    public BigQueryJobsPage getJobsList(@RequestParam(required = false) String pageToken)
-            throws Exception {
-        return bigQueryAPICalls.getJobsList(pageToken);
-    }
 
-    @PostMapping("/api/jobs-list-new")
-    public BigQueryJobsPage getJobsListNew(@RequestBody(required = false) BigQueryQueryParams queryParams,
+    @PostMapping("/api/jobs-list")
+    public BigQueryJobsPage getJobsList(@RequestBody(required = false) BigQueryQueryParams queryParams,
                                     @RequestParam(required = false) String pageToken) throws Exception {
-        return bigQueryAPICalls.getJobsListNew(pageToken,queryParams);
+        return bigQueryAPICalls.getJobsList(pageToken,queryParams);
     }
 
 }

@@ -40,14 +40,8 @@ export const getCostByWeekAndService = (range: string) => {
 
 // BigQuery
 
-export const getBigQueryJobsListOld = (pageToken: string) => {
-    const params = { pageToken: pageToken }
-    let endpoint: string = "api/jobs-list"
-    return axios.get<BigQueryPage>(baseURL + endpoint, { params })
-}
-
 export const getBigQueryJobsList = (currPageNum: string, queryParams: BigQueryQueryParams) => {
     const params = { pageToken: currPageNum }
-    let endpoint: string = "api/jobs-list-new"
+    let endpoint: string = "api/jobs-list"
     return axios.post<BigQueryPage>(baseURL + endpoint, queryParams, { params })
 }

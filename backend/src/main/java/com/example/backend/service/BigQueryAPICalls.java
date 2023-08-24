@@ -448,30 +448,7 @@ public class BigQueryAPICalls {
         return getDataFromQuery(query, CostByWeekAndService.class);
     }
 
-    public BigQueryJobsPage getJobsList(String pageToken) {
-
-        // BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
-        Page<Job> jobs;
-
-        if (pageToken == null) {
-            // Means it is the first x jobs
-            jobs = bigQuery.listJobs();
-        } else {
-            // Means it is the next x jobs
-            jobs = bigQuery.listJobs(BigQuery.JobListOption.pageToken(pageToken));
-        }
-
-        if (jobs == null) {
-            System.out.println("Dataset does not contain any jobs.");
-            // return;
-        }
-
-        BigQueryJobsPage resultPage = new BigQueryJobsPage(jobs);
-
-        return resultPage;
-    }
-
-    public BigQueryJobsPage getJobsListNew(String pageToken, BigQueryQueryParams bigQueryQueryParams) {
+    public BigQueryJobsPage getJobsList(String pageToken, BigQueryQueryParams bigQueryQueryParams) {
         // BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
         Page<Job> jobs;
 
