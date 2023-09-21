@@ -45,7 +45,7 @@ public class BigQueryAPICalls {
     Gson gson;
     int pageSize = 50;
 
-    String detailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_0124FF_8C7296_9F0D41";
+    String detailedString = "profitable-infra-consumption.all_billing_data.gcp_billing_export_resource_v1_011093_DD21A6_63939E";
 
     // helper function to get JSON string from a given query
     <T> List<T> getDataFromQuery(String oldQuery, Class<T> resultType) throws Exception {
@@ -304,10 +304,10 @@ public class BigQueryAPICalls {
         // if (queryParams)
         List<JobStatus.State> jobstates = new ArrayList<JobStatus.State>();
         List<String> stateFilters = queryParams.getStateFilters();
-        for (int i=0;i<stateFilters.size();i++) {
+        for (int i = 0; i < stateFilters.size(); i++) {
             jobstates.add(JobStatus.State.valueOf(stateFilters.get(i)));
         }
-        queryParams.getStateFilters().stream().map(jobState->jobstates.add(JobStatus.State.valueOf(jobState)));
+        queryParams.getStateFilters().stream().map(jobState -> jobstates.add(JobStatus.State.valueOf(jobState)));
         if (queryParams.getStateFilters().size() > 0) {
             jobListOptions.add(JobListOption.stateFilter(jobstates.toArray(new JobStatus.State[0])));
         }
@@ -320,7 +320,7 @@ public class BigQueryAPICalls {
         maxCreationTimeModifier(queryParams, jobListOptions);
         minCreationTimeModifier(queryParams, jobListOptions);
         parentJobIdModifier(queryParams, jobListOptions);
-        stateFiltersModifier(queryParams,jobListOptions);
+        stateFiltersModifier(queryParams, jobListOptions);
         return jobListOptions.toArray(new JobListOption[0]);
         // return jobListOption.maxCreationTime(100000000).allUsers();
     }
