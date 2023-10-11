@@ -16,6 +16,7 @@ import com.example.backend.model.CostByMonth;
 import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 import com.example.backend.model.CostByWeekAndService;
+import com.example.backend.model.Forecast;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.BigQueryQueryParams;
@@ -48,13 +49,12 @@ public class BigQueryController {
     // ************************ API CALLS *****************************
     // ****************************************************************
 
-
     // Billing
 
     @PostMapping("/api/billing-data")
     public QueryPage<AllData> getBillingData(@RequestBody(required = false) BillingQueryParams queryParams,
-                                    @RequestParam(required = false) String currPageNum) throws Exception {
-        return bigQueryAPICalls.getBillingData(currPageNum,queryParams);
+            @RequestParam(required = false) String currPageNum) throws Exception {
+        return bigQueryAPICalls.getBillingData(currPageNum, queryParams);
     }
 
     @GetMapping("/api/cost-by-month")
@@ -84,8 +84,15 @@ public class BigQueryController {
 
     @PostMapping("/api/jobs-list")
     public BigQueryJobsPage getJobsList(@RequestBody(required = false) BigQueryQueryParams queryParams,
-                                    @RequestParam(required = false) String pageToken) throws Exception {
-        return bigQueryAPICalls.getJobsList(pageToken,queryParams);
+            @RequestParam(required = false) String pageToken) throws Exception {
+        return bigQueryAPICalls.getJobsList(pageToken, queryParams);
+    }
+
+    // Forecast
+    @PostMapping("/api/forecast")
+    public QueryPage<Forecast> getForecast(@RequestBody(required = false) BillingQueryParams queryParams,
+            @RequestParam(required = false) String currPageNum) throws Exception {
+        return bigQueryAPICalls.getForecast(currPageNum);
     }
 
 }
