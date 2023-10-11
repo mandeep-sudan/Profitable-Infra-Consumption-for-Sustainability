@@ -3,106 +3,105 @@
 // **********************************************
 
 interface ICostBySomething {
-    name:string
-    totalCost:number
-    totalCredits:number
-    finalCost:number
+  name: string;
+  totalCost: number;
+  totalCredits: number;
+  finalCost: number;
 }
 
 class CostByProject implements ICostBySomething {
-    name:string
-    totalCost:number
-    totalCredits:number
-    finalCost:number
+  name: string;
+  totalCost: number;
+  totalCredits: number;
+  finalCost: number;
 }
 
 class CostByService implements ICostBySomething {
-    name:string
-    totalCost:number
-    totalCredits:number
-    finalCost:number
+  name: string;
+  totalCost: number;
+  totalCredits: number;
+  finalCost: number;
 }
 
-
 class CostByMonth implements ICostBySomething {
-    name:string
-    totalCost:number
-    totalCredits:number
-    finalCost:number
+  name: string;
+  totalCost: number;
+  totalCredits: number;
+  finalCost: number;
 }
 
 interface ICostByWeekAndSomething {
-    week:string
-    name:string
-    totalCost:number
-    totalCredits:number
-    finalCost:number
+  week: string;
+  name: string;
+  totalCost: number;
+  totalCredits: number;
+  finalCost: number;
 }
 
 class CostByWeekAndService implements ICostByWeekAndSomething {
-    week:string
-    name:string
-    totalCost:number
-    totalCredits:number
-    finalCost:number
+  week: string;
+  name: string;
+  totalCost: number;
+  totalCredits: number;
+  finalCost: number;
 }
 
-
-interface IInfTablePage<T,> {
-    rowList:T[]
-    nextPageInfo:string
-    // getPageInfo: ()=>string 
-    // getRowList: ()=>T[] 
+interface IInfTablePage<T> {
+  rowList: T[];
+  nextPageInfo: string;
+  // getPageInfo: ()=>string
+  // getRowList: ()=>T[]
 }
 
 class BigQueryJob {
-    jobId:string
-    projectId:string
-    email:string
-    status:string
-    query:string
-    creationTime:number
-    startTime:number
-    endTime:number
+  jobId: string;
+  projectId: string;
+  email: string;
+  status: string;
+  query: string;
+  creationTime: number;
+  startTime: number;
+  endTime: number;
 }
 
-
 class AllData {
-    billingAccountId:string
-    service:string
-    sku:string
-    usageStartTime:string
-    usageEndTime:string
-    usageDurationSeconds:string
-    projectId:string
-    projectName:string
-    location:string
-    resourceName:string
-    resourceGlobalName:string
-    exportTime:string
-    cost:number
-    currency:string
-    usageAmount:string
-    usageUnit:string
-    credits: [{
-        id: string
-        fullName: string
-        type: string
-        name: string
-        amount: number
-    }]
-    // TO DO: Ensure that this is the correct unit
-    invoiceMonth:number   
+  billingAccountId: string;
+  service: string;
+  sku: string;
+  usageStartTime: string;
+  usageEndTime: string;
+  usageDurationSeconds: string;
+  projectId: string;
+  projectName: string;
+  location: string;
+  resourceName: string;
+  resourceGlobalName: string;
+  exportTime: string;
+  cost: number;
+  currency: string;
+  usageAmount: string;
+  usageUnit: string;
+  credits: [
+    {
+      id: string;
+      fullName: string;
+      type: string;
+      name: string;
+      amount: number;
+    }
+  ];
+  // TO DO: Ensure that this is the correct unit
+  invoiceMonth: number;
 }
 
 class BigQueryPage implements IInfTablePage<BigQueryJob> {
-    rowList:BigQueryJob[]
-    nextPageInfo:string
+  rowList: BigQueryJob[];
+  nextPageInfo: string;
 }
 
 class AllDataPage implements IInfTablePage<AllData> {
-    rowList:AllData[]
-    nextPageInfo:string
+  rowList: AllData[];
+  nextPageInfo: string;
 }
 
 // **********************************************
@@ -110,8 +109,8 @@ class AllDataPage implements IInfTablePage<AllData> {
 // **********************************************
 
 class AxesKeysAndLabels {
-    x: {key: string, label: string}
-    y: {key: string, label: string}
+  x: { key: string; label: string };
+  y: { key: string; label: string };
 }
 
 // **********************************************
@@ -121,40 +120,40 @@ class AxesKeysAndLabels {
 // Billing
 
 interface IQueryParamInfo {
-    field: string
+  field: string;
 }
 
-class BillingMatch implements IQueryParamInfo{
-    field: string
-    value: string
-    operator: string
-    not: boolean
+class BillingMatch implements IQueryParamInfo {
+  field: string;
+  value: string;
+  operator: string;
+  not: boolean;
 }
 
-class BillingBetweenDates implements IQueryParamInfo{
-    field: string
-    startDateTime: Date
-    endDateTime: Date
-    inclusive: boolean
+class BillingBetweenDates implements IQueryParamInfo {
+  field: string;
+  startDateTime: Date;
+  endDateTime: Date;
+  inclusive: boolean;
 }
 
-class BillingBetweenValues implements IQueryParamInfo{
-    field: string
-    lowNumber: number
-    highNumber: number
-    inclusive: boolean
+class BillingBetweenValues implements IQueryParamInfo {
+  field: string;
+  lowNumber: number;
+  highNumber: number;
+  inclusive: boolean;
 }
 
-class BillingSorting implements IQueryParamInfo{
-    field: string
-    ascending: boolean
+class BillingSorting implements IQueryParamInfo {
+  field: string;
+  ascending: boolean;
 }
 
 class BillingQueryParams {
-    matches: BillingMatch[]
-    betweenDates: BillingBetweenDates[]
-    betweenValues: BillingBetweenValues[]
-    sortings: BillingSorting[]
+  matches: BillingMatch[];
+  betweenDates: BillingBetweenDates[];
+  betweenValues: BillingBetweenValues[];
+  sortings: BillingSorting[];
 }
 
 // BigQuery
@@ -166,11 +165,58 @@ class BillingQueryParams {
 // }
 
 class BigQueryQueryParams {
-    allUsers:boolean
-    minCreationTime:string
-    maxCreationTime:string
-    stateFilters:string[]
-    // private Projection projection;
-    // private StateFilter stateFilter;
-    parentJobId:string
+  allUsers: boolean;
+  minCreationTime: string;
+  maxCreationTime: string;
+  stateFilters: string[];
+  // private Projection projection;
+  // private StateFilter stateFilter;
+  parentJobId: string;
+}
+
+class Forecast {
+  predictedCost: number;
+  billingAccountId: string;
+  usageStartTime: string;
+  usageEndTime: string;
+  transactionType: string;
+  exportTime: string;
+  cost: number;
+  currency: string;
+  costType: string;
+  costAtList: number;
+  service: Forecast.Service;
+  sku: Forecast.Sku;
+  location: Forecast.Location;
+  usage: Forecast.Usage;
+  invoice: Forecast.Invoice;
+}
+namespace Forecast {
+  export class Service {
+    id: string;
+    description: string;
+  }
+
+  export class Sku {
+    id: string;
+    description: string;
+  }
+
+  export class Location {
+    location: string;
+    country: string;
+    region: string;
+    zone: string;
+  }
+
+  export class Usage {
+    amount: number;
+    unit: string;
+    amountInPricingUnits: number;
+    pricingUnit: string;
+  }
+
+  export class Invoice {
+    month: string;
+  }
 }
