@@ -485,11 +485,12 @@ public class BigQueryAPICalls {
 
         String query = """
                     WITH features AS (
-                        SELECT billing_account_id, service, sku, Date(usage_start_time) as usage_start_time,
-                            Date(usage_end_time) as usage_end_time, location, transaction_type,
-                            Date(export_time) as export_time, cost, currency, currency_conversion_rate, usage,
-                            invoice, cost_type, cost_at_list
-                        FROM `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E`
+                        SELECT billing_account_id, service, sku, DATE_ADD(Date(usage_start_time), INTERVAL 10 DAY) as usage_start_time,
+                        DATE_ADD(Date(usage_end_time), INTERVAL 10 DAY) as usage_end_time, location, transaction_type,
+                        Date(export_time) as export_time, cost, currency, currency_conversion_rate, usage,
+                        invoice, cost_type, cost_at_list
+                    FROM `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E`
+                    WHERE DATE(usage_start_time) > DATE_ADD(CURRENT_DATE(), INTERVAL -10 DAY)
                     )
 
                     SELECT * FROM ML.PREDICT(MODEL `profitable-infra-consumption.all_billing_data.billingModelNew`, (SELECT * FROM features))
