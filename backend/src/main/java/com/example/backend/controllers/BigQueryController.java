@@ -90,7 +90,7 @@ public class BigQueryController {
     }
 
     // Forecast
-    @PostMapping("/api/forecast")
+    @GetMapping("/api/forecast")
     public QueryPage<Forecast> getForecast(@RequestParam(required = false) Integer numDays,
             @RequestParam(required = false) Integer currPageNum) throws Exception {
         return bigQueryAPICalls.getForecast(Objects.requireNonNullElse(numDays, 7),

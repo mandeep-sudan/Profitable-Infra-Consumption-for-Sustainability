@@ -57,7 +57,8 @@ export const getForecast = (
 ) => {
   const params = {
     currPageNum: currPageNum,
+    numDays: queryParams.numDays,
   };
   let endpoint: string = "api/forecast";
-  return axios.post<ForecastPage>(baseURL + endpoint, queryParams, { params });
+  return axios.get<ForecastPage>(baseURL + endpoint, { params: params });
 };
