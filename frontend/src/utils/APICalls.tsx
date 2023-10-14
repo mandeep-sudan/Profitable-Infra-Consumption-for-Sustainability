@@ -51,10 +51,13 @@ export const getBigQueryJobsList = (
 };
 
 // Forecast
-export const getForecast = (currPageNum: string) => {
+export const getForecast = (
+  currPageNum: string,
+  queryParams: { numDays: number }
+) => {
   const params = {
     currPageNum: currPageNum,
   };
   let endpoint: string = "api/forecast";
-  return axios.post<Forecast>(baseURL + endpoint, { params });
+  return axios.post<ForecastPage>(baseURL + endpoint, queryParams, { params });
 };

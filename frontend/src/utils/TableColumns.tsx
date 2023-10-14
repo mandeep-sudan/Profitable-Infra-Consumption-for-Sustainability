@@ -346,103 +346,18 @@ export const forecastColumns: MRT_ColumnDef<Forecast>[] = [
     enableClickToCopy: true,
   },
   {
-    accessorKey: "billingAccountId",
-    header: "Billing Account ID",
+    accessorKey: "serviceDesc",
+    header: "Service Description",
     enableClickToCopy: true,
   },
   {
-    accessorKey: "sku.description",
+    accessorKey: "skuDesc",
     header: "SKU Description",
     enableClickToCopy: true,
   },
   {
-    accessorKey: "sku.id",
-    header: "SKU ID",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "usageStartTime",
-    header: "Usage Start Time",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "usageEndTime",
-    header: "Usage End Time",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "location.location",
-    header: "Location",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "location.country",
-    header: "Country",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "location.region",
-    header: "Region",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "location.zone",
-    header: "Zone",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "transactionType",
-    header: "Transaction Type",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "exportTime",
-    header: "Export Time",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "cost",
-    header: "Cost",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "currency",
-    header: "Currency",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "usage.amount",
-    header: "Usage Amount",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "usage.unit",
-    header: "Usage Unit",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "usage.amountInPricingUnits",
-    header: "Usage Amount in Pricing Units",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "usage.pricingUnit",
-    header: "Usage Pricing Unit",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "invoice.month",
-    header: "Invoice Month",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "costType",
-    header: "Cost Type",
-    enableClickToCopy: true,
-  },
-  {
-    accessorKey: "costAtList",
-    header: "Cost At List",
+    accessorKey: "usageDate",
+    header: "Usage Date",
     enableClickToCopy: true,
   },
 ];

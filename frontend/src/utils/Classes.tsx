@@ -176,47 +176,12 @@ class BigQueryQueryParams {
 
 class Forecast {
   predictedCost: number;
-  billingAccountId: string;
-  usageStartTime: string;
-  usageEndTime: string;
-  transactionType: string;
-  exportTime: string;
-  cost: number;
-  currency: string;
-  costType: string;
-  costAtList: number;
-  service: Forecast.Service;
-  sku: Forecast.Sku;
-  location: Forecast.Location;
-  usage: Forecast.Usage;
-  invoice: Forecast.Invoice;
+  skuDesc: string;
+  serviceDesc: string;
+  usageDate: string;
 }
-namespace Forecast {
-  export class Service {
-    id: string;
-    description: string;
-  }
 
-  export class Sku {
-    id: string;
-    description: string;
-  }
-
-  export class Location {
-    location: string;
-    country: string;
-    region: string;
-    zone: string;
-  }
-
-  export class Usage {
-    amount: number;
-    unit: string;
-    amountInPricingUnits: number;
-    pricingUnit: string;
-  }
-
-  export class Invoice {
-    month: string;
-  }
+class ForecastPage implements IInfTablePage<Forecast> {
+  rowList: Forecast[];
+  nextPageInfo: string;
 }

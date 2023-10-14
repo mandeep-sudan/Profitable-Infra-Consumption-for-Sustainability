@@ -473,30 +473,38 @@ public class BigQueryAPICalls {
         return resultPage;
     }
 
-    public QueryPage<Forecast> getForecast(String currPageNum) throws Exception {
-        // TO DO: make sure that TO_JSON_STRING(project.labels) as project_labels,
-        // wasn't needed
-        int pageNum;
-        try {
-            pageNum = Integer.parseInt(currPageNum);
-        } catch (Exception e) {
-            pageNum = 0;
-        }
-
-        String query = """
-                    WITH features AS (
-                        SELECT billing_account_id, service, sku, DATE_ADD(Date(usage_start_time), INTERVAL 10 DAY) as usage_start_time,
-                        DATE_ADD(Date(usage_end_time), INTERVAL 10 DAY) as usage_end_time, location, transaction_type,
-                        Date(export_time) as export_time, cost, currency, currency_conversion_rate, usage,
-                        invoice, cost_type, cost_at_list
-                    FROM `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E`
-                    WHERE DATE(usage_start_time) > DATE_ADD(CURRENT_DATE(), INTERVAL -10 DAY)
-                    )
-
-                    SELECT * FROM ML.PREDICT(MODEL `profitable-infra-consumption.all_billing_data.billingModelNew`, (SELECT * FROM features))
-                """
-                +
-                " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
+    public QueryPage<Forecast> getForecast(Integer numDays, Integer pageNum) throws Exception {
+        String query = String.format("""
+                WITH
+                    days AS (
+                    SELECT
+                        DATE_ADD(CURRENT_DATE(), INTERVAL day_number DAY) AS usage_date
+                    FROM
+                        UNNEST(GENERATE_ARRAY(1,%d)) AS day_number ),
+                    features AS (
+                    SELECT
+                        usage_date,
+                        sku_desc,
+                        service_desc
+                    FROM
+                        days
+                    CROSS JOIN (
+                        SELECT
+                        DISTINCT sku.description AS sku_desc,
+                        service.description AS service_desc
+                        FROM
+                        `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E` ) )
+                SELECT
+                *
+                FROM
+                ML.PREDICT(MODEL `profitable-infra-consumption.all_billing_data.billingModel`,
+                    (
+                    SELECT
+                    *
+                    FROM
+                    features))
+                    ORDER BY usage_date, service_desc, sku_desc
+                    """, numDays) + " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
 
         return getDataFromQueryPaginated(query, Forecast.class, pageNum);
     }

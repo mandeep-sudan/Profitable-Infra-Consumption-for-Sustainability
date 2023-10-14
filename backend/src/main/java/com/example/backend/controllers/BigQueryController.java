@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -90,9 +91,9 @@ public class BigQueryController {
 
     // Forecast
     @PostMapping("/api/forecast")
-    public QueryPage<Forecast> getForecast(@RequestBody(required = false) BillingQueryParams queryParams,
-            @RequestParam(required = false) String currPageNum) throws Exception {
-        return bigQueryAPICalls.getForecast(currPageNum);
+    public QueryPage<Forecast> getForecast(@RequestParam(required = false) Integer numDays,
+            @RequestParam(required = false) Integer currPageNum) throws Exception {
+        return bigQueryAPICalls.getForecast(Objects.requireNonNullElse(numDays, 7),
+                Objects.requireNonNullElse(currPageNum, 0));
     }
-
 }
