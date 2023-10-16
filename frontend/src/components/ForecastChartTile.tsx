@@ -1,6 +1,14 @@
 import { Card } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { getForecastTimeline } from "../utils/APICalls";
 import "./Tiles.css";
 
@@ -17,7 +25,7 @@ export const ForecastChartTile = ({ numDays }: ForecastChartTileProps) => {
     getForecastTimeline(numDays).then((response) => {
       setForecastTimeline(response.data);
     });
-  }, []);
+  }, [numDays]);
 
   const getTimeSeries = () => [
     ...forecastTimeline
@@ -50,12 +58,14 @@ export const ForecastChartTile = ({ numDays }: ForecastChartTileProps) => {
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart width={500} height={400} data={getTimeSeries()}>
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={"usageDate"} />
           <YAxis />
           {getServiceNames().map((e) => {
             console.log(getTimeSeries());
             return <Line key={e} dataKey={e}></Line>;
           })}
+          <Tooltip />
         </LineChart>
       </ResponsiveContainer>
     </div>

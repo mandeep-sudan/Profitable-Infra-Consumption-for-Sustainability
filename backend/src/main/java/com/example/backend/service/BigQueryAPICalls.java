@@ -518,7 +518,7 @@ public class BigQueryAPICalls {
                             SELECT
                                 DATE_ADD(CURRENT_DATE(), INTERVAL day_number DAY) AS usage_date
                             FROM
-                                UNNEST(GENERATE_ARRAY(1,7)) AS day_number ),
+                                UNNEST(GENERATE_ARRAY(1,%d)) AS day_number ),
                             features AS (
                             SELECT
                                 usage_date,
