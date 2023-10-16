@@ -513,38 +513,38 @@ public class BigQueryAPICalls {
     public List<ForecastTimeline> getForecastTimeline(Integer numDays) throws Exception {
         String query = String.format(
                 """
-                          WITH
-                            days AS (
-                            SELECT
-                                DATE_ADD(CURRENT_DATE(), INTERVAL day_number DAY) AS usage_date
-                            FROM
-                                UNNEST(GENERATE_ARRAY(1,%d)) AS day_number ),
-                            features AS (
-                            SELECT
-                                usage_date,
-                                sku_desc,
-                                service_desc
-                            FROM
-                                days
-                            CROSS JOIN (
-                                SELECT
-                                DISTINCT sku.description AS sku_desc,
-                                service.description AS service_desc
-                                FROM
-                                `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E` ) )
-                        SELECT
-                          usage_date,
-                          service_desc,
-                          SUM(predicted_cost) as predicted_cost
-                        FROM
-                          ML.PREDICT(MODEL `profitable-infra-consumption.all_billing_data.billingModel`,
-                            (
-                            SELECT
-                              *
-                            FROM
-                              features))
-                        GROUP BY usage_date,service_desc
-                        ORDER BY usage_date, service_desc
+                    WITH
+                    days AS (
+                    SELECT
+                      DATE_ADD(CURRENT_DATE(), INTERVAL day_number DAY) AS usage_date
+                    FROM
+                      UNNEST(GENERATE_ARRAY(1,%d)) AS day_number ),
+                    features AS (
+                    SELECT
+                      usage_date,
+                      sku_desc,
+                      service_desc
+                    FROM
+                      days
+                    CROSS JOIN (
+                      SELECT
+                        DISTINCT sku.description AS sku_desc,
+                        service.description AS service_desc
+                      FROM
+                        `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E` ) )
+                  SELECT
+                    usage_date,
+                    service_desc,
+                    ABS(SUM(predicted_cost) OVER (PARTITION BY sku_desc, service_desc ORDER BY usage_date)) * 1000 as predicted_cost
+                  FROM
+                    ML.PREDICT(MODEL `profitable-infra-consumption.all_billing_data.billingModel`,
+                      (
+                      SELECT
+                        *
+                      FROM
+                        features))
+                  
+                    ORDER BY service_desc, sku_desc, usage_date
                                   """,
                 numDays);
 
