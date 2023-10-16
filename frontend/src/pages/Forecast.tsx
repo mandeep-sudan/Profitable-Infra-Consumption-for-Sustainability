@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { getForecast } from "../utils/APICalls";
 import InfiniteTableTile from "../components/InfiniteTableTile";
 import { forecastColumns } from "../utils/TableColumns";
-import { Center, Container, SegmentedControl } from "@mantine/core";
+import { Card, Center, Container, SegmentedControl } from "@mantine/core";
+import { ForecastChartTile } from "../components/ForecastChartTile";
 
 export const Forecast = () => {
-  const [tileStatus, setTileStatus] = useState<string>("week");
+  const [timeframe, setTimeframe] = useState<string>("week");
+
   const getNumDays = () => {
-    switch (tileStatus) {
+    switch (timeframe) {
       case "week":
         return 7;
       case "month":
@@ -21,8 +23,8 @@ export const Forecast = () => {
     <>
       <Container>
         <SegmentedControl
-          value={tileStatus}
-          onChange={setTileStatus}
+          value={timeframe}
+          onChange={setTimeframe}
           data={[
             {
               label: <Center>W</Center>,
@@ -47,6 +49,16 @@ export const Forecast = () => {
         queryParams={{ numDays: getNumDays() }}
         modal={""}
       />
+      <Card
+        shadow="sm"
+        padding="lg"
+        radius="md"
+        withBorder
+        style={{ width: "100%", height: "100%" }}
+        className={"tile full-tile"}
+      >
+        <ForecastChartTile numDays={getNumDays()} />
+      </Card>
     </>
   );
 };

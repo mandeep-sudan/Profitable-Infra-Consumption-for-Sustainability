@@ -25,6 +25,7 @@ import com.example.backend.model.BillingQueryParams.BillingBetweenValues;
 import com.example.backend.model.BillingQueryParams.BillingMatch;
 import com.example.backend.model.BillingQueryParams.BillingSorting;
 import com.example.backend.model.Forecast;
+import com.example.backend.model.ForecastTimeline;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.bigquery.BigQuery;
 // import com.google.cloud.bigquery.BigQueryException;
@@ -507,5 +508,46 @@ public class BigQueryAPICalls {
                     """, numDays) + " LIMIT " + pageSize + " OFFSET " + pageNum * pageSize;
 
         return getDataFromQueryPaginated(query, Forecast.class, pageNum);
+    }
+
+    public List<ForecastTimeline> getForecastTimeline(Integer numDays) throws Exception {
+        String query = String.format(
+                """
+                          WITH
+                            days AS (
+                            SELECT
+                                DATE_ADD(CURRENT_DATE(), INTERVAL day_number DAY) AS usage_date
+                            FROM
+                                UNNEST(GENERATE_ARRAY(1,7)) AS day_number ),
+                            features AS (
+                            SELECT
+                                usage_date,
+                                sku_desc,
+                                service_desc
+                            FROM
+                                days
+                            CROSS JOIN (
+                                SELECT
+                                DISTINCT sku.description AS sku_desc,
+                                service.description AS service_desc
+                                FROM
+                                `profitable-infra-consumption.all_billing_data.gcp_billing_export_v1_011093_DD21A6_63939E` ) )
+                        SELECT
+                          usage_date,
+                          service_desc,
+                          SUM(predicted_cost) as predicted_cost
+                        FROM
+                          ML.PREDICT(MODEL `profitable-infra-consumption.all_billing_data.billingModel`,
+                            (
+                            SELECT
+                              *
+                            FROM
+                              features))
+                        GROUP BY usage_date,service_desc
+                        ORDER BY usage_date, service_desc
+                                  """,
+                numDays);
+
+        return getDataFromQuery(query, ForecastTimeline.class);
     }
 }

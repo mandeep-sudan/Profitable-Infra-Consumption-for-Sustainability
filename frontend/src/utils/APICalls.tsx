@@ -62,3 +62,8 @@ export const getForecast = (
   let endpoint: string = "api/forecast";
   return axios.get<ForecastPage>(baseURL + endpoint, { params: params });
 };
+
+export const getForecastTimeline = (numDays: number) =>
+  axios.get<ForecastTimeline[]>(baseURL + "api/forecast-timeline", {
+    params: { numDays: numDays },
+  });

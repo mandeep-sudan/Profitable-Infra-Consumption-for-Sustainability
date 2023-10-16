@@ -18,6 +18,7 @@ import com.example.backend.model.CostByProject;
 import com.example.backend.model.CostByService;
 import com.example.backend.model.CostByWeekAndService;
 import com.example.backend.model.Forecast;
+import com.example.backend.model.ForecastTimeline;
 // import com.example.backend.model.ModifiedJob;
 import com.example.backend.model.BigQueryJobsPage;
 import com.example.backend.model.BigQueryQueryParams;
@@ -95,5 +96,12 @@ public class BigQueryController {
             @RequestParam(required = false) Integer currPageNum) throws Exception {
         return bigQueryAPICalls.getForecast(Objects.requireNonNullElse(numDays, 7),
                 Objects.requireNonNullElse(currPageNum, 0));
+    }
+
+    // Forecast-timeline
+    @GetMapping("/api/forecast-timeline")
+    public List<ForecastTimeline> getForecastTimeline(@RequestParam(required = false) Integer numDays)
+            throws Exception {
+        return bigQueryAPICalls.getForecastTimeline(Objects.requireNonNullElse(numDays, 7));
     }
 }

@@ -185,3 +185,9 @@ class ForecastPage implements IInfTablePage<Forecast> {
   rowList: Forecast[];
   nextPageInfo: string;
 }
+
+class ForecastTimeline {
+  predictedCost: number;
+  serviceDesc: string;
+  usageDate: string;
+}
