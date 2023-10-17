@@ -342,6 +342,7 @@ export const bigQueryJobsListColumns: MRT_ColumnDef<BigQueryJob>[] = [
 export const forecastColumns: MRT_ColumnDef<Forecast>[] = [
   {
     accessorKey: "predictedCost",
+    accessorFn: (row: Forecast) => '$' + row.predictedCost.toFixed(5),
     header: "Predicted Cost",
     enableClickToCopy: true,
   },
