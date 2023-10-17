@@ -59,8 +59,8 @@ export const ForecastChartTile = ({ numDays }: ForecastChartTileProps) => {
       <ResponsiveContainer width="100%" height="100%">
         <LineChart width={500} height={400} data={getTimeSeries()}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={"usageDate"} />
-          <YAxis />
+          <XAxis dataKey={"usageDate"} interval={"preserveStart"} minTickGap={20} />
+          <YAxis unit={"$"} />
           {getServiceNames().map((e) => {
             console.log(getTimeSeries());
             return <Line key={e} dataKey={e}></Line>;
