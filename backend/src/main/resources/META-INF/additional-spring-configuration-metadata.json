@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "open_ai_token",
+      "type": "java.lang.String",
+      "description": "Client token for OpenAI service"
+    }
+  ]
+}

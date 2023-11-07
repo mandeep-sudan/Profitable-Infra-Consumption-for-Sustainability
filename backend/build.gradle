@@ -27,6 +27,7 @@ dependencies {
 	implementation 'com.google.cloud:spring-cloud-gcp-starter'
 	implementation 'com.google.cloud:spring-cloud-gcp-starter-bigquery'
 	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.theokanning.openai-gpt3-java:service:0.16.1'
 
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 	testCompileOnly 'org.projectlombok:lombok:1.18.28'
