@@ -17,9 +17,11 @@ public class OpenAICompletionService {
     OpenAiService service;
 
     public List<String> getTextToSQL(String prompt) {
-        return service
-                .createCompletion(CompletionRequest.builder().prompt("").model("gpt-3.5-turbo").echo(true).build())
-                .getChoices()
-                .stream().map(CompletionChoice::getText).collect(Collectors.toList());
+        List<CompletionChoice> choices = service
+                .createCompletion(
+                        CompletionRequest.builder().prompt(prompt).model("gpt-3.5-turbo-instruct").echo(true).build())
+                .getChoices();
+
+        return choices.stream().map(CompletionChoice::getText).collect(Collectors.toList());
     }
 }
