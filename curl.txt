@@ -1,0 +1,23 @@
+API_ENDPOINT="us-central1-aiplatform.googleapis.com"
+PROJECT_ID="profitable-infra-consumption"
+MODEL_ID="code-bison"
+LOCATION_ID="us-central1"
+ 
+curl \
+-X POST \
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+-H "Content-Type: application/json" \
+"https://${API_ENDPOINT}/v1/projects/${PROJECT_ID}/locations/${LOCATION_ID}/publishers/google/models/${MODEL_ID}:predict" -d \
+$'{
+    "instances": [
+        {
+            "prefix": "Table customers, columns = [CustomerId, FirstName, LastName, Company, Address, Cith, State, Country, PostalCode, Phone, Fax, Email, SupportRepId]
+Create a SQL query to pull the list of customers whose first name starts with \'S\', and postal code has 5 digits. Order by phone number."
+        }
+    ],
+    "parameters": {
+        "candidateCount": 1,
+        "maxOutputTokens": 1024,
+        "temperature": 0.2
+    }
+}'
