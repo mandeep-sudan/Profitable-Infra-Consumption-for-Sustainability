@@ -67,3 +67,6 @@ export const getForecastTimeline = (numDays: number) =>
   axios.get<ForecastTimeline[]>(baseURL + "api/forecast-timeline", {
     params: { numDays: numDays },
   });
+
+export const getQueryFromPrompt = (prompt: string) =>
+  axios.post(baseURL + "api/automl", prompt);
