@@ -12,6 +12,7 @@ import static java.util.Map.entry;
 import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.model.AutoMLResponse;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.gson.Gson;
 
@@ -30,7 +31,7 @@ public class AutoMLClient {
         return credentials.getAccessToken().getTokenValue();
     }
 
-    public String textToQuery(String query) throws Exception {
+    public AutoMLResponse textToQuery(String query) throws Exception {
         HttpClient client = HttpClient.newBuilder().build();
 
         // Create a request
@@ -43,7 +44,8 @@ public class AutoMLClient {
 
         // Send the request and get the response
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+
+        return new Gson().fromJson(response.body(), AutoMLResponse.class);
     }
 
     private static String getResourceLocator() {

@@ -18,6 +18,6 @@ public class AutoMLController {
     @PostMapping(value = "/api/automl")
     public String makePrediction(@RequestBody String query) throws Exception {
         return autoMLClient.textToQuery(
-                query);
+                query).getPredictions().get(0).getContent();
     }
 }
