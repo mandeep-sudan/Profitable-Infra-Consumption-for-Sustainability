@@ -8,6 +8,7 @@ import BigQuery from "../pages/BigQuery";
 import NewTableTile from "../components/StaticTableTile";
 import Dashboard from "../pages/Dashboard";
 import { Forecast } from "../pages/Forecast";
+import { Assistant } from "../pages/Assistant";
 
 type ContentProps = {
   active: string;
@@ -25,6 +26,7 @@ const Content = ({ active }: ContentProps) => {
           DataProc: <Text>DataProc Information</Text>,
           Billing: <Billing />,
           Forecast: <Forecast />,
+          Assistant: <Assistant />,
           "Other Settings": <Text>Other Settings Information</Text>,
         }[active]
       }

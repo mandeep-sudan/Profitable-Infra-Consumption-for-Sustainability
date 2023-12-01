@@ -7,6 +7,7 @@ import {
   Image,
   getStylesRef,
   rem,
+  Container,
 } from "@mantine/core";
 import {
   IconSettings,
@@ -19,6 +20,8 @@ import {
   IconBrandGoogleBigQuery,
   IconDatabaseCog,
   IconChartArcs,
+  IconMicrophone,
+  IconHeadset,
 } from "@tabler/icons-react";
 import { MantineLogo } from "@mantine/ds";
 // import deloitteImgUrl from '../../public/images/DeloitteLogo.png' // TO DO: Remove this error (https://stackoverflow.com/questions/52759220/importing-images-in-typescript-react-cannot-find-module)
@@ -101,6 +104,7 @@ const data = [
   { link: "", label: "DataProc", icon: IconDatabaseCog },
   { link: "", label: "Billing", icon: IconReceipt2 },
   { link: "", label: "Forecast", icon: IconChartArcs },
+  { link: "", label: "Assistant", icon: IconHeadset },
   { link: "", label: "Other Settings", icon: IconSettings },
 ];
 
