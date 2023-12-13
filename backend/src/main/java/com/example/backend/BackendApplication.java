@@ -20,16 +20,6 @@ public class BackendApplication {
 	}
 
 	@Bean
-	WebMvcConfigurer corsConfigurer() { // public
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/*").allowedOrigins("http://localhost:5173");
-			}
-		};
-	}
-
-	@Bean
 	OpenAiService openAiService() {
 		return new OpenAiService(openAiToken);
 	}

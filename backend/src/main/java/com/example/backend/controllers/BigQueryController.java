@@ -39,7 +39,6 @@ HELPFUL LINKS:
         https://stackoverflow.com/questions/44150064/how-to-get-query-result-in-json-form-using-java-api-of-google-bigquery
 */
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 // @RequestMapping("api/")
 public class BigQueryController {
